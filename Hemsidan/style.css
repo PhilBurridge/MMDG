@@ -1,0 +1,44 @@
+body
+{
+	margin:0cm 0cm 1cm 1cm;
+	font:italic 12px/30px Georgia, serif;
+	width: 500px;
+}
+
+p
+{
+	margin:0cm 0cm 1cm 1cm;
+	font:italic 12px/30px Georgia, serif;
+}
+
+h1
+{
+	margin:1cm 2cm 1cm 1cm;
+	font:italic bold 16px/30px Georgia, serif;
+} 
+
+h2
+{
+	margin:0.5cm 2cm 1cm 1cm;
+	font:italic bold 14px/30px Georgia, serif;
+} 
+
+h4
+{
+	margin:0cm 0cm 1cm 1cm;
+	font:italic bold 12px/30px Georgia, serif;
+}
+
+div
+{
+	text-align: justify;
+}
+
+.minClass
+{
+	margin:0 auto;
+}
+.minClass img{
+	display:block;
+	margin:0 auto;
+}
