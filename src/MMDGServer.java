@@ -1,12 +1,11 @@
-public class MMDGServer
-{
+public class MMDGServer{
 
     /**
      * @param args
      */
-    public static void main(String[] args) {
-        // Welcome the MMDG server to the project!
-        System.out.println("MMDG: Hello world!");
+    
+    public String greet(){
+        return "MMDG: Hellow world!";
     }
 
 }
