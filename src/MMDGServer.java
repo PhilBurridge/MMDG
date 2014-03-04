@@ -1,38 +1,28 @@
+import java.util.Vector;
+
+
 public class MMDGServer{
 
-    /**
-     * This is the HTTP server handler class
-     */
+    /** This is the HTTP server handler class */
     private HTTPServer httpServer;
 
-    /**
-     * This is the WebSocket handler class
-     */
+    /** This is the WebSocket handler class */
     private WebSocketServer webSocketServer;
 
-    /**
-     * This is the TCP handler class
-     */
+    /** This is the TCP handler class */
     private TCPHandler tcpHandler;
 
-    /**
-     * The port used by HTTP server
-     */
+    /** The port used by HTTP server */
     private final int HTTP_PORT = 1337;
 
-    /**
-     * The port used by Web Socket Server
-     */
+    /** The port used by Web Socket Server */
     private final int WEB_SOCKET_PORT = 1338;
 
-    /**
-     * The port used by the TCP handler
-     */
+    /** The port used by the TCP handler */
     private final int TCP_PORT = 8080;
 
-    /**
-     * This is a simple constructor
-     */
+    // CONSTRUCTORS
+    /** This is a simple constructor */
     public MMDGServer() {
         System.out.print("init MMDGServer ... ");
         httpServer = new HTTPServer(HTTP_PORT);
@@ -40,9 +30,43 @@ public class MMDGServer{
         tcpHandler = new TCPHandler(TCP_PORT);
         System.out.println("Done!");
 
-        /* TESTING TCP */
-        tcpHandler.sendMessage("Hello TCP");
+    }
+
+    // METHODS
+
+    /**
+     * Starts the httpServer and webSocketServer. Gets the commandStack from
+     * WebSocketServer and tells TCP handler to send the commands 60 times per
+     * second.
+     */
+    public void run() {
+        httpServer.listenForNewConnections();
+        webSocketServer.listenToWebSocketMessages();
         
+        int i = 0;
+        while (true) {
+            i++;
+            System.out.print("i=" + i + ": ");
+            
+            Vector<String> commadStack = webSocketServer.getCommandStack();
+            tcpHandler.sendMessages(commadStack);
+            webSocketServer.clearCommandStack();
+            
+            // sleep for 1/60 seconds
+            try {
+                Thread.sleep(17);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                break;
+            }
+            
+            if (i>=300)
+                break;
+        }
+    }
+
+    public void sendTestMessageViaTCP(String msg) {
+        tcpHandler.sendMessage(msg);
     }
 
     /**
@@ -52,10 +76,6 @@ public class MMDGServer{
      */
     public String greet() {
         return "MMDG: Hello world!";
-    }
-    
-    public void hittepa(){
-        System.out.println(1);
     }
 
 }
