@@ -53,5 +53,11 @@ public class MMDGServer{
     public String greet() {
         return "MMDG: Hello world!";
     }
+    
+    public void hittepa(){
+        int hej = 0;
+        hej++;
+        System.out.println(hej);
+    }
 
 }
