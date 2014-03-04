@@ -1,5 +1,4 @@
-public class MMDGServer
-{
+public class MMDGServer{
 
     /**
      * @param args
