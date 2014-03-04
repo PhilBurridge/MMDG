@@ -34,7 +34,7 @@ public class MMDGServer{
      * @return a string with a greeting message
      */
     public String greet(){
-        return "MMDG: Hellow world!";
+        return "MMDG: Hello world!";
     }
 
 }
