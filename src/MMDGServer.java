@@ -55,9 +55,7 @@ public class MMDGServer{
     }
     
     public void hittepa(){
-        int hej = 0;
-        hej++;
-        System.out.println(hej);
+        System.out.println(1);
     }
 
 }
