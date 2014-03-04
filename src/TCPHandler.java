@@ -8,7 +8,7 @@ public class TCPHandler{
     }
 
     public void sendMessage(String message) {
-        System.out.println("messages: " + message);
+        System.out.println("message to send via TCP: " + message);
     }
     
     public void sendMessages(Vector<String> commandStack){

@@ -20,16 +20,19 @@ public class MMDGServer{
 
     /** The port used by the TCP handler */
     private final int TCP_PORT = 8080;
+    
+    /** */
+    private int unloadsPerSecond = 2;  
 
+    
     // CONSTRUCTORS
-    /** This is a simple constructor */
+    /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() {
         System.out.print("init MMDGServer ... ");
         httpServer = new HTTPServer(HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(TCP_PORT);
         System.out.println("Done!");
-
     }
 
     // METHODS
@@ -37,45 +40,35 @@ public class MMDGServer{
     /**
      * Starts the httpServer and webSocketServer. Gets the commandStack from
      * WebSocketServer and tells TCP handler to send the commands 60 times per
-     * second.
+     * second. 
      */
     public void run() {
         httpServer.listenForNewConnections();
         webSocketServer.listenToWebSocketMessages();
         
-        int i = 0;
+        int unloads = 0;
         while (true) {
-            i++;
-            System.out.print("i=" + i + ": ");
             
             Vector<String> commadStack = webSocketServer.getCommandStack();
             tcpHandler.sendMessages(commadStack);
             webSocketServer.clearCommandStack();
             
-            // sleep for 1/60 seconds
+            // sleep for 1/unloadPerSeconds seconds
             try {
-                Thread.sleep(17);
+                Thread.sleep(1000/unloadsPerSecond);
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
             }
-            
-            if (i>=300)
+            unloads++;
+            if (unloads/unloadsPerSecond >= 5)
                 break;
         }
+        System.out.println("Server stopped");
     }
 
     public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendMessage(msg);
-    }
-
-    /**
-     * This is just a test method.
-     * 
-     * @return a string with a greeting message
-     */
-    public String greet() {
-        return "MMDG: Hello world!";
     }
 
 }

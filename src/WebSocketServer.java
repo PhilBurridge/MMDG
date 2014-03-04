@@ -9,12 +9,11 @@ public class WebSocketServer{
     
     public WebSocketServer(int websocketPort){
         commandStack = new Vector<String>();
-        cs = new VirtualClient(this,1);
-        cs = new VirtualClient(this,2);
     }
     
     public void listenToWebSocketMessages(){
-        
+        cs = new VirtualClient(this,1);
+        cs = new VirtualClient(this,2);
     }
     
     public void addCommand(String command){
