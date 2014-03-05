@@ -50,8 +50,19 @@ public class MMDGServer{
      * Starts the httpServer and webSocketServer. Gets the commandStack from
      * WebSocketServer and tells TCP handler to send the commands 60 times per
      * second.
+     * @throws IOException 
      */
-    public void run() {
+    public void run() throws IOException {
+        webSocketServer.connect();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+            System.out.println("Write something to the client!");
+            webSocketServer.sendMessage(br.readLine().getBytes());
+        }
+        
+        
+        
+        /*
         int maxTime = 10; //
         System.out.println("Server run for " + maxTime + " seconds.");
 
@@ -75,7 +86,7 @@ public class MMDGServer{
             unloads++;
             if (unloads / unloadsPerSecond >= 10) break;
         }
-        System.out.println("Server stopped");
+        System.out.println("Server stopped");*/
     }
 
    /* public void sendTestMessageViaTCP(String msg) {
