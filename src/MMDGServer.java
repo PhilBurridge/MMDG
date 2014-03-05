@@ -56,11 +56,11 @@ public class MMDGServer{
 
         httpServer.listenForNewConnections();
         webSocketServer.listenToWebSocketMessages();
-
+        Vector<String> commadStack;
         int unloads = 0;
         while (true) {
 
-            Vector<String> commadStack = webSocketServer.getCommandStack();
+            commadStack = webSocketServer.getCommandStack();
             tcpHandler.sendMessages(commadStack);
             webSocketServer.clearCommandStack();
 
@@ -77,8 +77,8 @@ public class MMDGServer{
         System.out.println("Server stopped");
     }
 
-    public void sendTestMessageViaTCP(String msg) {
+   /* public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendMessage(msg);
-    }
+    }*/
 
 }
