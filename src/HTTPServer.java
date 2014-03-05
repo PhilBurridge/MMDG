@@ -35,5 +35,11 @@ public class HTTPServer {
             os.close();
         }
     }
+    
+    
+    public void listenForNewConnections(){
+        
+    }
 
 }
+
