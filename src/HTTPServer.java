@@ -25,7 +25,7 @@ public class HTTPServer{
      * @param HOST
      * The ip or DNS address
      * @param HTTP_PORT
-     * The ip or DNS address
+     * The http server port
      */
     public HTTPServer(String HOST, int HTTP_PORT) {
 
@@ -41,7 +41,8 @@ public class HTTPServer{
         // assigning a "content handler" to the server. Server needs to be told
         // what content to serve in response to given URL (now just HOST:PORT/)
         server.createContext("/", new MyHandler());
-        server.setExecutor(null); // creates a default executor
+        // creates a default executor
+        server.setExecutor(null);
         // Starts listening to connections
         server.start();
     }
@@ -54,8 +55,8 @@ public class HTTPServer{
     static class MyHandler implements HttpHandler{
 
         /**
-         * Will respond with any file requested if it exist in public file.
-         * Variable name t is seams to be a standard on internet.
+         * Will respond with any file requested if it exist in public directory.
+         * Variable name t seems to be a standard on internet.
          */
         public void handle(HttpExchange t) throws IOException {
             String root = "public/";
@@ -105,7 +106,10 @@ public class HTTPServer{
          * jetty is recommended by many.
          */
     }
-    // THis function is probably not needed. http is request-respond based, not an open connection. as long as server is running, anyone can connect(/send requests).
+
+    // THis function is probably not needed. http is request-respond based, not
+    // an open connection. as long as server is running, anyone can
+    // connect(/send requests).
     // if i understand it correctly that is.
     public void listenForNewConnections() {
 
