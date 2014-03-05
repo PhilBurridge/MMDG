@@ -20,11 +20,13 @@ public class MMDGServer{
 
     /** The port used by the TCP handler */
     private final int TCP_PORT = 8080;
-    
-    /** */
-    private int unloadsPerSecond = 2;  
 
-    
+    /**
+     * Defines how many times per second the MMDG Server should unload the stack
+     * of client commands to the application
+     */
+    private double unloadsPerSecond = 2;
+
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() {
@@ -35,34 +37,42 @@ public class MMDGServer{
         System.out.println("Done!");
     }
 
+    public void setUnloadsPerSecond(double unloadsPerSecond) {
+        if (unloadsPerSecond > 0) {
+            this.unloadsPerSecond = unloadsPerSecond;
+        }
+    }
+
     // METHODS
 
     /**
      * Starts the httpServer and webSocketServer. Gets the commandStack from
      * WebSocketServer and tells TCP handler to send the commands 60 times per
-     * second. 
+     * second.
      */
     public void run() {
+        int maxTime = 10; //
+        System.out.println("Server run for " + maxTime + " seconds.");
+
         httpServer.listenForNewConnections();
         webSocketServer.listenToWebSocketMessages();
-        
+
         int unloads = 0;
         while (true) {
-            
+
             Vector<String> commadStack = webSocketServer.getCommandStack();
             tcpHandler.sendMessages(commadStack);
             webSocketServer.clearCommandStack();
-            
+
             // sleep for 1/unloadPerSeconds seconds
             try {
-                Thread.sleep(1000/unloadsPerSecond);
+                Thread.sleep((int) (1000 / unloadsPerSecond));
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
             }
             unloads++;
-            if (unloads/unloadsPerSecond >= 5)
-                break;
+            if (unloads / unloadsPerSecond >= 10) break;
         }
         System.out.println("Server stopped");
     }

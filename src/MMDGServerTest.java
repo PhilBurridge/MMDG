@@ -5,6 +5,7 @@ public class MMDGServerTest{
      */
     public static void main(String[] args) {
         MMDGServer mmdgServer = new MMDGServer();
+        mmdgServer.setUnloadsPerSecond(10);
         mmdgServer.run();
     }
 
