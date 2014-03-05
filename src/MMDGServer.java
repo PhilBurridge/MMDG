@@ -12,6 +12,9 @@ public class MMDGServer{
     /** This is the TCP handler class */
     private TCPHandler tcpHandler;
 
+    /** The IP used by HTTP server */
+    private final String HOST = "127.0.0.1";
+    
     /** The port used by HTTP server */
     private final int HTTP_PORT = 1337;
 
@@ -31,7 +34,7 @@ public class MMDGServer{
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() {
         System.out.print("init MMDGServer ... ");
-        httpServer = new HTTPServer(HTTP_PORT);
+        httpServer = new HTTPServer(HOST, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(TCP_PORT);
         System.out.println("Done!");
@@ -76,7 +79,6 @@ public class MMDGServer{
         }
         System.out.println("Server stopped");
     }
-
    /* public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendMessage(msg);
     }*/
