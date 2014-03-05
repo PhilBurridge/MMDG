@@ -1,3 +1,5 @@
+import java.io.*;
+
 public class MMDGServer{
 
     /**
@@ -33,7 +35,7 @@ public class MMDGServer{
     /**
      * This is a simple constructor
      */
-    public MMDGServer() {
+    public MMDGServer() throws IOException{
         System.out.print("init MMDGServer ... ");
         httpServer = new HTTPServer(HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
