@@ -54,13 +54,10 @@ public class MMDGServer{
      * second.
      */
     public void run() {
-        int maxTime = 10; //
-        System.out.println("Server run for " + maxTime + " seconds.");
-
+        
         httpServer.listenForNewConnections();
         webSocketServer.listenToWebSocketMessages();
         Vector<String> commadStack;
-        int unloads = 0;
         while (true) {
 
             commadStack = webSocketServer.getCommandStack();
@@ -74,8 +71,6 @@ public class MMDGServer{
                 e.printStackTrace();
                 break;
             }
-            unloads++;
-            if (unloads / unloadsPerSecond >= 10) break;
         }
         System.out.println("Server stopped");
     }
