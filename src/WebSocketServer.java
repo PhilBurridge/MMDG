@@ -12,7 +12,7 @@ import org.apache.commons.codec.binary.Base64;
 /**
  * Handles the websocket connections.
  */
-public class WebSocketServer{
+public class WebSocketServer extends ConsolePrinter{
 
     public static final int MASK_SIZE = 4;
     public static final int SINGLE_FRAME_UNMASKED = 0x81;
@@ -40,11 +40,11 @@ public class WebSocketServer{
     }
 
     public void connect() throws IOException {
-        System.out.println("Waiting for connections");
+        print("Waiting for connections");
         socket = serverSocket.accept();
-        System.out.println("Got connection");
+        print("Got connection");
         if (handshake()) {
-            System.out.println("Handshake done. Listening...");
+            print("Handshake done. Listening...");
             listenerThread();
         }
     }
@@ -58,16 +58,16 @@ public class WebSocketServer{
         String str;
 
         // Reading client handshake
-        System.out.println();
-        System.out.println("READ CLIENT HANDSHAKE:");
+        print();
+        print("READ CLIENT HANDSHAKE:");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
-            System.out.println(str);
+            print(str);
             if (s.length == 2) {
                 keys.put(s[0], s[1]);
             }
         }
-        System.out.println();
+        print();
 
         // Do what you want with the keys here, we will just use
         // "Sec-WebSocket-Key"
@@ -87,8 +87,8 @@ public class WebSocketServer{
         String response = "HTTP/1.1 101 Switching Protocols\r\n"
                         + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n"
                         + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
-        System.out.println("WRITING RESPONSE TO CLIENT:");
-        System.out.println(response);
+        print("WRITING RESPONSE TO CLIENT:");
+        print(response);
         out.write(response);
         out.flush();
 
@@ -96,14 +96,14 @@ public class WebSocketServer{
     }
 
     private byte[] readBytes(int numOfBytes) throws IOException {
-        System.out.println("numOfBytes = " + numOfBytes);
+        print("numOfBytes = " + numOfBytes);
         byte[] b = new byte[numOfBytes];
         socket.getInputStream().read(b);
         return b;
     }
 
     public void sendMessage(byte[] msg) throws IOException {
-        System.out.println("Sending to client");
+        print("Sending to client");
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         BufferedOutputStream os = new BufferedOutputStream(
                         socket.getOutputStream());
@@ -123,7 +123,7 @@ public class WebSocketServer{
             public void run() {
                 try {
                     while (true) {
-                        System.out.println("Recieved from client: "
+                        print("Recieved from client: "
                                         + reiceveMessage());
                     }
                 } catch (IOException ex) {
@@ -132,25 +132,25 @@ public class WebSocketServer{
             }
         });
         t.start();
-        System.out.println("Started thread used to listen to client messages...");
+        print("Started thread used to listen to client messages...");
     }
 
     public String reiceveMessage() throws IOException {
         byte[] buf = readBytes(2);
-        System.out.println("Headers:");
+        print("Headers:");
         convertAndPrint(buf);
         int opcode = buf[0] & 0x0F;
         if (opcode == 8) {
             // Client want to close connection!
-            System.out.println("Client closed!");
+            print("Client closed!");
             socket.close();
             System.exit(0);
             return null;
         } else {
             final int payloadSize = getSizeOfPayload(buf[1]);
-            System.out.println("Payloadsize: " + payloadSize);
+            print("Payloadsize: " + payloadSize);
             buf = readBytes(MASK_SIZE + payloadSize);
-            System.out.println("Payload:");
+            print("Payload:");
             convertAndPrint(buf);
             buf = unMask(Arrays.copyOfRange(buf, 0, 4),
                             Arrays.copyOfRange(buf, 4, buf.length));
@@ -176,7 +176,7 @@ public class WebSocketServer{
         for (byte b : bytes) {
             sb.append(String.format("%02X ", b));
         }
-        System.out.println(sb.toString());
+        print(sb.toString());
     }
 
 }

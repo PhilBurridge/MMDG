@@ -1,7 +1,7 @@
 import java.util.Vector;
 
 
-public class TCPHandler{
+public class TCPHandler { 
 
     public TCPHandler(int tcpPort) {
 

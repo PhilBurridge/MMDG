@@ -3,7 +3,7 @@ import java.io.*;
 import java.util.Vector;
 
 
-public class MMDGServer{
+public class MMDGServer extends ConsolePrinter{
 
     /** This is the HTTP server handler class */
     private HTTPServer httpServer;
@@ -36,12 +36,15 @@ public class MMDGServer{
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() throws IOException{
-        System.out.println("init MMDGServer ... ");
-        System.out.println("Server IP is: " + HOST);
+        allowPrints = true;
+        print("init MMDGServer ... ");
+        print("Server IP is: " + HOST);
         httpServer = new HTTPServer(HOST, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(TCP_PORT);
-        System.out.println("MMDGServer constructed!");
+        print("MMDGServer constructed!");
+        
+        webSocketServer.allowPrints = false;
     }
 
     public void setUnloadsPerSecond(double unloadsPerSecond) {
@@ -60,13 +63,13 @@ public class MMDGServer{
      */
     public void run() throws IOException {
         
-        System.out.println("Listening to HTTP requests...");
+        print("Listening to HTTP requests...");
         httpServer.listenForNewConnections();
         
         webSocketServer.connect();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
-            System.out.println("Write something to the client!");
+            print("Write something to the client!");
             webSocketServer.sendMessage(br.readLine().getBytes());
         }
         
@@ -74,7 +77,7 @@ public class MMDGServer{
         
         /*
         int maxTime = 10; //
-        System.out.println("Server run for " + maxTime + " seconds.");
+        print("Server run for " + maxTime + " seconds.");
         
         httpServer.listenForNewConnections();
         webSocketServer.listenToWebSocketMessages();
@@ -93,7 +96,7 @@ public class MMDGServer{
                 break;
             }
         }
-        System.out.println("Server stopped");*/
+        print("Server stopped");*/
     }
     
     public void sendTestMessageViaTCP(String msg) {
