@@ -62,7 +62,7 @@ public class WebSocketServer extends ConsolePrinter{
         print("READ CLIENT HANDSHAKE:");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
-            print(str);
+            //print(str);
             if (s.length == 2) {
                 keys.put(s[0], s[1]);
             }
@@ -96,7 +96,7 @@ public class WebSocketServer extends ConsolePrinter{
     }
 
     private byte[] readBytes(int numOfBytes) throws IOException {
-        print("numOfBytes = " + numOfBytes);
+        //print("numOfBytes = " + numOfBytes);
         byte[] b = new byte[numOfBytes];
         socket.getInputStream().read(b);
         return b;
@@ -112,7 +112,7 @@ public class WebSocketServer extends ConsolePrinter{
         baos.write(msg);
         baos.flush();
         baos.close();
-        convertAndPrint(baos.toByteArray());
+        //convertAndPrint(baos.toByteArray());
         os.write(baos.toByteArray(), 0, baos.size());
         os.flush();
     }
@@ -137,8 +137,8 @@ public class WebSocketServer extends ConsolePrinter{
 
     public String reiceveMessage() throws IOException {
         byte[] buf = readBytes(2);
-        print("Headers:");
-        convertAndPrint(buf);
+        //print("Headers:");
+        //convertAndPrint(buf);
         int opcode = buf[0] & 0x0F;
         if (opcode == 8) {
             // Client want to close connection!
@@ -148,10 +148,10 @@ public class WebSocketServer extends ConsolePrinter{
             return null;
         } else {
             final int payloadSize = getSizeOfPayload(buf[1]);
-            print("Payloadsize: " + payloadSize);
+            //print("Payloadsize: " + payloadSize);
             buf = readBytes(MASK_SIZE + payloadSize);
-            print("Payload:");
-            convertAndPrint(buf);
+            //print("Payload:");
+            //convertAndPrint(buf);
             buf = unMask(Arrays.copyOfRange(buf, 0, 4),
                             Arrays.copyOfRange(buf, 4, buf.length));
             String message = new String(buf);

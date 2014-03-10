@@ -44,7 +44,9 @@ public class MMDGServer extends ConsolePrinter{
         tcpHandler = new TCPHandler(TCP_PORT);
         print("MMDGServer constructed!");
         
-        webSocketServer.allowPrints = false;
+        //Manage print outs
+        httpServer.allowPrints = true;
+        webSocketServer.allowPrints = true;
     }
 
     public void setUnloadsPerSecond(double unloadsPerSecond) {
