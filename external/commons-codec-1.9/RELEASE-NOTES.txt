@@ -1,0 +1,25 @@
+              Apache Commons Codec 1.9 RELEASE NOTES
+
+The codec package contains simple encoder and decoders for
+various formats such as Base64 and Hexadecimal.  In addition to these
+widely used encoders and decoders, the codec package also maintains a
+collection of phonetic encoding utilities.
+
+Performance and fix release. Requires a minimum of Java 1.6.
+
+Changes in this version include:
+
+Performance:
+CODEC-174: Improve performance of Beider Morse encoder. Thanks to Thomas Champagne.
+
+Fixed Bugs:
+o CODEC-175: Beider Morse does not close Scanners used to read config files. 
+o CODEC-172: Base32 decode table has spurious value. Thanks to Matt Bishop. 
+o CODEC-170: Link broken in Metaphone Javadoc. Thanks to Ron Wheeler, Henri Yandell. 
+o CODEC-176: Spelling fixes in Javadoc and comments. Thanks to Ville Skyttä. 
+
+
+For complete information on Commons Codec, including instructions on how to submit bug reports,
+patches, or suggestions for improvement, see the Apache Commons Codec website:
+
+http://commons.apache.org/proper/commons-codec/

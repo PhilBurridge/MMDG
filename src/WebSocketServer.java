@@ -6,7 +6,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Vector;
-import sun.misc.BASE64Encoder;
+import org.apache.commons.codec.binary.Base64;
 
 
 /**
@@ -68,16 +68,16 @@ public class WebSocketServer{
             }
         }
         System.out.println();
-        
+
         // Do what you want with the keys here, we will just use
         // "Sec-WebSocket-Key"
         String hash;
         try {
-            hash = new BASE64Encoder()
-                            .encode(MessageDigest
-                                            .getInstance("SHA-1")
-                                            .digest((keys.get("Sec-WebSocket-Key") + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11")
-                                                            .getBytes()));
+            new Base64();
+            hash = Base64.encodeBase64String(MessageDigest
+                            .getInstance("SHA-1")
+                            .digest((keys.get("Sec-WebSocket-Key") + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11")
+                                            .getBytes()));
         } catch (NoSuchAlgorithmException ex) {
             ex.printStackTrace();
             return false;
