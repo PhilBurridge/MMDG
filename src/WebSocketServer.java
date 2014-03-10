@@ -123,8 +123,9 @@ public class WebSocketServer{
             public void run() {
                 try {
                     while (true) {
-                        System.out.println("Recieved from client: "
-                                        + reiceveMessage());
+                        String msg = reiceveMessage();
+                        System.out.println("Recieved from client: " + msg);
+                        commandStack.add(msg);
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();

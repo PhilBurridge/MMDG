@@ -62,38 +62,29 @@ public class MMDGServer{
         
         System.out.println("Listening to HTTP requests...");
         httpServer.listenForNewConnections();
-        
         webSocketServer.connect();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        
+        Vector<String> commadStack;
         while (true) {
             System.out.println("Write something to the client!");
             webSocketServer.sendMessage(br.readLine().getBytes());
-        }
-        
-        
-        
-        /*
-        int maxTime = 10; //
-        System.out.println("Server run for " + maxTime + " seconds.");
-        
-        httpServer.listenForNewConnections();
-        webSocketServer.listenToWebSocketMessages();
-        Vector<String> commadStack;
-        while (true) {
-
+            
             commadStack = webSocketServer.getCommandStack();
             tcpHandler.sendMessages(commadStack);
             webSocketServer.clearCommandStack();
 
             // sleep for 1/unloadPerSeconds seconds
+            /*
             try {
                 Thread.sleep((int) (1000 / unloadsPerSecond));
             } catch (InterruptedException e) {
                 e.printStackTrace();
                 break;
             }
+            */
         }
-        System.out.println("Server stopped");*/
+
     }
     
     public void sendTestMessageViaTCP(String msg) {
