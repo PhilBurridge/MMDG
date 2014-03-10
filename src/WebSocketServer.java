@@ -68,17 +68,16 @@ public class WebSocketServer{
             }
         }
         System.out.println();
-        
+
         // Do what you want with the keys here, we will just use
         // "Sec-WebSocket-Key"
         String hash;
         try {
             new Base64();
-            hash = Base64
-                            .encodeBase64String(MessageDigest
-                                            .getInstance("SHA-1")
-                                            .digest((keys.get("Sec-WebSocket-Key") + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11")
-                                                            .getBytes()));
+            hash = Base64.encodeBase64String(MessageDigest
+                            .getInstance("SHA-1")
+                            .digest((keys.get("Sec-WebSocket-Key") + "258EAFA5-E914-47DA-95CA-C5AB0DC85B11")
+                                            .getBytes()));
         } catch (NoSuchAlgorithmException ex) {
             ex.printStackTrace();
             return false;
