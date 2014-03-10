@@ -68,6 +68,8 @@ public class MMDGServer extends ConsolePrinter{
         print("Listening to HTTP requests...");
         httpServer.listenForNewConnections();
         webSocketServer.connect();
+        
+        //will be used to send messages to clients from server
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         Vector<String> commadStack;
