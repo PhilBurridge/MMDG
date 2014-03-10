@@ -1,3 +1,4 @@
+import java.net.*;
 import java.io.*;
 import java.util.Vector;
 
@@ -15,7 +16,7 @@ public class MMDGServer{
 
     /** The IP used by HTTP server */
     private final String LOCALHOST = "127.0.0.1";
-    private final String HOST = "130.236.124.32";
+    private final String HOST = get_my_IP();
     
     /** The port used by HTTP server */
     private final int HTTP_PORT = 1337;
@@ -35,11 +36,12 @@ public class MMDGServer{
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() throws IOException{
-        System.out.print("init MMDGServer ... ");
-        httpServer = new HTTPServer(LOCALHOST, HTTP_PORT);
+        System.out.println("init MMDGServer ... ");
+        System.out.println("Server IP is: " + HOST);
+        httpServer = new HTTPServer(HOST, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(TCP_PORT);
-        System.out.println("Done!");
+        System.out.println("MMDGServer constructed!");
     }
 
     public void setUnloadsPerSecond(double unloadsPerSecond) {
@@ -96,5 +98,20 @@ public class MMDGServer{
     
     public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendMessage(msg);
+    }
+    
+    static private String get_my_IP(){
+        String ip = "";
+        try{
+            URL whatismyip = new URL("http://checkip.amazonaws.com/");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                            whatismyip.openStream()));
+    
+            ip = in.readLine(); //you get the IP as a String
+        }catch(Exception e){
+            e.printStackTrace();
+            return "Couldn't find IP";
+        }
+        return ip;
     }
 }
