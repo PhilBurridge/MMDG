@@ -1,4 +1,5 @@
-var ws = new WebSocket("ws://130.236.124.32:1338/");
+
+var ws = new WebSocket("ws://" + config.serverIP + ":" + config.serverWsPort + "/");
 
 console.log("Server ip is: %s", config.serverIP);
 console.log("Server ws port is: %s", config.serverWsPort);
