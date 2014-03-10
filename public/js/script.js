@@ -2,7 +2,7 @@ var ws = new WebSocket("ws://130.236.124.32:1338/");
 
 ws.onopen = function() {
     alert("Opened!");
-    ws.send("TJenare! Jag är en client, Detta skrivs från Javascript! Woo!");
+    ws.send("TJenare! I am a client, This is from JS!");
 };
 
 function buttonDown() {
