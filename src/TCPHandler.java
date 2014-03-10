@@ -13,7 +13,7 @@ public class TCPHandler extends ConsolePrinter{
 
     public void sendMessages(Vector<String> commandStack) {
         if (commandStack.size() == 0) {
-            System.out.print('.');
+            print("Emtpy message.");
             return;
         }
 
