@@ -9,6 +9,9 @@ import java.util.Vector;
 import org.apache.commons.codec.binary.Base64;
 
 
+// good tutorial:
+// http://stackoverflow.com/questions/12702305/using-html5-client-with-a-server-in-java
+
 /**
  * Handles the websocket connections.
  */
@@ -49,7 +52,7 @@ public class WebSocketServer extends ConsolePrinter{
     /**
      * will listen for client connections in a seperate thread, create a new
      * socket and add it to a socket array/vector. so far it is not in a
-     * seperate array, and it only has 1 socket, only 1 person can connect at a
+     * seperate thread, and it only has 1 socket, only 1 person can connect at a
      * time.
      */
     public void connect() throws IOException {
@@ -61,6 +64,7 @@ public class WebSocketServer extends ConsolePrinter{
             listenerThread();
         }
     }
+
     /** creates a hashmap with socket keys. */
     private boolean handshake() throws IOException {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
