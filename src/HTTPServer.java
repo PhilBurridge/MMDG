@@ -43,8 +43,7 @@ public class HTTPServer{
         server.createContext("/", new MyHandler());
         // creates a default executor
         server.setExecutor(null);
-        // Starts listening to connections
-        server.start();
+
     }
 
     /**
@@ -112,7 +111,8 @@ public class HTTPServer{
     // connect(/send requests).
     // if i understand it correctly that is.
     public void listenForNewConnections() {
-
+        // Starts listening to connections
+        server.start();
     }
 
 }

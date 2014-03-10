@@ -1,8 +1,8 @@
-var ws = new WebSocket("ws://127.0.0.1:1338/");
+var ws = new WebSocket("ws://130.236.124.32:1338/");
 
 ws.onopen = function() {
     alert("Opened!");
-    ws.send("Hello Server");
+    ws.send("TJenare! Jag är en client, Detta skrivs från Javascript! Woo!");
 };
 
 function buttonDown() {

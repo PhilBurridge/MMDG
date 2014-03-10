@@ -57,6 +57,10 @@ public class MMDGServer{
      * @throws IOException 
      */
     public void run() throws IOException {
+        
+        System.out.println("Listening to HTTP requests...");
+        httpServer.listenForNewConnections();
+        
         webSocketServer.connect();
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         while (true) {
@@ -69,8 +73,6 @@ public class MMDGServer{
         /*
         int maxTime = 10; //
         System.out.println("Server run for " + maxTime + " seconds.");
-
-    public void run() {
         
         httpServer.listenForNewConnections();
         webSocketServer.listenToWebSocketMessages();
@@ -95,5 +97,4 @@ public class MMDGServer{
     public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendMessage(msg);
     }
-
 }

@@ -96,6 +96,7 @@ public class WebSocketServer{
     }
 
     private byte[] readBytes(int numOfBytes) throws IOException {
+        System.out.println("numOfBytes = " + numOfBytes);
         byte[] b = new byte[numOfBytes];
         socket.getInputStream().read(b);
         return b;
