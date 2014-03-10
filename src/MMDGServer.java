@@ -16,7 +16,7 @@ public class MMDGServer extends ConsolePrinter{
 
     /** The IP used by HTTP server */
     private final String LOCALHOST = "127.0.0.1";
-    private final String HOST = get_my_IP();
+    private String serverIP = "undefined";
     
     /** The port used by HTTP server */
     private final int HTTP_PORT = 1337;
@@ -37,10 +37,19 @@ public class MMDGServer extends ConsolePrinter{
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() throws IOException{
         allowPrints = true;
-        print("init MMDGServer ... ");
-        print("Server IP is: " + HOST);
-        httpServer = new HTTPServer(HOST, HTTP_PORT);
+        
+        print("Creating MMDGServer ... ");
+        serverIP = get_my_IP();
+        print("Server IP: " + serverIP);
+        if (createConfigFile()){
+            print("Created file config.js");
+        }
+        
+        print("Creating HTTP-server");
+        httpServer = new HTTPServer(serverIP, HTTP_PORT);
+        print("Creating WebSocket-server");
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
+        print("Creating TCP handler");
         tcpHandler = new TCPHandler(TCP_PORT);
         print("MMDGServer constructed!");
         
@@ -81,7 +90,7 @@ public class MMDGServer extends ConsolePrinter{
             //print("Message sent to client");
             
             
-            print("Sending message to TCP handler");
+            //print("Sending message to TCP handler");
             commadStack = webSocketServer.getCommandStack();
             tcpHandler.sendMessages(commadStack);
             webSocketServer.clearCommandStack();
@@ -104,7 +113,7 @@ public class MMDGServer extends ConsolePrinter{
         tcpHandler.sendMessage(msg);
     }
     
-    static private String get_my_IP(){
+    private String get_my_IP(){
         String ip = "";
         try{
             URL whatismyip = new URL("http://checkip.amazonaws.com/");
@@ -117,5 +126,26 @@ public class MMDGServer extends ConsolePrinter{
             return "Couldn't find IP";
         }
         return ip;
+    }
+    
+    private boolean createConfigFile(){
+        try {
+            
+            PrintWriter writer = new PrintWriter("public/js/config.js", "UTF-8");
+            
+            writer.println("(function (exports) {"                                              );
+            writer.println("    exports.serverIP = \"" + serverIP + "\";"                       );
+            writer.println("    exports.serverWsPort= " + WEB_SOCKET_PORT + ";"                 );
+            writer.println("})(typeof exports === 'undefined' ? this['config']={} : exports);"  );
+            
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 }
