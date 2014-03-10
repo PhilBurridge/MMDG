@@ -10,18 +10,14 @@ ws.onopen = function() {
 };
 
 function buttonDown() {
-
-
 	document.getElementById('content').innerHTML += '<br>Button pressed!';
-	ws.send("Hi server, the button is pressed");
-
-
+	ws.send("button pressed");
 }
 
 function buttonUp(){
 
 	document.getElementById('content').innerHTML += '<br>Button released!';
-	ws.send("Hi server, the button is released");
+	ws.send("button released");
 
 }
 
