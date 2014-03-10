@@ -124,7 +124,7 @@ public class WebSocketServer extends ConsolePrinter{
                 try {
                     while (true) {
                         String msg = reiceveMessage();
-                        System.out.println("Recieved from client: " + msg);
+                        print("Recieved from client: " + msg);
                         commandStack.add(msg);
                     }
                 } catch (IOException ex) {

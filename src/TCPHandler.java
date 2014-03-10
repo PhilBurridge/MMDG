@@ -1,14 +1,14 @@
 import java.util.Vector;
 
 
-public class TCPHandler { 
+public class TCPHandler extends ConsolePrinter{ 
 
     public TCPHandler(int tcpPort) {
 
     }
 
     public void sendMessage(String message) {
-        System.out.print("\nTCP-message: \"" + message + "\" ");
+        print("sending TCP message: \"" + message + "\" ");
     }
 
     public void sendMessages(Vector<String> commandStack) {

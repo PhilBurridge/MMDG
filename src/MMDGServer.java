@@ -72,13 +72,19 @@ public class MMDGServer extends ConsolePrinter{
 
         Vector<String> commadStack;
         while (true) {
-            System.out.println("Write something to the client!");
-            webSocketServer.sendMessage(br.readLine().getBytes());
             
+            
+            print("Write something to the client!");
+            webSocketServer.sendMessage(br.readLine().getBytes());
+            print("Message sent to client");
+            
+            
+            print("Sending message to TCP handler");
             commadStack = webSocketServer.getCommandStack();
             tcpHandler.sendMessages(commadStack);
             webSocketServer.clearCommandStack();
-
+            print("Sent message to TCP handler");
+            
             // sleep for 1/unloadPerSeconds seconds
             
             try {
