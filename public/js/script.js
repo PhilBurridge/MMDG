@@ -1,4 +1,4 @@
-var ws = new WebSocket("ws://130.236.124.32:1338/");
+var ws = new WebSocket("ws://localhost:1338/");
 
 ws.onopen = function() {
     alert("Opened!");

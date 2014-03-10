@@ -36,7 +36,7 @@ public class MMDGServer{
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() throws IOException{
         System.out.print("init MMDGServer ... ");
-        httpServer = new HTTPServer(HOST, HTTP_PORT);
+        httpServer = new HTTPServer(LOCALHOST, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(TCP_PORT);
         System.out.println("Done!");
