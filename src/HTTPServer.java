@@ -14,7 +14,7 @@ import com.sun.net.httpserver.HttpServer;
  * connecting to the HTTP server they will receive the controller .html and .css
  * files along with the websocket javascript.
  */
-public class HTTPServer{
+public class HTTPServer extends ConsolePrinter{
 
     /** The HTTP server from com.sun.net. module */
     private HttpServer server;
@@ -35,7 +35,7 @@ public class HTTPServer{
             // initiates the servers with the right host and port.
             server = HttpServer.create(address, 0);
         } catch (IOException e) {
-            System.out.println("Error: " + e.getMessage());
+            print("Error: " + e.getMessage());
             e.printStackTrace();
         }
         // assigning a "content handler" to the server. Server needs to be told
