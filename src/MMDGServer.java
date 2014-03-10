@@ -13,6 +13,10 @@ public class MMDGServer{
     /** This is the TCP handler class */
     private TCPHandler tcpHandler;
 
+    /** The IP used by HTTP server */
+    private final String LOCALHOST = "127.0.0.1";
+    private final String HOST = "130.236.124.32";
+    
     /** The port used by HTTP server */
     private final int HTTP_PORT = 1337;
 
@@ -32,7 +36,7 @@ public class MMDGServer{
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() throws IOException{
         System.out.print("init MMDGServer ... ");
-        httpServer = new HTTPServer(HTTP_PORT);
+        httpServer = new HTTPServer(HOST, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(TCP_PORT);
         System.out.println("Done!");
@@ -66,10 +70,11 @@ public class MMDGServer{
         int maxTime = 10; //
         System.out.println("Server run for " + maxTime + " seconds.");
 
+    public void run() {
+        
         httpServer.listenForNewConnections();
         webSocketServer.listenToWebSocketMessages();
         Vector<String> commadStack;
-        int unloads = 0;
         while (true) {
 
             commadStack = webSocketServer.getCommandStack();
@@ -83,14 +88,12 @@ public class MMDGServer{
                 e.printStackTrace();
                 break;
             }
-            unloads++;
-            if (unloads / unloadsPerSecond >= 10) break;
         }
         System.out.println("Server stopped");*/
     }
-
-   /* public void sendTestMessageViaTCP(String msg) {
+    
+    public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendMessage(msg);
-    }*/
+    }
 
 }

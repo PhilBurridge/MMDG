@@ -40,10 +40,11 @@ public class WebSocketServer{
     }
 
     public void connect() throws IOException {
-        System.out.println("Listening");
+        System.out.println("Waiting for connections");
         socket = serverSocket.accept();
         System.out.println("Got connection");
         if (handshake()) {
+            System.out.println("Handshake done. Listening...");
             listenerThread();
         }
     }
