@@ -43,7 +43,6 @@ public class HTTPServer extends ConsolePrinter{
         server.createContext("/", new MyHandler());
         // creates a default executor
         server.setExecutor(null);
-
     }
 
     /**
@@ -112,6 +111,7 @@ public class HTTPServer extends ConsolePrinter{
     // if i understand it correctly that is.
     public void listenForNewConnections() {
         // Starts listening to connections
+        print("Waiting for connections ... ");
         server.start();
     }
 

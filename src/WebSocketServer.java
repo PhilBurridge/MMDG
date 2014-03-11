@@ -56,7 +56,7 @@ public class WebSocketServer extends ConsolePrinter{
      * time.
      */
     public void connect() throws IOException {
-        print("Waiting for connections");
+        print("Waiting for connections ... ");
         socket = serverSocket.accept();
         print("Got connection");
         if (handshake()) {
