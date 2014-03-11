@@ -48,7 +48,7 @@ public class MMDGServer extends ConsolePrinter{
         httpServer.allowPrints = true;
         webSocketServer.allowPrints = true;
 
-        System.out.println(getLinkToQRCode(400, "000000", "FFFFFF"));
+        System.out.println(getLinkToQRCode(600, "000000", "FFFFFF"));
     }
 
     public void setUnloadsPerSecond(double unloadsPerSecond) {
