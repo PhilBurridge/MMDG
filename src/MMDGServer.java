@@ -48,7 +48,7 @@ public class MMDGServer extends ConsolePrinter{
         httpServer.allowPrints = true;
         webSocketServer.allowPrints = true;
 
-        System.out.println(getLinkToQRCode(400, 400, "000000", "FFFFFF"));
+        System.out.println(getLinkToQRCode(400, "000000", "FFFFFF"));
     }
 
     public void setUnloadsPerSecond(double unloadsPerSecond) {
@@ -108,19 +108,18 @@ public class MMDGServer extends ConsolePrinter{
     /**
      * Calls a with proper parameters to generate a QR code as an image.
      * 
-     * @param width
-     * Defines the width of the generated image
-     * @param height
-     * Defines the height of the generated image
+     * @param size
+     * Defines the size of the generated image
      * @param color
      * The foreground color as a string defining the hexadecimal color code.
      * @param bgColor
      * The background color as a string defining the hexadecimal color code.
      * @return a link to an image generated on the web, containing the QR code
-     * @example getLinkToQRCode(400, 400, "000000", "FFFFFF");
+     * @example getLinkToQRCode(400, "000000", "FFFFFF");
      */
-    public String getLinkToQRCode(int width, int height, String color,
+    public String getLinkToQRCode(int size, String color,
                     String bgColor) {
+
         if (!(isValidColorString(color) && isValidColorString(bgColor))) {
             System.out.println("Using default colors for QR code");
             color = "000000";
@@ -132,7 +131,8 @@ public class MMDGServer extends ConsolePrinter{
         link += "?color=" + color + "&bgcolor=" + bgColor;
         link += "&data=http%3A%2F%2F" + HOST + "%3A" + HTTP_PORT
                         + "%2Fmmdg.html";
-        link += "&qzone=1&margin=0&size=400x400&ecc=L";
+        link += "&qzone=1&margin=0&";
+        link += "size=" + size + "x" + size + "&ecc=L";
         return link;
     }
 
