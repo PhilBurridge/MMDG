@@ -47,6 +47,8 @@ public class MMDGServer extends ConsolePrinter{
         //Manage print outs
         httpServer.allowPrints = true;
         webSocketServer.allowPrints = true;
+        
+        System.out.println(getLinkToQRCode(400, 400, "000000", "FFFFFF"));
     }
 
     public void setUnloadsPerSecond(double unloadsPerSecond) {
@@ -102,6 +104,45 @@ public class MMDGServer extends ConsolePrinter{
     
     public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendMessage(msg);
+    }
+    
+    /**
+     * Calls a with proper parameters to generate a QR code as an image.
+     * @param width The width of the generated image 
+     * @param height The height of the generated image
+     * @param color The foreground color as a string defining the hexadecimal color code.  
+     * @param bgColor The background color as a string defining the hexadecimal color code.
+     * @return a link to an image generated on the web, containing the QR code
+     * @example getLinkToQRCode(400, 400, "000000", "FFFFFF"); 
+     */
+    public String getLinkToQRCode(int width, int height, String color, String bgColor){
+        if (!(isValidColorString(color) && isValidColorString(bgColor))){
+            System.out.println("Using default colors for QR code");
+            color = "000000";
+            bgColor = "FFFFFF";
+        }
+        
+        String link = "";
+        link += "http://api.qrserver.com/v1/create-qr-code/";
+        link += "?color=" + color + "&bgcolor=" + bgColor;
+        link += "&data=http%3A%2F%2F" + HOST + "%3A" + HTTP_PORT + "%2Fmmdg.html";
+        link += "&qzone=1&margin=0&size=400x400&ecc=L";
+        return link;
+    }
+    
+    private boolean isValidColorString(String s){
+        if(s.length() != 6){
+            System.out.println("Error! Color string length = " + s.length());
+            return false;
+        }
+        char c;
+        for (int i = 0; i<6; ++i){
+            c = s.charAt(i);
+            if(!(('0' <= c && c <= '9') || ('A' <= c && c <= 'F'))){
+                System.out.println("Error: Color string cannot contain " + c);
+            }
+        }
+        return true;
     }
     
     static private String get_my_IP(){
