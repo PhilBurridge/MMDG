@@ -56,13 +56,17 @@ public class MMDGServer extends ConsolePrinter{
         print("MMDGServer constructor done!\n");
     }
 
+    /**
+     * Sets how many times per second the MMDG server will unload the eventstack
+     * and send it to the application
+     * 
+     * @param unloadsPerSecond
+     */
     public void setUnloadsPerSecond(double unloadsPerSecond) {
         if (unloadsPerSecond > 0) {
             this.unloadsPerSecond = unloadsPerSecond;
         }
     }
-
-    // METHODS
 
     /**
      * Starts the httpServer and webSocketServer. Gets the commandStack from
@@ -113,7 +117,7 @@ public class MMDGServer extends ConsolePrinter{
      * Tries to get local host address via Java InetAdress. If that doesn't
      * work, it tries to get the IP address from http://checkip.amazonaws.com/.
      * 
-     * @return The IP adress
+     * @return The local host IP address, or public IP address.
      */
     private String getMyIP() {
         try {
@@ -122,7 +126,7 @@ public class MMDGServer extends ConsolePrinter{
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }
-        
+
         // This is probably a wierd way to get the IP address...
         String ip = "";
         try {
@@ -138,6 +142,13 @@ public class MMDGServer extends ConsolePrinter{
         return ip;
     }
 
+    /**
+     * Creates the file "public/js/config.js" which will be sent to all clients
+     * and used in order to connect to the web socket server. The file contains
+     * the info about the web socket IP and port.
+     * 
+     * @return True if the file was successfully created, else false.
+     */
     private boolean createConfigFile() {
         try {
 
