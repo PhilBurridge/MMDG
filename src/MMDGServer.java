@@ -109,7 +109,21 @@ public class MMDGServer extends ConsolePrinter{
         tcpHandler.sendMessage(msg);
     }
 
+    /**
+     * Tries to get local host address via Java InetAdress. If that doesn't
+     * work, it tries to get the IP address from http://checkip.amazonaws.com/.
+     * 
+     * @return The IP adress
+     */
     private String getMyIP() {
+        try {
+            // Getting local host address.
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+        
+        // This is probably a wierd way to get the IP address...
         String ip = "";
         try {
             URL whatismyip = new URL("http://checkip.amazonaws.com/");
