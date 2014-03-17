@@ -47,5 +47,4 @@ public class VirtualClient extends JFrame implements ActionListener{
             webSocketServer.addCommand("client=" + id + ",button=2,pressed");
         }
     }
-
 }
