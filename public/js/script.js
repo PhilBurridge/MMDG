@@ -10,15 +10,22 @@ ws.onopen = function() {
     init(ws);
 };
 
-function buttonDown() {
+// Returns value=1 to App on click
+function buttonDownVal1() {
 	document.getElementById('content').innerHTML += '<br>Button pressed!';
-	ws.send("button pressed");
+	ws.send("value=1" + "\r\n");
+}
+
+// Returns value=0 to App on click
+function buttonDownVal0() {
+    document.getElementById('content').innerHTML += '<br>Button pressed!';
+    ws.send("value=0" + "\r\n");
 }
 
 function buttonUp(){
 
 	document.getElementById('content').innerHTML += '<br>Button released!';
-	ws.send("button released");
+	ws.send("value=0" + "\r\n");
 
 }
 

@@ -14,6 +14,7 @@ public class VirtualClient extends JFrame implements ActionListener{
     private JButton btn1;
     private JButton btn2;
     private WebSocketServer webSocketServer;
+    private TCPHandler tcphandler;
     private int id;
 
     public VirtualClient(WebSocketServer wss, int id) {
@@ -40,7 +41,9 @@ public class VirtualClient extends JFrame implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btn1) {
+            String msg = "value=1" + "\r\n";
             webSocketServer.addCommand("client=" + id + ",button=1,pressed");
+            tcphandler.sendMessage(msg);
         }
 
         if (e.getSource() == btn2) {

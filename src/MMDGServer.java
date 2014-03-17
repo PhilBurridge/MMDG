@@ -31,9 +31,9 @@ public class MMDGServer extends ConsolePrinter{
 
     /**
      * Defines how many times per second the MMDG Server should unload the stack
-     * of client commands to the application
+     * of client  s to the application
      */
-    private double unloadsPerSecond = 2;
+    private double unloadsPerSecond = 10;
 
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */
@@ -76,36 +76,39 @@ public class MMDGServer extends ConsolePrinter{
      * @throws IOException
      */
     public void run() throws IOException {
-        /*
+        
         print("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
                         + "/mmdg.html>");
         
         httpServer.listenForNewConnections();
         webSocketServer.connect();
-        */
+        
         // will be used to send messages to clients from server
         
-        // Recives messages from application
-        tcpHandler.receiveMessages();
+        // Receives messages from application, Not inuse atm
+        //tcpHandler.receiveMessages();
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        // Read from console in Eclipse
+        //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         Vector<String> commandStack;
         while (true) {
             
             
+            // To send a message from console in eclipse
+            //print("Write something to TCP!");
+            //tcpHandler.sendMessage(br.readLine());
 
-            print("Write something to TCP!");
-            tcpHandler.sendMessage(br.readLine());
-
-            //commadStack = webSocketServer.getCommandStack();
-            //tcpHandler.sendMessages(commadStack);
-            //webSocketServer.clearCommandStack();
-            // print("Sent message to TCP handler");
+            // Send messages from web site to connected application 
+            commandStack = webSocketServer.getCommandStack();
+            tcpHandler.sendMessages(commandStack);
+            webSocketServer.clearCommandStack();
+            print("Sent message to TCP handler");
 
             // sleep for 1/unloadPerSeconds seconds
 
             try {
+                // How often stacks get sent to application
                 Thread.sleep((int) (1000 / unloadsPerSecond));
             } catch (InterruptedException e) {
                 e.printStackTrace();

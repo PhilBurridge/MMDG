@@ -70,7 +70,7 @@ public class TCPHandler extends ConsolePrinter{
         // Currently we are using ";" as delimiter.
         String messages = "";
         for (int i = 0; i < commandStack.size(); ++i) {
-            messages += commandStack.elementAt(i) + ";";
+            messages += commandStack.elementAt(i) + "";
         }
         sendMessage(messages);
     }

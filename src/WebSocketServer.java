@@ -24,6 +24,8 @@ public class WebSocketServer extends ConsolePrinter{
     private ServerSocket serverSocket;
     /** a client socket, endpoint for communication */
     private Socket socket;
+    
+    private TCPHandler tcphandler;
 
     /**
      * a buffer of messages that will fill upp until MMDGServer forwards it to
@@ -142,6 +144,8 @@ public class WebSocketServer extends ConsolePrinter{
                         String msg = reiceveMessage();
                         print("Recieved from client: " + msg);
                         commandStack.add(msg);
+//                        String msgApp = "value=1" + "\r\n";
+//                        tcphandler.sendMessage(msgApp);
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
