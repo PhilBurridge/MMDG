@@ -2,7 +2,10 @@ import java.io.*;
 import java.net.*;
 import java.util.Vector;
 
-
+/**
+ * 
+ *
+ */
 public class TCPHandler extends ConsolePrinter{
 
     private Socket clientSocket;
@@ -23,7 +26,7 @@ public class TCPHandler extends ConsolePrinter{
     public void sendMessage(String message) {
         print("sending TCP message: \"" + message + "\" ");
         try {
-            outToServer.writeBytes(message + '\n');
+            outToServer.writeBytes(message + "\r\n");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,17 +45,3 @@ public class TCPHandler extends ConsolePrinter{
         sendMessage(messages);
     }
 }
-
-/*
- * String sentence; String modifiedSentence; BufferedReader inFromUser = new
- * BufferedReader(new InputStreamReader(System.in));
- * 
- * Socket clientSocket = new Socket("localhost", 20501); DataOutputStream
- * outToServer = new DataOutputStream(clientSocket.getOutputStream());
- * BufferedReader inFromServer = new BufferedReader(new
- * InputStreamReader(clientSocket.getInputStream()));
- * 
- * sentence = inFromUser.readLine(); outToServer.writeBytes(sentence + '\n');
- * modifiedSentence = inFromServer.readLine();
- * System.out.println(modifiedSentence); //clientSocket.close();
- */
