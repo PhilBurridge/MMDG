@@ -17,11 +17,18 @@ public class WebSocketServer extends ConsolePrinter{
     public static final int MASK_SIZE = 4;
     public static final int SINGLE_FRAME_UNMASKED = 0x81;
 
+    /** server socket that waits and possibly responds to requests */
     private ServerSocket serverSocket;
+    /** a client socket, endpoint for communication */
     private Socket socket;
 
+    /**
+     * a buffer of messages that will fill upp until MMDGServer forwards it to
+     * the TCPHandler
+     */
     private Vector<String> commandStack;
 
+    /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
         commandStack = new Vector<String>();
         serverSocket = new ServerSocket(websocketPort);
@@ -39,6 +46,12 @@ public class WebSocketServer extends ConsolePrinter{
         commandStack.clear();
     }
 
+    /**
+     * will listen for client connections in a seperate thread, create a new
+     * socket and add it to a socket array/vector. so far it is not in a
+     * seperate array, and it only has 1 socket, only 1 person can connect at a
+     * time.
+     */
     public void connect() throws IOException {
         print("Waiting for connections");
         socket = serverSocket.accept();
@@ -48,7 +61,7 @@ public class WebSocketServer extends ConsolePrinter{
             listenerThread();
         }
     }
-
+    /** creates a hashmap with socket keys. */
     private boolean handshake() throws IOException {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -62,7 +75,7 @@ public class WebSocketServer extends ConsolePrinter{
         print("READ CLIENT HANDSHAKE:");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
-            //print(str);
+            // print(str);
             if (s.length == 2) {
                 keys.put(s[0], s[1]);
             }
@@ -96,7 +109,7 @@ public class WebSocketServer extends ConsolePrinter{
     }
 
     private byte[] readBytes(int numOfBytes) throws IOException {
-        //print("numOfBytes = " + numOfBytes);
+        // print("numOfBytes = " + numOfBytes);
         byte[] b = new byte[numOfBytes];
         socket.getInputStream().read(b);
         return b;
@@ -112,7 +125,7 @@ public class WebSocketServer extends ConsolePrinter{
         baos.write(msg);
         baos.flush();
         baos.close();
-        //convertAndPrint(baos.toByteArray());
+        // convertAndPrint(baos.toByteArray());
         os.write(baos.toByteArray(), 0, baos.size());
         os.flush();
     }
@@ -138,8 +151,8 @@ public class WebSocketServer extends ConsolePrinter{
 
     public String reiceveMessage() throws IOException {
         byte[] buf = readBytes(2);
-        //print("Headers:");
-        //convertAndPrint(buf);
+        // print("Headers:");
+        // convertAndPrint(buf);
         int opcode = buf[0] & 0x0F;
         if (opcode == 8) {
             // Client want to close connection!
@@ -149,10 +162,10 @@ public class WebSocketServer extends ConsolePrinter{
             return null;
         } else {
             final int payloadSize = getSizeOfPayload(buf[1]);
-            //print("Payloadsize: " + payloadSize);
+            // print("Payloadsize: " + payloadSize);
             buf = readBytes(MASK_SIZE + payloadSize);
-            //print("Payload:");
-            //convertAndPrint(buf);
+            // print("Payload:");
+            // convertAndPrint(buf);
             buf = unMask(Arrays.copyOfRange(buf, 0, 4),
                             Arrays.copyOfRange(buf, 4, buf.length));
             String message = new String(buf);
