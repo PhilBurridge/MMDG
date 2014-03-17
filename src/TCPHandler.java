@@ -76,7 +76,7 @@ public class TCPHandler extends ConsolePrinter{
     }
     
     /**
-     * Receive massages from the connected application
+     * Receive messages from the connected application
      */
     public void receiveMessages() {
         String appMessages;
