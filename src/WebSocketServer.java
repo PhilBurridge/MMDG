@@ -56,7 +56,7 @@ public class WebSocketServer extends ConsolePrinter{
      * time.
      */
     public void connect() throws IOException {
-        print("Waiting for connections");
+        print("Waiting for connections ... ");
         socket = serverSocket.accept();
         print("Got connection");
         if (handshake()) {
@@ -65,7 +65,7 @@ public class WebSocketServer extends ConsolePrinter{
         }
     }
 
-    /** creates a hashmap with socket keys. */
+    /** Server socket and client sockets does a firm and manly handshake. */
     private boolean handshake() throws IOException {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -75,7 +75,6 @@ public class WebSocketServer extends ConsolePrinter{
         String str;
 
         // Reading client handshake
-        print();
         print("READ CLIENT HANDSHAKE:");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
@@ -84,7 +83,7 @@ public class WebSocketServer extends ConsolePrinter{
                 keys.put(s[0], s[1]);
             }
         }
-        print();
+        // print("hashmap"+keys.toString());
 
         // Do what you want with the keys here, we will just use
         // "Sec-WebSocket-Key"
@@ -196,5 +195,4 @@ public class WebSocketServer extends ConsolePrinter{
         }
         print(sb.toString());
     }
-
 }

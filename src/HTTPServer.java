@@ -43,7 +43,6 @@ public class HTTPServer extends ConsolePrinter{
         server.createContext("/", new MyHandler());
         // creates a default executor
         server.setExecutor(null);
-
     }
 
     /**
@@ -106,13 +105,13 @@ public class HTTPServer extends ConsolePrinter{
          */
     }
 
-    // THis function is probably not needed. http is request-respond based, not
-    // an open connection. as long as server is running, anyone can
+    // This function is probably not needed. Http is request-respond based, not
+    // an open connection. As long as server is running, anyone can
     // connect(/send requests).
-    // if i understand it correctly that is.
+    // If i understand it correctly that is.
     public void listenForNewConnections() {
         // Starts listening to connections
+        print("Waiting for connections ... ");
         server.start();
     }
-
 }

@@ -3,5 +3,8 @@
 .project
 .settings
 
+*.patch
+
 bin
 Thumbs.db
+public/js/config.js
