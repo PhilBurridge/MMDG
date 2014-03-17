@@ -56,5 +56,4 @@ public class ConsolePrinter{
         if (allowPrints) System.out.println(this.getClass().getSimpleName()
                         + ": " + data);
     }
-
 }

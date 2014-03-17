@@ -72,7 +72,7 @@ public class MMDGServer extends ConsolePrinter{
         //will be used to send messages to clients from server
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Vector<String> commadStack;
+        Vector<String> commandStack;
         while (true) {
             
             
@@ -82,8 +82,8 @@ public class MMDGServer extends ConsolePrinter{
             
             
             print("Sending message to TCP handler");
-            commadStack = webSocketServer.getCommandStack();
-            tcpHandler.sendMessages(commadStack);
+            commandStack = webSocketServer.getCommandStack();
+            tcpHandler.sendMessages(commandStack);
             webSocketServer.clearCommandStack();
             //print("Sent message to TCP handler");
             
@@ -95,7 +95,6 @@ public class MMDGServer extends ConsolePrinter{
                 e.printStackTrace();
                 break;
             }
-            
         }
         print("Server stopped");
     }

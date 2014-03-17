@@ -195,5 +195,4 @@ public class WebSocketServer extends ConsolePrinter{
         }
         print(sb.toString());
     }
-
 }
