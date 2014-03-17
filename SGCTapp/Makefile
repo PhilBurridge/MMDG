@@ -3,7 +3,7 @@ CC = g++
 
 # Flags:
 # -Wall -pedantic
-CFLAGS = -O3
+# CFLAGS = -O3
 
 # More flags:
 ifeq ($(OS), Windows_NT)
@@ -24,7 +24,7 @@ else
 endif
 
 # Files:
-FILES = $(wildcard src/*.cpp)
+FILES = $(wildcard *.cpp)
 
 # Binary folder:
 BINFOLD = bin/
