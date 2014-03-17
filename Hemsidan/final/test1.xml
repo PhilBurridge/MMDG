@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 
+Example on what is available to modify in this .xml file.
+
+Color: Green, Blue, Red...
+Height: ex; 100
+Width: ex; 100
+Position: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
+
+-->
+<CATALOG>
+	<BUTTON>
+		<COLOR>Green</COLOR>
+		<!--
+		<Height>100</Height>
+		<Width>100</Width>
+		<HorizontalPosition>Left</HorizontalPosition>
+		<VerticalPosition>Center</VerticalPosition> 
+		-->
+	</Button>
+
+	<Button>
+		<COLOR>Blue</COLOR>
+		<!--
+		<Height>100</Height>
+		<Width>100</Width>
+		<HorizontalPosition>Right</HorizontalPosition>
+		<VerticalPosition>Bottom</VerticalPosition>
+		-->
+	</Button> 
+
+</CATALOG>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css">
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+</head>
+<body>
+
+<script>
+if (window.XMLHttpRequest)
+{// code for IE7+, Firefox, Chrome, Opera, Safari
+	xmlhttp=new XMLHttpRequest();
+}
+else
+{// code for IE6, IE5
+	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.open("GET","config.xml",false);
+xmlhttp.send();
+xmlDoc=xmlhttp.responseXML; 
+
+var t = xmlDoc.getElementsByTagName("TEXTBOX"); //Textbox
+for (i=0;i<t.length;i++)
+{
+	var orientation = y[i].getElementsByTagName("ORIENTATION")[0].childNodes[0].nodeValue;
+	//var startvalue = parseInt(y[i].getElementsByTagName("STARTVALUE")[0].childNodes[0].nodeValue);
+	//var width = parseInt(y[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue);
+	
+	if(orientation == "above")
+	{
+		//document.write("<textbox></textbox>");
+	}
+}
+
+var y = xmlDoc.getElementsByTagName("SLIDER"); //Sliders
+for (i=0;i<y.length;i++)
+{
+	var orientation = y[i].getElementsByTagName("ORIENTATION")[0].childNodes[0].nodeValue;
+	//var startvalue = parseInt(y[i].getElementsByTagName("STARTVALUE")[0].childNodes[0].nodeValue);
+	//var endvalue = parseInt(y[i].getElementsByTagName("ENDVALUE")[0].childNodes[0].nodeValue);
+	
+	if(orientation == "above")
+	{
+		document.write("<div data-role='main' class='ui-content'><form method='post' action='demoform.asp'><label for='points'>Points:</label><input type='range' name='points' id='points' value='50' min='0' max='100'><input type='submit' data-inline='true' value='Submit'></form></div>");
+		//document.write("<div data-role='main' class='ui-content'><form method='post' action='demoform.asp'><label for='points'>Points:</label><input type='range' name='points' id='points' value='startvalue' min='0' max='endvalue'><input type='submit' data-inline='true' value='Submit'></form></div>");
+	}
+}
+
+document.write("<table border='1'>");
+var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
+
+document.write("<tr><td>");
+for (i=0;i<x.length;i++)   //x.lenght() is the amount of buttons
+{
+	var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+	
+	if(Pos == "upleft")
+	{
+		var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+		var Height = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+		var Width = x[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue;
+		document.write("<button>");
+		document.write(Color);
+		document.write("</button>");
+	}
+}
+document.write("</td><td>");
+for (i=0;i<x.length;i++)
+{
+	var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+	
+	if(Pos == "upcenter")
+	{
+		var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+		var Height = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+		var Width = x[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue;
+		document.write("<button>");
+		document.write(Color);
+		document.write("</button>");
+	}
+}
+document.write("</td><td>");
+for (i=0;i<x.length;i++)
+{
+	var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+	
+	if(Pos == "upright")
+	{
+		var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+		var Height = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+		var Width = x[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue;
+		document.write("<button>");
+		document.write(Color);
+		document.write("</button>");
+	}
+}
+document.write("</td></tr>");
+document.write("<tr><td>");
+for (i=0;i<x.length;i++)
+{
+	var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+	
+	if(Pos == "centerleft")
+	{
+		var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+		var Height = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+		var Width = x[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue;
+		document.write("<button>");
+		document.write(Color);
+		document.write("</button>");
+	}
+}
+document.write("</td><td>");
+for (i=0;i<x.length;i++)
+{
+	var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+	
+	if(Pos == "centercenter")
+	{
+		var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+		var Height = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+		var Width = x[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue;
+		document.write("<button>");
+		document.write(Color);
+		document.write("</button>");
+	}
+}
+document.write("</td><td>");
+for (i=0;i<x.length;i++)
+{
+	var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+	
+	if(Pos == "centerright")
+	{
+		var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+		var Height = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+		var Width = x[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue;
+		document.write("<button>");
+		document.write(Color);
+		document.write("</button>");
+	}
+}
+document.write("</td></tr>");
+document.write("<tr><td>");
+for (i=0;i<x.length;i++)
+{
+	var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+	
+	if(Pos == "downleft")
+	{
+		var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+		var Height = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+		var Width = x[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue;
+		document.write("<button>");
+		document.write(Color);
+		document.write("</button>");
+	}
+}
+document.write("</td><td>");
+for (i=0;i<x.length;i++)
+{
+	var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+	
+	if(Pos == "downcenter")
+	{
+		var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+		var Height = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+		var Width = x[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue;
+		document.write("<button>");
+		document.write(Color);
+		document.write("</button>");
+	}
+}
+document.write("</td><td>");
+for (i=0;i<x.length;i++)
+{
+	var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+	
+	if(Pos == "downright")
+	{
+		var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+		var Height = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+		var Width = x[i].getElementsByTagName("WIDTH")[0].childNodes[0].nodeValue;
+		document.write("<button>");
+		document.write(Color);
+		document.write("</button>");
+	}
+}
+document.write("</td></tr>");
+
+document.write("</table>");
+
+for (i=0;i<y.length;i++)
+{
+	var orientation = y[i].getElementsByTagName("ORIENTATION")[0].childNodes[0].nodeValue;
+	
+	if(orientation == "beneeth")
+	{
+		document.write("<div data-role='main' class='ui-content'><form method='post' action='demoform.asp'><label for='points'>Points:</label><input type='range' name='points' id='points' value='50' min='0' max='100'><input type='submit' data-inline='true' value='Submit'></form></div>");
+	}
+}
+
+//var Position = {upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright};
+
+//en for-loop för varje ifsats kommer lösa problemet!
+//var Color = x[i].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue;
+//var Heightstr = x[i].getElementsByTagName("HEIGHT")[0].childNodes[0].nodeValue;
+//var Pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+//var Height = +"Heightstr";
+
+// var Height = parseInt('Height');
+// var Width = x[i].getElementsByTagName("Width")[0].childNodes[0].nodeValue;
+// char xPos = x[i].getElementsByTagName("HorizontalPosition")[0].childNodes[0].nodeValue;
+// char yPos = x[i].getElementsByTagName("VerticalPosition")[0].childNodes[0].nodeValue;
+// var xpos = x[i].getElementsByTagName("XPOS")[0].childNodes[0].nodeValue;
+
+</script>
+
+</body>
+</html>
