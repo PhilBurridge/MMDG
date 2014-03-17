@@ -27,7 +27,7 @@ public class MMDGServer extends ConsolePrinter{
     private final int WEB_SOCKET_PORT = 1338;
 
     /** The port used by the TCP handler */
-    private final int TCP_PORT = 8080;
+    private final int TCP_PORT = 20501;
 
     /**
      * Defines how many times per second the MMDG Server should unload the stack
@@ -76,27 +76,31 @@ public class MMDGServer extends ConsolePrinter{
      * @throws IOException
      */
     public void run() throws IOException {
+        /*
         print("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
                         + "/mmdg.html>");
+        
         httpServer.listenForNewConnections();
         webSocketServer.connect();
-
+        */
         // will be used to send messages to clients from server
+        
+        // Recives messages from application
+        tcpHandler.receiveMessages();
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         Vector<String> commandStack;
         while (true) {
             
             
-            //print("Write something to the client!");
-            //webSocketServer.sendMessage(br.readLine().getBytes());
-            //print("Message sent to client");
-            
-            
-            print("Sending message to TCP handler");
-            commandStack = webSocketServer.getCommandStack();
-            tcpHandler.sendMessages(commandStack);
-            webSocketServer.clearCommandStack();
+
+            print("Write something to TCP!");
+            tcpHandler.sendMessage(br.readLine());
+
+            //commadStack = webSocketServer.getCommandStack();
+            //tcpHandler.sendMessages(commadStack);
+            //webSocketServer.clearCommandStack();
             // print("Sent message to TCP handler");
 
             // sleep for 1/unloadPerSeconds seconds
