@@ -15,6 +15,9 @@ public class TCPHandler extends ConsolePrinter{
 
     /** The object which writes the messages to the application */
     private DataOutputStream outToServer;
+    
+    /** The objects which reads messages from the application */
+    private BufferedReader inFromServer;
 
     /**
      * Creates the socket and the outputStream. Exceptions are handled something
@@ -27,6 +30,7 @@ public class TCPHandler extends ConsolePrinter{
         try {
             clientSocket = new Socket("localhost", tcpPort);
             outToServer = new DataOutputStream(clientSocket.getOutputStream());
+            inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -69,5 +73,15 @@ public class TCPHandler extends ConsolePrinter{
             messages += commandStack.elementAt(i) + ";";
         }
         sendMessage(messages);
+    }
+   
+    public void reciveMessages() {
+        String appMessages;
+        try {
+            appMessages = inFromServer.readLine();
+            System.out.println("Message from App: " + appMessages);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
