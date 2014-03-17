@@ -24,6 +24,8 @@ public class WebSocketServer extends ConsolePrinter{
     private ServerSocket serverSocket;
     /** a client socket, endpoint for communication */
     private Socket socket;
+    
+    private TCPHandler tcphandler;
 
     /**
      * a buffer of messages that will fill upp until MMDGServer forwards it to
@@ -56,7 +58,7 @@ public class WebSocketServer extends ConsolePrinter{
      * time.
      */
     public void connect() throws IOException {
-        print("Waiting for connections");
+        print("Waiting for connections ... ");
         socket = serverSocket.accept();
         print("Got connection");
         if (handshake()) {
@@ -65,7 +67,7 @@ public class WebSocketServer extends ConsolePrinter{
         }
     }
 
-    /** creates a hashmap with socket keys. */
+    /** Server socket and client sockets does a firm and manly handshake. */
     private boolean handshake() throws IOException {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -75,7 +77,6 @@ public class WebSocketServer extends ConsolePrinter{
         String str;
 
         // Reading client handshake
-        print();
         print("READ CLIENT HANDSHAKE:");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
@@ -84,7 +85,7 @@ public class WebSocketServer extends ConsolePrinter{
                 keys.put(s[0], s[1]);
             }
         }
-        print();
+        // print("hashmap"+keys.toString());
 
         // Do what you want with the keys here, we will just use
         // "Sec-WebSocket-Key"
@@ -143,6 +144,8 @@ public class WebSocketServer extends ConsolePrinter{
                         String msg = reiceveMessage();
                         print("Recieved from client: " + msg);
                         commandStack.add(msg);
+//                        String msgApp = "value=1" + "\r\n";
+//                        tcphandler.sendMessage(msgApp);
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -196,5 +199,4 @@ public class WebSocketServer extends ConsolePrinter{
         }
         print(sb.toString());
     }
-
 }

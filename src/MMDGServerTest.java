@@ -27,5 +27,4 @@ public class MMDGServerTest{
             j.sendMessage(br.readLine().getBytes());
         }
     }*/
-    
 }
