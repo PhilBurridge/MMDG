@@ -3,7 +3,7 @@ import java.net.*;
 import java.util.Vector;
 
 /**
- * 
+ * This class handles the TCP handling between the MMDG server and the application
  *
  */
 public class TCPHandler extends ConsolePrinter{
@@ -14,7 +14,7 @@ public class TCPHandler extends ConsolePrinter{
 
     public TCPHandler(int tcpPort) {
         try {
-            clientSocket = new Socket("localhost", 20501);
+            clientSocket = new Socket("localhost", tcpPort);
             outToServer = new DataOutputStream(clientSocket.getOutputStream());
         } catch (UnknownHostException e) {
             e.printStackTrace();

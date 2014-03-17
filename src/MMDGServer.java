@@ -27,7 +27,7 @@ public class MMDGServer extends ConsolePrinter{
     private final int WEB_SOCKET_PORT = 1338;
 
     /** The port used by the TCP handler */
-    private final int TCP_PORT = 8080;
+    private final int TCP_PORT = 20501;
 
     /**
      * Defines how many times per second the MMDG Server should unload the stack
