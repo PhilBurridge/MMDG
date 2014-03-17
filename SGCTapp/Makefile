@@ -6,20 +6,42 @@ CC = g++
 CFLAGS = -O3
 
 # More flags:
-FRAMEWORKS = -lsgct -framework Opengl -framework Cocoa -framework IOKit -stdlib=libstdc++
+ifeq ($(OS), Windows_NT)
+	FRAMEWORKS = -lsgct -lopengl32 -lglu32 -lgdi32 -lws2_32 -static-libgcc -static-libstdc++
+else
+	FRAMEWORKS = -lsgct -framework Opengl -framework Cocoa -framework IOKit -stdlib=libstdc++
+endif
 
 # Even more flags:
-LIBFOLD = -L"/usr/local/lib"
-INCFOLD = -I"/usr/local/include"
+ifeq ($(OS), Windows_NT)
+	MKDIR = 
+	LIBFOLD = -L"C:\sgct\lib\mingw"
+	INCFOLD = -I"C:\sgct\include"
+else
+	MKDIR = mkdir -p bin
+	LIBFOLD = -L"/usr/local/lib"
+	INCFOLD = -I"/usr/local/include"
+endif
 
 # Files:
-FILES = main.cpp
+FILES = $(wildcard src/*.cpp)
 
 # Binary folder:
 BINFOLD = bin/
 
 # Binary name:
-BINNAME = main
+ifeq ($(OS), Windows_NT)
+	BINNAME = main.exe
+else
+	BINNAME = main
+endif
+
+ifeq ($(OS), Windows_NT)
+	FOO = this is windows
+else
+	FOO = this is not windows
+endif
+
 
 all: compile
 .PHONY: all
@@ -32,14 +54,14 @@ run:
 	./$(BINFOLD)$(BINNAME) -config "configs/single.xml"
 .PHONY: run
 
-run-double:
-	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 0
+report:
+	cd docs && latex report.tex && bibtex refs && latex report.tex && latex report.tex && cd ..
 .PHONY: run
 
-run-double-second:
-	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 1 --slave
+talk:
+	$(FOO)
 .PHONY: run
 
 clean:
-	rm $(BINFOLD)*
+	rm -f $(BINFOLD)*
 .PHONY: clean

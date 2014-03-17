@@ -131,8 +131,8 @@ void draw() {
         speed = -speed;
     }
 
-    glm::mat4 scene_mat = glm::rotate( glm::mat4(1.0f), static_cast<float>( curr_time.getVal() ) * speed, glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 MVP = gEngine->getActiveModelViewProjectionMatrix() * scene_mat;
+    glm::mat4 sceneMat = glm::rotate( glm::mat4(1.0f), static_cast<float>( curr_time.getVal() ) * speed, glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 MVP = gEngine->getActiveModelViewProjectionMatrix() * sceneMat;
 
     sgct::ShaderManager::instance()->bindShaderProgram( "xform" );
         
@@ -175,6 +175,10 @@ void cleanUp() {
         glDeleteVertexArrays(1, &vertexArray);
 }
 
+/*To prevent NULL pointer errors the length of the received message will be checked as well
+ (unnecessary in this case but a good practice if more complex messages will be added).
+ - From sgct wiki. 
+*/
 void externalControlCallback(const char * recievedChars, int size, int clientId) {
     // this test might not be needed, will leave it for now
     //if(gEngine->isMaster()) {
