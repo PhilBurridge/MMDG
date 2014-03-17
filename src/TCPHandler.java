@@ -3,14 +3,30 @@ import java.net.*;
 import java.util.Vector;
 
 
-public class TCPHandler extends ConsolePrinter{ 
+public class TCPHandler extends ConsolePrinter{
+
+    private Socket clientSocket;
+    private DataOutputStream outToServer;
+    
 
     public TCPHandler(int tcpPort) {
-
+        try {
+            clientSocket = new Socket("localhost", 20501);
+            outToServer = new DataOutputStream(clientSocket.getOutputStream());
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendMessage(String message) {
         print("sending TCP message: \"" + message + "\" ");
+        try {
+            outToServer.writeBytes(message + '\n');
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendMessages(Vector<String> commandStack) {
@@ -28,16 +44,15 @@ public class TCPHandler extends ConsolePrinter{
 }
 
 /*
-String sentence;
-String modifiedSentence;
-BufferedReader inFromUser = new BufferedReader(new InputStreamReader(System.in));
-
-Socket clientSocket = new Socket("localhost", 20501);
-DataOutputStream outToServer = new DataOutputStream(clientSocket.getOutputStream());
-BufferedReader inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-
-sentence = inFromUser.readLine();
-outToServer.writeBytes(sentence + '\n');
-modifiedSentence = inFromServer.readLine();
-System.out.println(modifiedSentence);
-//clientSocket.close();*/
+ * String sentence; String modifiedSentence; BufferedReader inFromUser = new
+ * BufferedReader(new InputStreamReader(System.in));
+ * 
+ * Socket clientSocket = new Socket("localhost", 20501); DataOutputStream
+ * outToServer = new DataOutputStream(clientSocket.getOutputStream());
+ * BufferedReader inFromServer = new BufferedReader(new
+ * InputStreamReader(clientSocket.getInputStream()));
+ * 
+ * sentence = inFromUser.readLine(); outToServer.writeBytes(sentence + '\n');
+ * modifiedSentence = inFromServer.readLine();
+ * System.out.println(modifiedSentence); //clientSocket.close();
+ */

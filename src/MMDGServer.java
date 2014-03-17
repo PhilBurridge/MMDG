@@ -66,8 +66,8 @@ public class MMDGServer extends ConsolePrinter{
     public void run() throws IOException {
         
         print("Listening to HTTP requests...");
-        httpServer.listenForNewConnections();
-        webSocketServer.connect();
+        //httpServer.listenForNewConnections();
+        //webSocketServer.connect();
         
         //will be used to send messages to clients from server
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -76,8 +76,9 @@ public class MMDGServer extends ConsolePrinter{
         while (true) {
             
             
-            //print("Write something to the client!");
+            print("Write something to the client!");
             //webSocketServer.sendMessage(br.readLine().getBytes());
+            tcpHandler.sendMessage(br.readLine());
             //print("Message sent to client");
             
             
