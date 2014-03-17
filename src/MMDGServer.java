@@ -86,7 +86,7 @@ public class MMDGServer extends ConsolePrinter{
         // will be used to send messages to clients from server
         
         // Recives messages from application
-        tcpHandler.reciveMessages();
+        tcpHandler.receiveMessages();
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
