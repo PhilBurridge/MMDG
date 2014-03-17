@@ -128,18 +128,16 @@ public class MMDGServer extends ConsolePrinter{
         }
 
         // This is probably a wierd way to get the IP address...
-        String ip = "";
         try {
             URL whatismyip = new URL("http://checkip.amazonaws.com/");
             BufferedReader in = new BufferedReader(new InputStreamReader(
                             whatismyip.openStream()));
 
-            ip = in.readLine(); // you get the IP as a String
+            return in.readLine(); // you return the IP as a String
         } catch (Exception e) {
             e.printStackTrace();
             return "Couldn't find IP";
         }
-        return ip;
     }
 
     /**
