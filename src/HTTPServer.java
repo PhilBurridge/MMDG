@@ -111,6 +111,7 @@ public class HTTPServer extends ConsolePrinter{
     // If i understand it correctly that is.
     public void listenForNewConnections() {
         // Starts listening to connections
+        print("Waiting for connections ... ");
         server.start();
     }
 }
