@@ -103,7 +103,7 @@ public class MMDGServer extends ConsolePrinter{
             commandStack = webSocketServer.getCommandStack();
             tcpHandler.sendMessages(commandStack);
             webSocketServer.clearCommandStack();
-            print("Sent message to TCP handler");
+            //print("Sent message to TCP handler");
 
             // sleep for 1/unloadPerSeconds seconds
 

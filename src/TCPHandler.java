@@ -31,11 +31,10 @@ public class TCPHandler extends ConsolePrinter{
             clientSocket = new Socket("localhost", tcpPort);
             outToServer = new DataOutputStream(clientSocket.getOutputStream());
             inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (Exception e) {
+            print("ERROR - could not connect to Application!");
+            e.printStackTrace();       
+        } 
     }
 
     /**
