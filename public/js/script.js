@@ -1,4 +1,8 @@
-var ws = new WebSocket("ws://130.236.124.32:1338/");
+
+var ws = new WebSocket("ws://" + config.serverIP + ":" + config.serverWsPort + "/");
+
+console.log("Server ip is: %s", config.serverIP);
+console.log("Server ws port is: %s", config.serverWsPort);
 
 ws.onopen = function() {
     alert("Opened!");
@@ -6,19 +10,22 @@ ws.onopen = function() {
     init(ws);
 };
 
-function buttonDown() {
-
-
+// Returns value=1 to App on click
+function buttonDownVal1() {
 	document.getElementById('content').innerHTML += '<br>Button pressed!';
-	ws.send("Hi server, the button is pressed");
+	ws.send("value=1" + "\r\n");
+}
 
-
+// Returns value=0 to App on click
+function buttonDownVal0() {
+    document.getElementById('content').innerHTML += '<br>Button pressed!';
+    ws.send("value=0" + "\r\n");
 }
 
 function buttonUp(){
 
 	document.getElementById('content').innerHTML += '<br>Button released!';
-	ws.send("Hi server, the button is released");
+	ws.send("value=0" + "\r\n");
 
 }
 

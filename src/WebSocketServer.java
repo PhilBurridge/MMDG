@@ -24,6 +24,8 @@ public class WebSocketServer extends ConsolePrinter{
     private ServerSocket serverSocket;
     /** a client socket, endpoint for communication */
     private Socket socket;
+    
+    private TCPHandler tcphandler;
 
     /**
      * a buffer of messages that will fill upp until MMDGServer forwards it to
@@ -56,7 +58,7 @@ public class WebSocketServer extends ConsolePrinter{
      * time.
      */
     public void connect() throws IOException {
-        print("Waiting for connections");
+        print("Waiting for connections ... ");
         socket = serverSocket.accept();
         print("Got connection");
         if (handshake()) {
@@ -142,6 +144,8 @@ public class WebSocketServer extends ConsolePrinter{
                         String msg = reiceveMessage();
                         print("Recieved from client: " + msg);
                         commandStack.add(msg);
+//                        String msgApp = "value=1" + "\r\n";
+//                        tcphandler.sendMessage(msgApp);
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -195,5 +199,4 @@ public class WebSocketServer extends ConsolePrinter{
         }
         print(sb.toString());
     }
-
 }
