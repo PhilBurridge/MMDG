@@ -15,13 +15,13 @@ public class TCPHandler extends ConsolePrinter{
 
     /** The object which writes the messages to the application */
     private DataOutputStream outToServer;
-    
+
     /** The objects which reads messages from the application */
-    private BufferedReader inFromServer;
+    private BufferedReader inFromApplication;
 
     /**
-     * Creates the socket and the outputStream. Exceptions are handled something
-     * goes badly
+     * Creates the socket and the outputStream. Exceptions are handled if
+     * something goes badly
      * 
      * @param tcpPort
      * the port number
@@ -30,13 +30,14 @@ public class TCPHandler extends ConsolePrinter{
         try {
             clientSocket = new Socket("localhost", tcpPort);
             outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            inFromServer = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            inFromApplication = new BufferedReader(new InputStreamReader(
+                            clientSocket.getInputStream()));
         } catch (Exception e) {
             print("ERROR - could not connect to Application!");
-            e.printStackTrace();       
-        } 
+            e.printStackTrace();
+        }
     }
-   
+
     /**
      * Sends a message to the connected TCP application
      * 
@@ -44,7 +45,7 @@ public class TCPHandler extends ConsolePrinter{
      * The message to be sent
      */
     public void sendMessage(String message) {
-        print("sending TCP message: \"" + message + "\" ");
+        print("sending TCP message: \"" + message + "\"");
         try {
             outToServer.writeBytes(message + "\r\n");
         } catch (IOException e) {
@@ -61,7 +62,7 @@ public class TCPHandler extends ConsolePrinter{
     public void sendMessages(Vector<String> commandStack) {
         // If command stack is empty, don't send anything
         if (commandStack.size() == 0) {
-            print("No message sent.");
+            // print("No message sent.");
             return;
         }
 
@@ -73,21 +74,21 @@ public class TCPHandler extends ConsolePrinter{
         }
         sendMessage(messages);
     }
-    
+
     /**
      * Receive messages from the connected application using a thread
      */
-    
+
     public void receiveMessages() {
         Thread appThread = new Thread(new Runnable() {
-            
+
             @Override
             public void run() {
                 String appMessages;
                 try {
                     while (true) {
-                        appMessages = inFromServer.readLine();
-                        System.out.println("Message from application: " + appMessages);
+                        appMessages = inFromApplication.readLine();
+                        print("Message from application: " + appMessages);
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
