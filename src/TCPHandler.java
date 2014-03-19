@@ -88,13 +88,15 @@ public class TCPHandler extends ConsolePrinter{
                 try {
                     while (true) {
                         appMessages = inFromApplication.readLine();
-                        print("Message from application: " + appMessages);
+                        if(appMessages != null)
+                            print("Message from application: " + appMessages);
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 }
             }
         });
+        
         appThread.start();
         print("Started thread used to listen to application...");
     }
