@@ -60,8 +60,9 @@ public class HTTPServer extends ConsolePrinter{
             // _____________ Start code review. delete this comment after review
 
             /*
-             * String with canonical path to public directory i.e
-             * C:/users/../../MMDG/public/
+             * String with canonical path to public directory i.e:
+             * win: C:/users/Michael/Documents/TNM094/MMDG/public/
+             * mac: /Users/Michael/Github/MMDG/
              */
             String root = System.getProperty("user.dir") + File.separator
                             + "public" + File.separator;
@@ -70,15 +71,18 @@ public class HTTPServer extends ConsolePrinter{
             URI uri = t.getRequestURI();
             // String with the relative path to requested file i.e /mmdg.html
             String entry = uri.getPath();
-            // Attempts to create a file from path
-            File file = new File(root, uri.getPath()).getCanonicalFile();
             
             /*
-             * if the requested file is not in root directory or if the entry is
-             * absolute ("C:/..") it is forbidden
+             * Attempts to create a file with a canonical pathname from root+entry.
+             * This means that it will resolve any "./" and "../"
+             * components out of the path. i.e:
+             * C:/users/Michael/Documents/TNM094/MMDG/public/../readme.md would become
+             * C:/users/Michael/Documents/TNM094/MMDG/public/readme.md
              */
-            if (!file.getPath().startsWith(root)
-                            || new File(entry).isAbsolute()) {
+            File file = new File(root, entry).getCanonicalFile();
+
+            //if the requested file is not in root directory it is forbidden
+            if (!file.getPath().startsWith(root)) {
                 // Suspected path traversal attack: reject with 403 error.
                 String response = "403 (Forbidden)\n";
                 t.sendResponseHeaders(403, response.length());
@@ -130,10 +134,6 @@ public class HTTPServer extends ConsolePrinter{
          */
     }
 
-    // This function is probably not needed. Http is request-respond based, not
-    // an open connection. As long as server is running, anyone can
-    // connect(/send requests).
-    // If i understand it correctly that is.
     public void listenForNewConnections() {
         // Starts listening to connections
         print("Waiting for connections ... ");
