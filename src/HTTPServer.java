@@ -57,22 +57,36 @@ public class HTTPServer extends ConsolePrinter{
          * Variable name t seems to be a standard on internet.
          */
         public void handle(HttpExchange t) throws IOException {
-            //String root = "public/";
-            String root = System.getProperty("user.dir") + "/public";
-            System.out.println(System.getProperty("user.dir"));
+            // _____________ Start code review. delete this comment after review
+
+            /*
+             * String with canonical path to public directory i.e
+             * C:/users/../../MMDG/public/
+             */
+            String root = System.getProperty("user.dir") + File.separator
+                            + "public" + File.separator;
+            
             // Gets the request from the URL.
             URI uri = t.getRequestURI();
-            File file = new File(root + uri.getPath()).getCanonicalFile();
-            if (!file.getPath().startsWith(root)) {
-                System.out.println(file.getPath());
-                
+            // String with the relative path to requested file i.e /mmdg.html
+            String entry = uri.getPath();
+            // Attempts to create a file from path
+            File file = new File(root, uri.getPath()).getCanonicalFile();
+            
+            /*
+             * if the requested file is not in root directory or if the entry is
+             * absolute ("C:/..") it is forbidden
+             */
+            if (!file.getPath().startsWith(root)
+                            || new File(entry).isAbsolute()) {
                 // Suspected path traversal attack: reject with 403 error.
                 String response = "403 (Forbidden)\n";
                 t.sendResponseHeaders(403, response.length());
                 OutputStream os = t.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
-            } else if  (!file.isFile()) {
+                // _________ End code reviewer. delete this comment after review
+            } else if (!file.isFile()) {
                 // Object does not exist or is not a file: reject with 404
                 // error.
                 String response = "404 (Not Found)\n";
