@@ -57,14 +57,13 @@ public class HTTPServer extends ConsolePrinter{
          * Variable name t seems to be a standard on internet.
          */
         public void handle(HttpExchange t) throws IOException {
-            // _____________ Start code review. delete this comment after review
 
             /*
              * String with canonical path to public directory i.e
              * C:/users/../../MMDG/public/
              */
             String root = System.getProperty("user.dir") + File.separator
-                            + "public" + File.separator;
+                            + "public";
             
             // Gets the request from the URL.
             URI uri = t.getRequestURI();
@@ -85,7 +84,6 @@ public class HTTPServer extends ConsolePrinter{
                 OutputStream os = t.getResponseBody();
                 os.write(response.getBytes());
                 os.close();
-                // _________ End code reviewer. delete this comment after review
             } else if (!file.isFile()) {
                 // Object does not exist or is not a file: reject with 404
                 // error.
