@@ -36,7 +36,7 @@ public class TCPHandler extends ConsolePrinter{
             e.printStackTrace();       
         } 
     }
-
+   
     /**
      * Sends a message to the connected TCP application
      * 
@@ -75,15 +75,26 @@ public class TCPHandler extends ConsolePrinter{
     }
     
     /**
-     * Receive messages from the connected application
+     * Receive messages from the connected application using a thread
      */
+    
     public void receiveMessages() {
-        String appMessages;
-        try {
-            appMessages = inFromServer.readLine();
-            System.out.println("Message from App: " + appMessages);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        Thread appThread = new Thread(new Runnable() {
+            
+            @Override
+            public void run() {
+                String appMessages;
+                try {
+                    while (true) {
+                        appMessages = inFromServer.readLine();
+                        System.out.println("Message from application: " + appMessages);
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        appThread.start();
+        print("Started thread used to listen to application...");
     }
 }
