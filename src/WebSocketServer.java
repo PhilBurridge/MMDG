@@ -22,10 +22,9 @@ public class WebSocketServer extends ConsolePrinter{
 
     /** server socket that waits and possibly responds to requests */
     private ServerSocket serverSocket;
+    
     /** a client socket, endpoint for communication */
     private Socket socket;
-    
-    private TCPHandler tcphandler;
 
     /**
      * a buffer of messages that will fill upp until MMDGServer forwards it to
