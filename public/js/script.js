@@ -13,19 +13,19 @@ ws.onopen = function() {
 // Returns value=1 to App on click
 function buttonDownVal1() {
 	document.getElementById('content').innerHTML += '<br>Button pressed!';
-	ws.send("value=1" + "\r\n");
+	ws.send("value=1");
 }
 
 // Returns value=0 to App on click
 function buttonDownVal0() {
     document.getElementById('content').innerHTML += '<br>Button pressed!';
-    ws.send("value=0" + "\r\n");
+    ws.send("value=0");
 }
 
 function buttonUp(){
 
 	document.getElementById('content').innerHTML += '<br>Button released!';
-	ws.send("value=0" + "\r\n");
+	ws.send("value=0");
 
 }
 
