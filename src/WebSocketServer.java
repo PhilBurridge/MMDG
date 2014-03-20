@@ -12,7 +12,6 @@ import java.util.Vector;
 import org.apache.commons.codec.binary.Base64;
 
 
-
 // good tutorial:
 // http://stackoverflow.com/questions/12702305/using-html5-client-with-a-server-in-java
 
@@ -49,11 +48,11 @@ public class WebSocketServer extends ConsolePrinter{
         commandStack.add(command);
     }
 
-    public Vector<String> getCommandStack() {
+    public synchronized Vector<String> getCommandStack() {
         return commandStack;
     }
 
-    public void clearCommandStack() {
+    public synchronized void clearCommandStack() {
         commandStack.clear();
     }
 
@@ -98,9 +97,11 @@ public class WebSocketServer extends ConsolePrinter{
 
     public void sendMessageToAllClients(String msg) {
         try {
-            Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet().iterator();
+            Iterator<Entry<Integer, ClientHandler>> it = clientHandlers
+                            .entrySet().iterator();
             while (it.hasNext()) {
-                Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>)it.next();
+                Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                                .next();
                 pairs.getValue().sendMessage(msg.getBytes());
                 it.remove(); // avoids a ConcurrentModificationException
             }
@@ -166,18 +167,19 @@ public class WebSocketServer extends ConsolePrinter{
     }
 
     private void removeDeadClientHandlers() {
-        
-        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet().iterator();
+
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet()
+                        .iterator();
         while (it.hasNext()) {
-            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>)it.next();
-            
-            if(!pairs.getValue().alive){
+            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                            .next();
+
+            if (!pairs.getValue().alive) {
                 clientHandlers.remove(pairs.getKey());
             }
-            
-            //it.remove(); // avoids a ConcurrentModificationException
+
+            // it.remove(); // avoids a ConcurrentModificationException
         }
-        
     }
 
     private static int get_next_client_id() {
@@ -246,6 +248,14 @@ public class WebSocketServer extends ConsolePrinter{
             allowPrints = true;
         }
 
+        /**
+         * Reads a chunk of bytes from the clientSockets inputstream.
+         * 
+         * @param numOfBytes
+         * Number of bytes to read
+         * @return Returns the read bytes
+         * @throws IOException
+         */
         private byte[] readBytes(int numOfBytes) throws IOException {
             // print("numOfBytes = " + numOfBytes);
             byte[] b = new byte[numOfBytes];
