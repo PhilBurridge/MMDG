@@ -64,12 +64,14 @@ public class WebSocketServer extends ConsolePrinter{
             public void run() {
                 try {
                     while (true) {
-                        print("Waiting for connections ... ");
+                        print("Waiting for connections ...");
                         Socket socket = serverSocket.accept();
+                        System.out.println();
+                        print("Connecting!");
                         if (handshake(socket)) {
                             ClientHandler ch = new ClientHandler(socket,
                                             clientHandlers.size());
-                            ch.listen();
+                            ch.listenToClient();
                             clientHandlers.add(ch);
                             print("Added client " + (clientHandlers.size() - 1));
                         }
@@ -209,7 +211,7 @@ public class WebSocketServer extends ConsolePrinter{
             }
         }
 
-        public void listen() {
+        public void listenToClient() {
             listenerTread = new Thread(new Runnable() {
                 @Override
                 public void run() {
