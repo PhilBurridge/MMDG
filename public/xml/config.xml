@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Example on what is available to modify in this xml file.
+
+Background:
+-Background Color (CSS color): ex #00008B = deep blue, #40B3DF = light blue, #B4009E = purple... goolge it :)
+
+Button:
+-Name: any name, not too long. This name is sent to the application.
+-Position: upleft,     upcenter,     upright,
+		  centerleft, centercenter, centerright, 
+		  downleft,   downcenter,   downright.
+
+Slider:
+-Available: Y or N if you want an slider available
+
+-->
+<CATALOG>
+	<BACKGROUND>
+		<COLOR>#00008B</COLOR>
+	</BACKGROUND>
+	<BUTTON>
+<!-- 	<COLOR>red</COLOR>
+		<HEIGHT>100</HEIGHT>
+		<WIDTH>100</WIDTH> -->
+		<NAME>btn1</NAME>
+		<POS>upleft</POS>
+	</BUTTON>
+	<BUTTON>
+		<NAME>btn2</NAME>
+		<POS>centerright</POS>
+	</BUTTON>
+	<BUTTON>
+		<NAME>btn3</NAME>
+		<POS>centercenter</POS>
+	</BUTTON>
+	<BUTTON>
+		<NAME>btn4</NAME>
+		<POS>centerleft</POS>
+	</BUTTON>
+	<BUTTON>
+		<NAME>btn5</NAME>
+		<POS>downright</POS>
+	</BUTTON>
+	<SLIDER>
+		<TITLE>Fin slider:</TITLE>
+		<ENDVALUE>80</ENDVALUE>
+		<STARTVALUE>60</STARTVALUE>
+		<POS>downleft</POS> <!-- kanske bara skall vara Ja/nej, placera en slider lr inte -->
+	</SLIDER>
+</CATALOG>

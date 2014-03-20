@@ -1,0 +1,50 @@
+html, body {
+	margin:0px;
+	padding:0px;
+	width:100%;
+	height:100%;
+}
+table {
+	border:0px solid black;
+	/* background-color:#00008B; */
+	width:100%;
+	height:100%;
+}
+td {
+	border:0px solid black;
+	width:33%;
+	height:33%;
+}
+button {
+	width:90%;
+	height:90%;
+}
+div { /*fråga mig inte varför detta står med, men det funkar nu! kanske en inbyggd div-tagg i ett table?*/    
+	width:80%;
+	height:70%;
+}
+div {
+	color:white;   /*blir inte vit*/
+}
+p {
+	font-family: verdana;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 13px;
+}
+h1 {
+	margin-top: 40px;
+	font-family: verdana;
+	font-size: 26px;
+	text-align: center;
+	padding: 0px;
+}
+
+h2 {
+	font-family: verdana;
+	font-size: 17px;
+	text-align: center;
+}
+hr {
+	border: 1px dotted black;
+}

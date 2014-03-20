@@ -1,4 +1,3 @@
-
 var ws = new WebSocket("ws://" + config.serverIP + ":" + config.serverWsPort + "/");
 
 console.log("Server ip is: %s", config.serverIP);
@@ -6,29 +5,15 @@ console.log("Server ws port is: %s", config.serverWsPort);
 
 ws.onopen = function() {
     alert("Opened!");
-    ws.send("TJenare! I am a client, This is from JS!");
+    ws.send("Hello! I am a client, This is from JS!");
     init(ws);
 };
 
-// Returns value=1 to App on click
-function buttonDownVal1() {
+// Returns the name of the button on mouse click
+function wsButton(name) {
 	document.getElementById('content').innerHTML += '<br>Button pressed!';
-	ws.send("value=1");
+	ws.send(name);
 }
-
-// Returns value=0 to App on click
-function buttonDownVal0() {
-    document.getElementById('content').innerHTML += '<br>Button pressed!';
-    ws.send("value=0");
-}
-
-function buttonUp(){
-
-	document.getElementById('content').innerHTML += '<br>Button released!';
-	ws.send("value=0");
-
-}
-
 
 function init(ws) {
     ws.onmessage = function (msg) {
