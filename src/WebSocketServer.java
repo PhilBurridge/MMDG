@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Vector;
 import org.apache.commons.codec.binary.Base64;
+import com.sun.corba.se.pept.transport.ListenerThread;
 
 
 // good tutorial:
@@ -19,6 +20,8 @@ public class WebSocketServer extends ConsolePrinter{
 
     public static final int MASK_SIZE = 4;
     public static final int SINGLE_FRAME_UNMASKED = 0x81;
+    
+    private static int next_client_id = 0;
 
     /** server socket that waits and possibly responds to requests */
     private ServerSocket serverSocket;
@@ -68,12 +71,15 @@ public class WebSocketServer extends ConsolePrinter{
                         Socket socket = serverSocket.accept();
                         System.out.println();
                         print("Connecting!");
+                        
+                        removeDeadClientHandlers();
                         if (handshake(socket)) {
                             ClientHandler ch = new ClientHandler(socket,
-                                            clientHandlers.size());
+                                            get_next_client_id());
                             ch.listenToClient();
                             clientHandlers.add(ch);
-                            print("Added client " + (clientHandlers.size() - 1));
+                            print("Clients connected: " + clientHandlers.size());
+                            print("Added client with ID " + ch.id);
                         }
                     }
                 } catch (IOException ex) {
@@ -130,7 +136,21 @@ public class WebSocketServer extends ConsolePrinter{
 
         return true;
     }
+    
+    private void removeDeadClientHandlers(){
+        for(int i=0; i<clientHandlers.size(); ++i){
+            if(!clientHandlers.elementAt(i).alive){
+                clientHandlers.remove(i);
+                --i;
+            }
+        }
+    }
 
+    private static int get_next_client_id(){
+        ++next_client_id;
+        return next_client_id; 
+    }
+    
     private int getSizeOfPayload(byte b) {
         // Must subtract 0x80 from masked frames
         return ((b & 0xFF) - 0x80);
@@ -170,6 +190,9 @@ public class WebSocketServer extends ConsolePrinter{
 
         /** The thread used to listen to this handlers particular client */
         private Thread listenerTread;
+        
+        /** */
+        private boolean alive;
 
         /** The ID of the client */
         private int id;
@@ -177,14 +200,27 @@ public class WebSocketServer extends ConsolePrinter{
         public ClientHandler(Socket clientSocket, int id) {
             this.clientSocket = clientSocket;
             this.id = id;
+            alive = true;
             allowPrints = true;
+            
         }
 
         private byte[] readBytes(int numOfBytes) throws IOException {
             // print("numOfBytes = " + numOfBytes);
             byte[] b = new byte[numOfBytes];
             clientSocket.getInputStream().read(b);
+            if(b.length < 0){
+                stop();
+                return null;
+            }
             return b;
+        }
+        
+        private void stop() throws IOException{
+            print("Client " + id +" closed!");
+            clientSocket.close();
+            alive = false;
+            //listenerTread.join();
         }
 
         public String reiceveMessage() throws IOException {
@@ -194,13 +230,14 @@ public class WebSocketServer extends ConsolePrinter{
             int opcode = buf[0] & 0x0F;
             if (opcode == 8) {
                 // Client want to close connection!
-                print("Client closed!");
-                clientSocket.close();
-                System.exit(0);
+                stop();
                 return null;
             } else {
                 final int payloadSize = getSizeOfPayload(buf[1]);
-                // print("Payloadsize: " + payloadSize);
+                if (payloadSize == -128){
+                    stop();
+                    return "disconnected";
+                } 
                 buf = readBytes(MASK_SIZE + payloadSize);
                 // print("Payload:");
                 // convertAndPrint(buf);
@@ -216,7 +253,7 @@ public class WebSocketServer extends ConsolePrinter{
                 @Override
                 public void run() {
                     try {
-                        while (true) {
+                        while (alive) {
                             String msg = reiceveMessage();
                             print("Recieved from client " + id + ": " + msg);
                             addCommand(msg);
