@@ -26,8 +26,7 @@ public class WebSocketServer extends ConsolePrinter{
     /** server socket that waits and possibly responds to requests */
     private ServerSocket serverSocket;
 
-    /** a client socket, endpoint for communication */
-    // private Socket socket;
+    /** Handles all the client sockets */
     private Vector<ClientHandler> clientHandlers;
 
     /**
@@ -89,6 +88,21 @@ public class WebSocketServer extends ConsolePrinter{
         });
         connectThread.start();
 
+    }
+    
+    public void sendMessageToClient(int id, String msg){
+        
+    }
+
+    public void sendMessageToAllClients(String msg) {
+        int i = 0;
+        try {
+            for (; i < clientHandlers.size(); ++i) {
+                clientHandlers.elementAt(i).sendMessage(msg.getBytes());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /** Server socket and client sockets does a firm and manly handshake. */
@@ -170,7 +184,6 @@ public class WebSocketServer extends ConsolePrinter{
     // }
     // print(sb.toString());
     // }
-    
 
     /**
      * This class is for handling clients. One instance of this class takes care
@@ -199,8 +212,11 @@ public class WebSocketServer extends ConsolePrinter{
         private int id;
 
         /**
-         * Constructrs a handler for the current constructor, with a specified ID.
-         * @param clientSocket clientSocket to be handled
+         * Constructrs a handler for the current constructor, with a specified
+         * ID.
+         * 
+         * @param clientSocket
+         * clientSocket to be handled
          * @param id
          */
         public ClientHandler(Socket clientSocket, int id) {
@@ -223,6 +239,7 @@ public class WebSocketServer extends ConsolePrinter{
 
         /**
          * Use this method to stop this client Handler from working.
+         * 
          * @throws IOException
          */
         private void stop() throws IOException {
@@ -231,9 +248,10 @@ public class WebSocketServer extends ConsolePrinter{
             alive = false;
             // listenerTread.join();
         }
-        
+
         /**
          * Receives a message from the client socket
+         * 
          * @return The received message from client
          * @throws IOException
          */
@@ -261,9 +279,9 @@ public class WebSocketServer extends ConsolePrinter{
                 return message;
             }
         }
-        
+
         /**
-         * Creates a thread for listening for client messages. 
+         * Creates a thread for listening for client messages.
          */
         public void listenToClient() {
             listenerTread = new Thread(new Runnable() {
@@ -275,7 +293,8 @@ public class WebSocketServer extends ConsolePrinter{
                             print("Recieved from client " + id + ": " + msg);
                             addCommand(msg);
                         }
-                        print("The listening thread of clientHandler " + id + " is done");
+                        print("The listening thread of clientHandler " + id
+                                        + " is done");
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
