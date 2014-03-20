@@ -24,7 +24,7 @@ else
 endif
 
 # Files:
-FILES = $(wildcard *.cpp)
+FILES = $(wildcard src/*.cpp)
 
 # Binary folder:
 BINFOLD = bin/

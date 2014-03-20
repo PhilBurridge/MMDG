@@ -6,7 +6,7 @@ Use telnet to test local: "telnet localhost 20501",
 then send "value 1" or "value 0"
 -->
 <Cluster masterAddress="localhost" externalControlPort="20501">
-	<Node address="localhost" port="20501">
+	<Node address="localhost" port="20400">
 		<Window fullScreen="false" numberOfSamples = "8">
 			<!-- 16:9 aspect ratio -->
 			<Size x="640" y="360" />
