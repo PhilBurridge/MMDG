@@ -22,9 +22,9 @@ public class WebSocketServer extends ConsolePrinter{
 
     /** server socket that waits and possibly responds to requests */
     private ServerSocket serverSocket;
-    
+
     /** a client socket, endpoint for communication */
-    //private Socket socket;
+    // private Socket socket;
     private Vector<ClientHandler> clientHandlers;
 
     /**
@@ -63,11 +63,12 @@ public class WebSocketServer extends ConsolePrinter{
             @Override
             public void run() {
                 try {
-                    while(true){
+                    while (true) {
                         print("Waiting for connections ... ");
                         Socket socket = serverSocket.accept();
                         if (handshake(socket)) {
-                            ClientHandler ch = new ClientHandler(socket, clientHandlers.size());
+                            ClientHandler ch = new ClientHandler(socket,
+                                            clientHandlers.size());
                             ch.listen();
                             clientHandlers.add(ch);
                             print("Added client " + (clientHandlers.size() - 1));
@@ -79,7 +80,7 @@ public class WebSocketServer extends ConsolePrinter{
             }
         });
         connectThread.start();
-        
+
     }
 
     /** Server socket and client sockets does a firm and manly handshake. */
@@ -121,13 +122,12 @@ public class WebSocketServer extends ConsolePrinter{
                         + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n"
                         + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
         print("Writing response");
-        //print(response);
+        // print(response);
         out.write(response);
         out.flush();
 
         return true;
     }
-
 
     private int getSizeOfPayload(byte b) {
         // Must subtract 0x80 from masked frames
@@ -141,43 +141,50 @@ public class WebSocketServer extends ConsolePrinter{
         return data;
     }
 
-//    private void convertAndPrint(byte[] bytes) {
-//        StringBuilder sb = new StringBuilder();
-//        for (byte b : bytes) {
-//            sb.append(String.format("%02X ", b));
-//        }
-//        print(sb.toString());
-//    }
-    
-    
-    
-    
-    
-    
+    // private void convertAndPrint(byte[] bytes) {
+    // StringBuilder sb = new StringBuilder();
+    // for (byte b : bytes) {
+    // sb.append(String.format("%02X ", b));
+    // }
+    // print(sb.toString());
+    // }
+
     /**
+     * This class is for handling clients. One instance of this class takes care
+     * of one client. It uses one separate thread for each client, which might
+     * not be the best solution. In the future we might use a limited number of
+     * threads in a so called "thread pool" and maybe gain performance?
      * 
+     * @pros: We can have ID:s for clienthandlers instead of clients.
+     * @cons: Performance might decrease drastically when many clients connect
      * 
-     *
      */
     private class ClientHandler extends ConsolePrinter{
+        /**
+         * An instance of the client socket. With this we can read and write to
+         * the client
+         */
         private Socket clientSocket;
+
+        /** The thread used to listen to this handlers particular client */
         private Thread listenerTread;
+
+        /** The ID of the client */
         private int id;
-        
-        
-        public ClientHandler(Socket clientSocket, int id){
+
+        public ClientHandler(Socket clientSocket, int id) {
             this.clientSocket = clientSocket;
             this.id = id;
             allowPrints = true;
         }
-        
+
         private byte[] readBytes(int numOfBytes) throws IOException {
             // print("numOfBytes = " + numOfBytes);
             byte[] b = new byte[numOfBytes];
             clientSocket.getInputStream().read(b);
             return b;
         }
-        
+
         public String reiceveMessage() throws IOException {
             byte[] buf = readBytes(2);
             // print("Headers:");
@@ -201,8 +208,7 @@ public class WebSocketServer extends ConsolePrinter{
                 return message;
             }
         }
-        
-        
+
         public void listen() {
             listenerTread = new Thread(new Runnable() {
                 @Override
@@ -221,7 +227,7 @@ public class WebSocketServer extends ConsolePrinter{
             listenerTread.start();
             print("Started thread used to listen to client messages...");
         }
-        
+
         public void sendMessage(byte[] msg) throws IOException {
             print("Sending to client");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -236,8 +242,7 @@ public class WebSocketServer extends ConsolePrinter{
             os.write(baos.toByteArray(), 0, baos.size());
             os.flush();
         }
-        
+
     }
-    
-    
+
 }
