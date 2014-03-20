@@ -24,7 +24,8 @@ public class WebSocketServer extends ConsolePrinter{
     private ServerSocket serverSocket;
     
     /** a client socket, endpoint for communication */
-    private Socket socket;
+    //private Socket socket;
+    private Vector<ClientHandler> clientHandlers;
 
     /**
      * a buffer of messages that will fill upp until MMDGServer forwards it to
@@ -35,10 +36,11 @@ public class WebSocketServer extends ConsolePrinter{
     /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
         commandStack = new Vector<String>();
+        clientHandlers = new Vector<ClientHandler>();
         serverSocket = new ServerSocket(websocketPort);
     }
 
-    public void addCommand(String command) {
+    private synchronized void addCommand(String command) {
         commandStack.add(command);
     }
 
@@ -57,17 +59,31 @@ public class WebSocketServer extends ConsolePrinter{
      * time.
      */
     public void connect() throws IOException {
-        print("Waiting for connections ... ");
-        socket = serverSocket.accept();
-        print("Got connection");
-        if (handshake()) {
-            print("Handshake done. Listening...");
-            listenerThread();
-        }
+        Thread connectThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while(true){
+                        print("Waiting for connections ... ");
+                        Socket socket = serverSocket.accept();
+                        if (handshake(socket)) {
+                            ClientHandler ch = new ClientHandler(socket, clientHandlers.size());
+                            ch.listen();
+                            clientHandlers.add(ch);
+                            print("Added client " + (clientHandlers.size() - 1));
+                        }
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        connectThread.start();
+        
     }
 
     /** Server socket and client sockets does a firm and manly handshake. */
-    private boolean handshake() throws IOException {
+    private boolean handshake(Socket socket) throws IOException {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(
                         socket.getInputStream()));
@@ -76,7 +92,7 @@ public class WebSocketServer extends ConsolePrinter{
         String str;
 
         // Reading client handshake
-        print("READ CLIENT HANDSHAKE:");
+        print("Reading client handshake");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
             // print(str);
@@ -104,80 +120,14 @@ public class WebSocketServer extends ConsolePrinter{
         String response = "HTTP/1.1 101 Switching Protocols\r\n"
                         + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n"
                         + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
-        print("WRITING RESPONSE TO CLIENT:");
-        print(response);
+        print("Writing response");
+        //print(response);
         out.write(response);
         out.flush();
 
         return true;
     }
 
-    private byte[] readBytes(int numOfBytes) throws IOException {
-        // print("numOfBytes = " + numOfBytes);
-        byte[] b = new byte[numOfBytes];
-        socket.getInputStream().read(b);
-        return b;
-    }
-
-    public void sendMessage(byte[] msg) throws IOException {
-        print("Sending to client");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        BufferedOutputStream os = new BufferedOutputStream(
-                        socket.getOutputStream());
-        baos.write(SINGLE_FRAME_UNMASKED);
-        baos.write(msg.length);
-        baos.write(msg);
-        baos.flush();
-        baos.close();
-        // convertAndPrint(baos.toByteArray());
-        os.write(baos.toByteArray(), 0, baos.size());
-        os.flush();
-    }
-
-    public void listenerThread() {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        String msg = reiceveMessage();
-                        print("Recieved from client: " + msg);
-                        commandStack.add(msg);
-//                        String msgApp = "value=1" + "\r\n";
-//                        tcphandler.sendMessage(msgApp);
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }
-        });
-        t.start();
-        print("Started thread used to listen to client messages...");
-    }
-
-    public String reiceveMessage() throws IOException {
-        byte[] buf = readBytes(2);
-        // print("Headers:");
-        // convertAndPrint(buf);
-        int opcode = buf[0] & 0x0F;
-        if (opcode == 8) {
-            // Client want to close connection!
-            print("Client closed!");
-            socket.close();
-            System.exit(0);
-            return null;
-        } else {
-            final int payloadSize = getSizeOfPayload(buf[1]);
-            // print("Payloadsize: " + payloadSize);
-            buf = readBytes(MASK_SIZE + payloadSize);
-            // print("Payload:");
-            // convertAndPrint(buf);
-            buf = unMask(Arrays.copyOfRange(buf, 0, 4),
-                            Arrays.copyOfRange(buf, 4, buf.length));
-            String message = new String(buf);
-            return message;
-        }
-    }
 
     private int getSizeOfPayload(byte b) {
         // Must subtract 0x80 from masked frames
@@ -191,11 +141,103 @@ public class WebSocketServer extends ConsolePrinter{
         return data;
     }
 
-    private void convertAndPrint(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02X ", b));
+//    private void convertAndPrint(byte[] bytes) {
+//        StringBuilder sb = new StringBuilder();
+//        for (byte b : bytes) {
+//            sb.append(String.format("%02X ", b));
+//        }
+//        print(sb.toString());
+//    }
+    
+    
+    
+    
+    
+    
+    /**
+     * 
+     * 
+     *
+     */
+    private class ClientHandler extends ConsolePrinter{
+        private Socket clientSocket;
+        private Thread listenerTread;
+        private int id;
+        
+        
+        public ClientHandler(Socket clientSocket, int id){
+            this.clientSocket = clientSocket;
+            this.id = id;
+            allowPrints = true;
         }
-        print(sb.toString());
+        
+        private byte[] readBytes(int numOfBytes) throws IOException {
+            // print("numOfBytes = " + numOfBytes);
+            byte[] b = new byte[numOfBytes];
+            clientSocket.getInputStream().read(b);
+            return b;
+        }
+        
+        public String reiceveMessage() throws IOException {
+            byte[] buf = readBytes(2);
+            // print("Headers:");
+            // convertAndPrint(buf);
+            int opcode = buf[0] & 0x0F;
+            if (opcode == 8) {
+                // Client want to close connection!
+                print("Client closed!");
+                clientSocket.close();
+                System.exit(0);
+                return null;
+            } else {
+                final int payloadSize = getSizeOfPayload(buf[1]);
+                // print("Payloadsize: " + payloadSize);
+                buf = readBytes(MASK_SIZE + payloadSize);
+                // print("Payload:");
+                // convertAndPrint(buf);
+                buf = unMask(Arrays.copyOfRange(buf, 0, 4),
+                                Arrays.copyOfRange(buf, 4, buf.length));
+                String message = new String(buf);
+                return message;
+            }
+        }
+        
+        
+        public void listen() {
+            listenerTread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        while (true) {
+                            String msg = reiceveMessage();
+                            print("Recieved from client " + id + ": " + msg);
+                            addCommand(msg);
+                        }
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+            listenerTread.start();
+            print("Started thread used to listen to client messages...");
+        }
+        
+        public void sendMessage(byte[] msg) throws IOException {
+            print("Sending to client");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            BufferedOutputStream os = new BufferedOutputStream(
+                            clientSocket.getOutputStream());
+            baos.write(SINGLE_FRAME_UNMASKED);
+            baos.write(msg.length);
+            baos.write(msg);
+            baos.flush();
+            baos.close();
+            // convertAndPrint(baos.toByteArray());
+            os.write(baos.toByteArray(), 0, baos.size());
+            os.flush();
+        }
+        
     }
+    
+    
 }
