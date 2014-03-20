@@ -20,7 +20,7 @@ public class WebSocketServer extends ConsolePrinter{
 
     public static final int MASK_SIZE = 4;
     public static final int SINGLE_FRAME_UNMASKED = 0x81;
-    
+
     private static int next_client_id = 0;
 
     /** server socket that waits and possibly responds to requests */
@@ -71,7 +71,7 @@ public class WebSocketServer extends ConsolePrinter{
                         Socket socket = serverSocket.accept();
                         System.out.println();
                         print("Connecting!");
-                        
+
                         removeDeadClientHandlers();
                         if (handshake(socket)) {
                             ClientHandler ch = new ClientHandler(socket,
@@ -136,21 +136,21 @@ public class WebSocketServer extends ConsolePrinter{
 
         return true;
     }
-    
-    private void removeDeadClientHandlers(){
-        for(int i=0; i<clientHandlers.size(); ++i){
-            if(!clientHandlers.elementAt(i).alive){
+
+    private void removeDeadClientHandlers() {
+        for (int i = 0; i < clientHandlers.size(); ++i) {
+            if (!clientHandlers.elementAt(i).alive) {
                 clientHandlers.remove(i);
                 --i;
             }
         }
     }
 
-    private static int get_next_client_id(){
+    private static int get_next_client_id() {
         ++next_client_id;
-        return next_client_id; 
+        return next_client_id;
     }
-    
+
     private int getSizeOfPayload(byte b) {
         // Must subtract 0x80 from masked frames
         return ((b & 0xFF) - 0x80);
@@ -170,6 +170,7 @@ public class WebSocketServer extends ConsolePrinter{
     // }
     // print(sb.toString());
     // }
+    
 
     /**
      * This class is for handling clients. One instance of this class takes care
@@ -190,39 +191,52 @@ public class WebSocketServer extends ConsolePrinter{
 
         /** The thread used to listen to this handlers particular client */
         private Thread listenerTread;
-        
-        /** */
+
+        /** A clientHandler is alive as long as it has a connected client */
         private boolean alive;
 
         /** The ID of the client */
         private int id;
 
+        /**
+         * Constructrs a handler for the current constructor, with a specified ID.
+         * @param clientSocket clientSocket to be handled
+         * @param id
+         */
         public ClientHandler(Socket clientSocket, int id) {
             this.clientSocket = clientSocket;
             this.id = id;
             alive = true;
             allowPrints = true;
-            
         }
 
         private byte[] readBytes(int numOfBytes) throws IOException {
             // print("numOfBytes = " + numOfBytes);
             byte[] b = new byte[numOfBytes];
             clientSocket.getInputStream().read(b);
-            if(b.length < 0){
+            if (b.length < 0) {
                 stop();
                 return null;
             }
             return b;
         }
-        
-        private void stop() throws IOException{
-            print("Client " + id +" closed!");
+
+        /**
+         * Use this method to stop this client Handler from working.
+         * @throws IOException
+         */
+        private void stop() throws IOException {
+            print("Client " + id + " closed!");
             clientSocket.close();
             alive = false;
-            //listenerTread.join();
+            // listenerTread.join();
         }
-
+        
+        /**
+         * Receives a message from the client socket
+         * @return The received message from client
+         * @throws IOException
+         */
         public String reiceveMessage() throws IOException {
             byte[] buf = readBytes(2);
             // print("Headers:");
@@ -234,10 +248,10 @@ public class WebSocketServer extends ConsolePrinter{
                 return null;
             } else {
                 final int payloadSize = getSizeOfPayload(buf[1]);
-                if (payloadSize == -128){
+                if (payloadSize == -128) {
                     stop();
                     return "disconnected";
-                } 
+                }
                 buf = readBytes(MASK_SIZE + payloadSize);
                 // print("Payload:");
                 // convertAndPrint(buf);
@@ -247,7 +261,10 @@ public class WebSocketServer extends ConsolePrinter{
                 return message;
             }
         }
-
+        
+        /**
+         * Creates a thread for listening for client messages. 
+         */
         public void listenToClient() {
             listenerTread = new Thread(new Runnable() {
                 @Override
@@ -258,6 +275,7 @@ public class WebSocketServer extends ConsolePrinter{
                             print("Recieved from client " + id + ": " + msg);
                             addCommand(msg);
                         }
+                        print("The listening thread of clientHandler " + id + " is done");
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
