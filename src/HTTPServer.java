@@ -57,11 +57,37 @@ public class HTTPServer extends ConsolePrinter{
          * Variable name t seems to be a standard on internet.
          */
         public void handle(HttpExchange t) throws IOException {
-            String root = "public/";
+            /*
+             * String with canonical path to public directory i.e: win:
+             * C:/users/Michael/Documents/TNM094/MMDG/public mac:
+             * /Users/Michael/Github/MMDG/
+             */
+            String root = System.getProperty("user.dir") + File.separator
+                            + "public" + File.separator;
+
             // Gets the request from the URL.
             URI uri = t.getRequestURI();
-            File file = new File(root + uri.getPath()).getCanonicalFile();
-            if (!file.isFile()) {
+            // String with the relative path to requested file i.e /mmdg.html
+            String entry = uri.getPath();
+
+            /*
+             * Attempts to create a file with a canonical pathname from
+             * root+entry. This means that it will resolve any "./" and "../"
+             * components out of the path. i.e:
+             * C:/users/Michael/Documents/TNM094/MMDG/public/../readme.md would
+             * become C:/users/Michael/Documents/TNM094/MMDG/public/readme.md
+             */
+            File file = new File(root, entry).getCanonicalFile();
+
+            // if the requested file is not in root directory it is forbidden
+            if (!file.getPath().startsWith(root)) {
+                // Suspected path traversal attack: reject with 403 error.
+                String response = "403 (Forbidden)\n";
+                t.sendResponseHeaders(403, response.length());
+                OutputStream os = t.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            } else if (!file.isFile()) {
                 // Object does not exist or is not a file: reject with 404
                 // error.
                 String response = "404 (Not Found)\n";
@@ -105,10 +131,6 @@ public class HTTPServer extends ConsolePrinter{
          */
     }
 
-    // This function is probably not needed. Http is request-respond based, not
-    // an open connection. As long as server is running, anyone can
-    // connect(/send requests).
-    // If i understand it correctly that is.
     public void listenForNewConnections() {
         // Starts listening to connections
         print("Waiting for connections ... ");
