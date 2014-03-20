@@ -5,9 +5,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
 import org.apache.commons.codec.binary.Base64;
-import com.sun.corba.se.pept.transport.ListenerThread;
+
 
 
 // good tutorial:
@@ -27,7 +30,7 @@ public class WebSocketServer extends ConsolePrinter{
     private ServerSocket serverSocket;
 
     /** Handles all the client sockets */
-    private Vector<ClientHandler> clientHandlers;
+    private HashMap<Integer, ClientHandler> clientHandlers;
 
     /**
      * a buffer of messages that will fill upp until MMDGServer forwards it to
@@ -37,9 +40,9 @@ public class WebSocketServer extends ConsolePrinter{
 
     /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
-        commandStack = new Vector<String>();
-        clientHandlers = new Vector<ClientHandler>();
         serverSocket = new ServerSocket(websocketPort);
+        clientHandlers = new HashMap<Integer, ClientHandler>();
+        commandStack = new Vector<String>();
     }
 
     private synchronized void addCommand(String command) {
@@ -73,12 +76,7 @@ public class WebSocketServer extends ConsolePrinter{
 
                         removeDeadClientHandlers();
                         if (handshake(socket)) {
-                            ClientHandler ch = new ClientHandler(socket,
-                                            get_next_client_id());
-                            ch.listenToClient();
-                            clientHandlers.add(ch);
-                            print("Clients connected: " + clientHandlers.size());
-                            print("Added client with ID " + ch.id);
+                            addHandlerForClient(socket);
                         }
                     }
                 } catch (IOException ex) {
@@ -89,16 +87,22 @@ public class WebSocketServer extends ConsolePrinter{
         connectThread.start();
 
     }
-    
-    public void sendMessageToClient(int id, String msg){
-        
+
+    public void sendMessageToClient(int id, String msg) {
+        try {
+            clientHandlers.get(id).sendMessage(msg.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void sendMessageToAllClients(String msg) {
-        int i = 0;
         try {
-            for (; i < clientHandlers.size(); ++i) {
-                clientHandlers.elementAt(i).sendMessage(msg.getBytes());
+            Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>)it.next();
+                pairs.getValue().sendMessage(msg.getBytes());
+                it.remove(); // avoids a ConcurrentModificationException
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -151,13 +155,29 @@ public class WebSocketServer extends ConsolePrinter{
         return true;
     }
 
+    private void addHandlerForClient(Socket socket) {
+        ClientHandler ch = new ClientHandler(socket, get_next_client_id());
+
+        clientHandlers.put(ch.id, ch);
+        ch.listenToClient();
+
+        print("Clients connected: " + clientHandlers.size());
+        print("Added client with ID " + ch.id);
+    }
+
     private void removeDeadClientHandlers() {
-        for (int i = 0; i < clientHandlers.size(); ++i) {
-            if (!clientHandlers.elementAt(i).alive) {
-                clientHandlers.remove(i);
-                --i;
+        
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>)it.next();
+            
+            if(!pairs.getValue().alive){
+                clientHandlers.remove(pairs.getKey());
             }
+            
+            //it.remove(); // avoids a ConcurrentModificationException
         }
+        
     }
 
     private static int get_next_client_id() {
