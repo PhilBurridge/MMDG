@@ -5,23 +5,22 @@
 	<meta charset="utf-8">
 	<title>Massive Multiplayer Dome Game</title>
 	<script src="js/config.js" type="text/javascript"></script>
-	<script src="js/script.js" type="text/javascript"></script>
+	<script src="http://code.jquery.com/jquery-1.5.min.js" type="text/javascript"></script>
+	<script src="js/websocket.js" type="text/javascript"></script>
+	<script src="js/bomb_game.js" type="text/javascript"></script>
 	<link rel="stylesheet" media="screen" href="css/style.css">
 
 </head>
 <body>
 
-<p>
-	<a href="#" class="playButton" onmousedown="buttonDownVal0()">Value = 0!</a>
-</p>
-
-<p>
-    <a href="#" class="playButton" onmousedown="buttonDownVal1()">Value = 1!</a>
-</p>
-
-
-<div id="content">
+<div id="btn">
+	<span id="vertcenter">
+		<p id="text">
+			Bomb game will start soon...
+		</p>	
+	</span>
 </div>
+
 
 </body>
 </html>

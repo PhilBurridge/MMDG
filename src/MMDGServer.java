@@ -83,13 +83,8 @@ public class MMDGServer extends ConsolePrinter{
         httpServer.listenForNewConnections();
         webSocketServer.connect();
         
-        // will be used to send messages to clients from server
-        
         // Receives messages from application, Not inuse atm
         tcpHandler.receiveMessages();
-
-        // Read from console in Eclipse
-        //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         Vector<String> commandStack;
         while (true) {
@@ -101,6 +96,9 @@ public class MMDGServer extends ConsolePrinter{
 
             // Send messages from web site to connected application 
             commandStack = webSocketServer.getCommandStack();
+            if(commandStack.size() > 0){
+                handleClientInput(commandStack);
+            }
             tcpHandler.sendMessages(commandStack);
             webSocketServer.clearCommandStack();
             //print("Sent message to TCP handler");
@@ -117,9 +115,21 @@ public class MMDGServer extends ConsolePrinter{
         }
         print("Server stopped");
     }
+    
+    public void sendToClient(int id, String msg){
+        webSocketServer.sendMessageToClient(id, msg);
+    }
+    
+    public void sendToAllClients(String msg){
+        webSocketServer.sendMessageToAllClients(msg);
+    }
 
     public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendMessage(msg);
+    }
+    
+    public void handleClientInput(Vector<String> commandStack){
+        
     }
 
     /**

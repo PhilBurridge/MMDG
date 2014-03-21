@@ -7,7 +7,7 @@ public class MMDGServerTest{
     /**
      * @param args
      */
-    public static void main(String[] args) throws IOException, InterruptedException, NoSuchAlgorithmException {
+    public static void main(String[] args) throws IOException{
         MMDGServer mmdgServer = new MMDGServer();
         mmdgServer.run();
     }

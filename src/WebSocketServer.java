@@ -321,7 +321,7 @@ public class WebSocketServer extends ConsolePrinter{
                         while (alive) {
                             String msg = reiceveMessage();
                             print("Recieved from client " + id + ": " + msg);
-                            addCommand(msg);
+                            addCommand("id=" + id + " " + msg);
                         }
                         print("The listening thread of clientHandler " + id
                                         + " is done");
