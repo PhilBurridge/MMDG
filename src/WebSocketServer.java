@@ -86,6 +86,17 @@ public class WebSocketServer extends ConsolePrinter{
         connectThread.start();
 
     }
+    
+    public void printClientHandlers(){
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers
+                        .entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                            .next();
+            print(pairs.getValue().toString());
+            //it.remove(); // avoids a ConcurrentModificationException
+        }
+    }
 
     public void sendMessageToClient(int id, String msg) {
         try {
@@ -103,7 +114,7 @@ public class WebSocketServer extends ConsolePrinter{
                 Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
                                 .next();
                 pairs.getValue().sendMessage(msg.getBytes());
-                it.remove(); // avoids a ConcurrentModificationException
+                //it.remove(); // avoids a ConcurrentModificationException
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -160,6 +171,7 @@ public class WebSocketServer extends ConsolePrinter{
         ClientHandler ch = new ClientHandler(socket, get_next_client_id());
 
         clientHandlers.put(ch.id, ch);
+        printClientHandlers();
         ch.listenToClient();
 
         print("Clients connected: " + clientHandlers.size());
@@ -199,13 +211,13 @@ public class WebSocketServer extends ConsolePrinter{
         return data;
     }
 
-    // private void convertAndPrint(byte[] bytes) {
-    // StringBuilder sb = new StringBuilder();
-    // for (byte b : bytes) {
-    // sb.append(String.format("%02X ", b));
-    // }
-    // print(sb.toString());
-    // }
+     private String convertToString(byte[] bytes) {
+         StringBuilder sb = new StringBuilder();
+         for (byte b : bytes) {
+             sb.append(String.format("%02X ", b));
+         }
+         return sb.toString();
+     }
 
     /**
      * This class is for handling clients. One instance of this class takes care
@@ -335,7 +347,7 @@ public class WebSocketServer extends ConsolePrinter{
         }
 
         public void sendMessage(byte[] msg) throws IOException {
-            print("Sending to client");
+            //print("Sending to client " + id + ": " + convertToString(msg));
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             BufferedOutputStream os = new BufferedOutputStream(
                             clientSocket.getOutputStream());
@@ -347,6 +359,10 @@ public class WebSocketServer extends ConsolePrinter{
             // convertAndPrint(baos.toByteArray());
             os.write(baos.toByteArray(), 0, baos.size());
             os.flush();
+        }
+        
+        public String toString(){
+            return "id = " + id + ", alive = " + alive;
         }
 
     }

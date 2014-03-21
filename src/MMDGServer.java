@@ -52,6 +52,7 @@ public class MMDGServer extends ConsolePrinter{
         // Manage print outs
         httpServer.allowPrints = true;
         webSocketServer.allowPrints = true;
+        tcpHandler.allowPrints = false;
 
         print("MMDGServer constructor done!\n");
     }
