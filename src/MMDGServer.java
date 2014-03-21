@@ -47,7 +47,7 @@ public class MMDGServer extends ConsolePrinter{
 
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
-        tcpHandler = new TCPHandler(TCP_PORT);
+        tcpHandler = new TCPHandler(LOCALHOST, TCP_PORT);
 
         // Manage print outs
         httpServer.allowPrints = true;
@@ -81,12 +81,10 @@ public class MMDGServer extends ConsolePrinter{
                         + "/mmdg.html>");
         
         httpServer.listenForNewConnections();
+        
+        //will start the listener thread for the tcpHandler.
+        tcpHandler.listener.start();
         webSocketServer.connect();
-        
-        // will be used to send messages to clients from server
-        
-        // Receives messages from application, Not inuse atm
-        tcpHandler.receiveMessages();
 
         // Read from console in Eclipse
         //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));

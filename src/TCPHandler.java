@@ -8,16 +8,24 @@ import java.util.Vector;
  * application
  * 
  */
-public class TCPHandler extends ConsolePrinter{
+public class TCPHandler extends ConsolePrinter implements Runnable{
+
+    public Thread listener = new Thread(this);
 
     /** The Socket to use for TCP communication with application */
     private Socket clientSocket;
 
     /** The object which writes the messages to the application */
-    private DataOutputStream outToServer;
+    private DataOutputStream outToApplication;
 
     /** The objects which reads messages from the application */
     private BufferedReader inFromApplication;
+
+    /** Address object that saves host and port of server */
+    private InetSocketAddress socketAddress;
+
+    /** Vector of messages that the applikation wants to send to the clients */
+    private Vector<String> clientMessages;
 
     /**
      * Creates the socket and the outputStream. Exceptions are handled if
@@ -26,16 +34,16 @@ public class TCPHandler extends ConsolePrinter{
      * @param tcpPort
      * the port number
      */
-    public TCPHandler(int tcpPort) {
-        try {
-            clientSocket = new Socket("localhost", tcpPort);
-            outToServer = new DataOutputStream(clientSocket.getOutputStream());
-            inFromApplication = new BufferedReader(new InputStreamReader(
-                            clientSocket.getInputStream()));
-        } catch (Exception e) {
-            print("ERROR - could not connect to Application!");
-            e.printStackTrace();
-        }
+    public TCPHandler(String host, int tcpPort) {
+
+        socketAddress = new InetSocketAddress(host, tcpPort);
+        clientMessages = new Vector<String>();
+        clientSocket = new Socket();
+
+    }
+
+    public Vector<String> getClientMessages() {
+        return clientMessages;
     }
 
     /**
@@ -46,11 +54,23 @@ public class TCPHandler extends ConsolePrinter{
      */
     public void sendMessage(String message) {
         print("sending TCP message: \"" + message + "\"");
-        try {
-            outToServer.writeBytes(message + "\r\n");
-        } catch (IOException e) {
-            e.printStackTrace();
+        
+        /*
+         * If the connection to the app is not established, TCPhandler will
+         * leave a message in ClientMessages that commands will not be received.
+         */
+        if (!clientSocket.isConnected() || clientSocket.isClosed()) {
+            clientMessages.add("Your message cannot be recieved by the application right now");
+            print("Wants to send Clients a message that Application connection is closed");
+        } else {
+            try {
+                outToApplication.writeBytes(message + "\r\n");
+            } catch (IOException e) {
+                print("outStream is not established");
+                e.printStackTrace();
+            }
         }
+
     }
 
     /**
@@ -60,6 +80,7 @@ public class TCPHandler extends ConsolePrinter{
      * The messages to be sent. (Vector of Strings)
      */
     public void sendMessages(Vector<String> commandStack) {
+
         // If command stack is empty, don't send anything
         if (commandStack.size() == 0) {
             // print("No message sent.");
@@ -78,26 +99,89 @@ public class TCPHandler extends ConsolePrinter{
     /**
      * Receive messages from the connected application using a thread
      */
+    @Override
+    public void run() {
+        // String where messages from applikation is temporary stored
+        String message = "";
+        // Call tcpHandlerObject.listener.inerrupt() to turn of this thread
+        // safely
+        while (!Thread.interrupted()) {
+            try {
+                /*
+                 * Checks if we have established a connection to the application
+                 * AND THEN if we can read a message. Must be in that order
+                 * because if we dont have a connection, we have not initialized
+                 * the streams yet.
+                 */
+                if (clientSocket.isConnected()
+                                && (message = inFromApplication.readLine()) != null) {
 
-    public void receiveMessages() {
-        Thread appThread = new Thread(new Runnable() {
-
-            @Override
-            public void run() {
-                String appMessages;
-                try {
-                    while (true) {
-                        appMessages = inFromApplication.readLine();
-                        if(appMessages != null)
-                            print("Message from application: " + appMessages);
+                    // If we want to be able to send messages from app to
+                    // clients
+                    if (message.startsWith("id=")) {
+                        clientMessages.add(message);
+                    } else {
+                        print(message);
                     }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+
+                } else {
+                    /*
+                     * If we have not established a connection to app, or if we
+                     * are receiving null messages. Could be a problem if we
+                     * were to get null messages for any other reason than
+                     * losing the connection
+                     */
+                    print("client receives null messages or is not connected to application");
+                    tryConnectSocket();
                 }
+            } catch (IOException e) {
+                print("read application message exception");
+                e.printStackTrace();
             }
-        });
-        
-        appThread.start();
-        print("Started thread used to listen to application...");
+        }
+    }
+
+    /**
+     * Will try to reconnect to the application. This function will block the
+     * thread untill established connection.
+     */
+    public void tryConnectSocket() {
+        /*
+         * If we lose connection with a socket, you have to close it and make a
+         * new. There seems to be no way to reconnect strangely enough.
+         */
+        closeSocket();
+        print("Trying to reconnect");
+        clientSocket = new Socket();
+        try {
+            /*
+             * trying to connect to app. A timeout in milliseconds is specified
+             * in the second argument. This function will block the thread
+             * untill a connection is reached. This is the phone.
+             */
+            clientSocket.connect(socketAddress, 1000);
+            // This is the mouth
+            outToApplication = new DataOutputStream(
+                            clientSocket.getOutputStream());
+            // This is the ear
+            inFromApplication = new BufferedReader(new InputStreamReader(
+                            clientSocket.getInputStream()));
+        } catch (IOException e) {
+            print("Could not connect to Application.");
+            // e.printStackTrace();
+        }
+    }
+
+    /**
+     * Will close the socket safely
+     */
+    private void closeSocket() {
+        if (clientSocket != null) {
+            try {
+                clientSocket.close();
+            } catch (IOException e) {
+                print("closing socket exception");
+            }
+        }
     }
 }
