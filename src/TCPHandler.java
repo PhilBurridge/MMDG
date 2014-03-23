@@ -28,6 +28,14 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
     private Vector<String> clientMessages;
 
     /**
+     * When not connected to an application, this specifies the number of
+     * milliseconds to wait before trying to connect next time
+     */
+    private int connectIntervall = 1000;
+
+    private Boolean appConnected = null;
+
+    /**
      * Creates the socket and the outputStream. Exceptions are handled if
      * something goes badly
      * 
@@ -107,20 +115,27 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      */
     @Override
     public void run() {
-        // String where messages from applikation is temporary stored
+        print("Trying to connect to application");
+
+        // String where messages from application is temporary stored
         String message = "";
+
         // Call tcpHandlerObject.listener.inerrupt() to turn of this thread
         // safely
         while (!Thread.interrupted()) {
             try {
+                
+                //Gets the status and prints if there is change
+                boolean contact = clientSocket.isConnected();
+                notifyAppConnectionChange(contact);
+                
                 /*
                  * Checks if we have established a connection to the application
                  * AND THEN if we can read a message. Must be in that order
                  * because if we dont have a connection, we have not initialized
                  * the streams yet.
                  */
-                if (clientSocket.isConnected()
-                                && (message = inFromApplication.readLine()) != null) {
+                if (contact && (message = inFromApplication.readLine()) != null) {
 
                     // If we want to be able to send messages from app to
                     // clients
@@ -137,7 +152,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
                      * were to get null messages for any other reason than
                      * losing the connection
                      */
-                    print("client receives null messages or is not connected to application");
+                    // print("client receives null messages or is not connected to application");
                     tryConnectSocket();
                 }
             } catch (IOException e) {
@@ -151,13 +166,14 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * Will try to reconnect to the application. This function will block the
      * thread until established connection.
      */
-    public void tryConnectSocket() {
+    private void tryConnectSocket() {
         /*
          * If we lose connection with a socket, you have to close it and make a
          * new. There seems to be no way to reconnect strangely enough.
          */
         closeSocket();
-        print("Trying to reconnect");
+
+        // print("Trying to reconnect");
         clientSocket = new Socket();
         try {
             /*
@@ -165,7 +181,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
              * in the second argument. This function will block the thread
              * untill a connection is reached. This is the phone.
              */
-            clientSocket.connect(socketAddress, 1000);
+            clientSocket.connect(socketAddress, connectIntervall);
 
             // This is the mouth
             outToApplication = new DataOutputStream(
@@ -175,7 +191,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
             inFromApplication = new BufferedReader(new InputStreamReader(
                             clientSocket.getInputStream()));
         } catch (IOException e) {
-            print("Could not connect to Application.");
+            // print("Could not connect to Application.");
             // e.printStackTrace();
         }
     }
@@ -192,4 +208,23 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
             }
         }
     }
+
+    private void notifyAppConnectionChange(boolean newStatus) {
+        // If status has been set, and the new status is the same, do nothing
+        if (appConnected != null && appConnected == newStatus) return;
+
+        if (newStatus == true) {
+            print("Connection established!");
+        } else {
+            print("No connection to application");
+            print("New attempts to connect will be made every "
+                            + connectIntervall
+                            + " milliseconds in the background...");
+        }
+
+        // Update status
+        appConnected = newStatus;
+
+    }
+
 }
