@@ -125,7 +125,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         while (!Thread.interrupted()) {
             try {
                 
-                //Gets the status and prints if there is change
+                //Gets the status and prints a message if there is change
                 boolean contact = clientSocket.isConnected();
                 notifyAppConnectionChange(contact);
                 
@@ -208,7 +208,11 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
             }
         }
     }
-
+    
+    /**
+     * Prints a message if there is a change of the connection status.
+     * @param newStatus The new status of the connection
+     */
     private void notifyAppConnectionChange(boolean newStatus) {
         // If status has been set, and the new status is the same, do nothing
         if (appConnected != null && appConnected == newStatus) return;
