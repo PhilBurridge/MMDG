@@ -24,7 +24,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
     /** Address object that saves host and port of server */
     private InetSocketAddress socketAddress;
 
-    /** Vector of messages that the applikation wants to send to the clients */
+    /** Vector of messages that the application wants to send to the clients. */
     private Vector<String> clientMessages;
 
     /**
@@ -42,19 +42,25 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
 
     }
 
+    /**
+     * The TCPHandler class stores incoming messages from the Application in a
+     * Vector. The server gets the messages by calling this method.
+     * 
+     * @return A vector of messages from the application
+     */
     public Vector<String> getClientMessages() {
         return clientMessages;
     }
 
     /**
-     * Sends a message to the connected TCP application
+     * Sends a ASCII string to the application.
      * 
      * @param message
      * The message to be sent
      */
     public void sendMessage(String message) {
         print("sending TCP message: \"" + message + "\"");
-        
+
         /*
          * If the connection to the app is not established, TCPhandler will
          * leave a message in ClientMessages that commands will not be received.
@@ -143,7 +149,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
 
     /**
      * Will try to reconnect to the application. This function will block the
-     * thread untill established connection.
+     * thread until established connection.
      */
     public void tryConnectSocket() {
         /*
@@ -160,9 +166,11 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
              * untill a connection is reached. This is the phone.
              */
             clientSocket.connect(socketAddress, 1000);
+
             // This is the mouth
             outToApplication = new DataOutputStream(
                             clientSocket.getOutputStream());
+
             // This is the ear
             inFromApplication = new BufferedReader(new InputStreamReader(
                             clientSocket.getInputStream()));
