@@ -13,7 +13,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
     public Thread listener = new Thread(this);
 
     /** The Socket to use for TCP communication with application */
-    private Socket clientSocket;
+    private Socket appSocket;
 
     /** The object which writes the messages to the application */
     private DataOutputStream outToApplication;
@@ -25,7 +25,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
     private InetSocketAddress socketAddress;
 
     /** Vector of messages that the application wants to send to the clients. */
-    private Vector<String> clientMessages;
+    private Vector<String> messagesFromApp;
 
     /**
      * When not connected to an application, this specifies the number of
@@ -49,8 +49,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
     public TCPHandler(String host, int tcpPort) {
 
         socketAddress = new InetSocketAddress(host, tcpPort);
-        clientMessages = new Vector<String>();
-        clientSocket = new Socket();
+        messagesFromApp = new Vector<String>();
+        appSocket = new Socket();
 
     }
 
@@ -60,8 +60,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * 
      * @return A vector of messages from the application
      */
-    public Vector<String> getClientMessages() {
-        return clientMessages;
+    public Vector<String> getMessagesFromApp() {
+        return messagesFromApp;
     }
 
     /**
@@ -70,15 +70,15 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * @param message
      * The message to be sent
      */
-    public void sendMessage(String message) {
+    public void sendToApplication(String message) {
         print("sending TCP message: \"" + message + "\"");
 
         /*
          * If the connection to the app is not established, TCPhandler will
          * leave a message in ClientMessages that commands will not be received.
          */
-        if (!clientSocket.isConnected() || clientSocket.isClosed()) {
-            clientMessages.add("Your message cannot be recieved by the application right now");
+        if (!appSocket.isConnected() || appSocket.isClosed()) {
+            messagesFromApp.add("Your message cannot be recieved by the application right now");
             print("Wants to send Clients a message that Application connection is closed");
         } else {
             try {
@@ -88,7 +88,6 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
                 e.printStackTrace();
             }
         }
-
     }
 
     /**
@@ -97,11 +96,10 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * @param commandStack
      * The messages to be sent. (Vector of Strings)
      */
-    public void sendMessages(Vector<String> commandStack) {
+    public void sendToApplication(Vector<String> commandStack) {
 
         // If command stack is empty, don't send anything
         if (commandStack.size() == 0) {
-            // print("No message sent.");
             return;
         }
 
@@ -111,7 +109,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         for (int i = 0; i < commandStack.size(); ++i) {
             messages += commandStack.elementAt(i) + "";
         }
-        sendMessage(messages);
+        sendToApplication(messages);
     }
 
     /**
@@ -130,7 +128,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
             try {
 
                 // Gets the status and prints a message if there is change
-                boolean contact = clientSocket.isConnected();
+                boolean contact = appSocket.isConnected();
                 notifyAppConnectionChange(contact);
 
                 /*
@@ -140,13 +138,12 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
                  * the streams yet.
                  */
                 if (contact && (message = inFromApplication.readLine()) != null) {
-
+                    print("Received message \"" + message + "\"");
+                    
                     // If we want to be able to send messages from app to
                     // clients
                     if (message.startsWith("id=")) {
-                        clientMessages.add(message);
-                    } else {
-                        print(message);
+                        messagesFromApp.add(message);
                     }
 
                 } else {
@@ -176,24 +173,22 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
          * new. There seems to be no way to reconnect strangely enough.
          */
         closeSocket();
-
-        // print("Trying to reconnect");
-        clientSocket = new Socket();
+        appSocket = new Socket();
         try {
             /*
              * trying to connect to app. A timeout in milliseconds is specified
              * in the second argument. This function will block the thread
              * untill a connection is reached. This is the phone.
              */
-            clientSocket.connect(socketAddress, connectIntervall);
+            appSocket.connect(socketAddress, connectIntervall);
 
             // This is the mouth
             outToApplication = new DataOutputStream(
-                            clientSocket.getOutputStream());
+                            appSocket.getOutputStream());
 
             // This is the ear
             inFromApplication = new BufferedReader(new InputStreamReader(
-                            clientSocket.getInputStream()));
+                            appSocket.getInputStream()));
         } catch (IOException e) {
             // print("Could not connect to Application.");
             // e.printStackTrace();
@@ -204,9 +199,9 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * Will close the socket safely
      */
     private void closeSocket() {
-        if (clientSocket != null) {
+        if (appSocket != null) {
             try {
-                clientSocket.close();
+                appSocket.close();
             } catch (IOException e) {
                 print("closing socket exception");
             }
@@ -234,7 +229,5 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
 
         // Update status
         appConnected = newStatus;
-
     }
-
 }

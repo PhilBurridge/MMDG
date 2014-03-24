@@ -43,7 +43,7 @@ public class VirtualClient extends JFrame implements ActionListener{
         if (e.getSource() == btn1) {
             String msg = "value=1" + "\r\n";
             webSocketServer.addCommand("client=" + id + ",button=1,pressed");
-            tcphandler.sendMessage(msg);
+            tcphandler.sendToApplication(msg);
         }
 
         if (e.getSource() == btn2) {
