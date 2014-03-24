@@ -33,6 +33,10 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      */
     private int connectIntervall = 1000;
 
+    /**
+     * Shows whether server is connected to application. Null if it hasn't tried
+     * to connect yet
+     */
     private Boolean appConnected = null;
 
     /**
@@ -124,11 +128,11 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         // safely
         while (!Thread.interrupted()) {
             try {
-                
-                //Gets the status and prints a message if there is change
+
+                // Gets the status and prints a message if there is change
                 boolean contact = clientSocket.isConnected();
                 notifyAppConnectionChange(contact);
-                
+
                 /*
                  * Checks if we have established a connection to the application
                  * AND THEN if we can read a message. Must be in that order
@@ -208,10 +212,12 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
             }
         }
     }
-    
+
     /**
      * Prints a message if there is a change of the connection status.
-     * @param newStatus The new status of the connection
+     * 
+     * @param newStatus
+     * The new status of the connection
      */
     private void notifyAppConnectionChange(boolean newStatus) {
         // If status has been set, and the new status is the same, do nothing
