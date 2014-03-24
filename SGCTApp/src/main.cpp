@@ -1,5 +1,5 @@
 /*******************************************************
-For this example app legacy openGL is used, just to make
+For this example-app legacy openGL is used, just to make
 things more easy to follow.
 It also dodges some issues in 3.3 and beyond 
 (Due to lack of skills in the modern versions 
@@ -68,8 +68,7 @@ int main( int argc, char* argv[] ) {
     sgct::SharedData::instance()->setDecodeFunction(decode);
 
     // Init the engine
-    if(!gEngine->init())
-    {
+    if(!gEngine->init()) {
         delete gEngine;
         return EXIT_FAILURE;
     }
@@ -191,7 +190,7 @@ To prevent NULL pointer errors the length of the received message will be checke
 */
 void externalControlCallback(
     const char * recievedChars, int size, int clientId) {
-    
+
     // Only decode the messages if SGCT is the master
     if(gEngine->isMaster()) {
         // Check length of message and print it
