@@ -71,7 +71,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * The message to be sent
      */
     public void sendToApplication(String message) {
-        print("sending TCP message: \"" + message + "\"");
+        print("Sending message to app: \"" + message + "\"");
 
         /*
          * If the connection to the app is not established, TCPhandler will
