@@ -44,7 +44,7 @@ public class WebSocketServer extends ConsolePrinter{
         commandStack = new Vector<String>();
     }
 
-    private synchronized void addCommand(String command) {
+    public synchronized void addCommand(String command) {
         commandStack.add(command);
     }
 
