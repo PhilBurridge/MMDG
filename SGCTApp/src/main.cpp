@@ -144,6 +144,7 @@ void draw() {
             glColor3f(0.0f, 1.0f, 0.0f);
         }
         // Rotation of the triangle
+        glTranslatef(0.0f, 0.0f, -3.0f);
         glRotatef(static_cast<float>(
             curr_time.getVal())*speed, 0.0f, 1.0f, 0.0f);
         // Draw the triangle
