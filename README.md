@@ -11,3 +11,4 @@ TO DO
   * Ping script hos clienterna
   * Tre nya rader när appen gittar
   * No Delay flag
+  * Bild på knapp (Pressed/released)
