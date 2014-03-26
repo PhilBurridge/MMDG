@@ -10,3 +10,4 @@ TO DO
   * Trådsäker kom mellan client och webserver
   * Ping script hos clienterna
   * Tre nya rader när appen gittar
+  * No Delay flag
