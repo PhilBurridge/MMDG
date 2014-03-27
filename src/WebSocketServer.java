@@ -5,6 +5,9 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Vector;
 import org.apache.commons.codec.binary.Base64;
 
@@ -20,12 +23,13 @@ public class WebSocketServer extends ConsolePrinter{
     public static final int MASK_SIZE = 4;
     public static final int SINGLE_FRAME_UNMASKED = 0x81;
 
+    private static int next_client_id = 0;
+
     /** server socket that waits and possibly responds to requests */
     private ServerSocket serverSocket;
-    /** a client socket, endpoint for communication */
-    private Socket socket;
-    
-    private TCPHandler tcphandler;
+
+    /** Handles all the client sockets */
+    private HashMap<Integer, ClientHandler> clientHandlers;
 
     /**
      * a buffer of messages that will fill upp until MMDGServer forwards it to
@@ -35,19 +39,20 @@ public class WebSocketServer extends ConsolePrinter{
 
     /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
-        commandStack = new Vector<String>();
         serverSocket = new ServerSocket(websocketPort);
+        clientHandlers = new HashMap<Integer, ClientHandler>();
+        commandStack = new Vector<String>();
     }
 
-    public void addCommand(String command) {
+    public synchronized void addCommand(String command) {
         commandStack.add(command);
     }
 
-    public Vector<String> getCommandStack() {
+    public synchronized Vector<String> getCommandStack() {
         return commandStack;
     }
 
-    public void clearCommandStack() {
+    public synchronized void clearCommandStack() {
         commandStack.clear();
     }
 
@@ -58,17 +63,55 @@ public class WebSocketServer extends ConsolePrinter{
      * time.
      */
     public void connect() throws IOException {
-        print("Waiting for connections ... ");
-        socket = serverSocket.accept();
-        print("Got connection");
-        if (handshake()) {
-            print("Handshake done. Listening...");
-            listenerThread();
+        Thread connectThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        print("Waiting for connections ...");
+                        Socket socket = serverSocket.accept();
+                        System.out.println();
+                        print("Connecting!");
+
+                        removeDeadClientHandlers();
+                        if (handshake(socket)) {
+                            addHandlerForClient(socket);
+                        }
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        connectThread.start();
+
+    }
+
+    public void sendMessageToClient(int id, String msg) {
+        try {
+            clientHandlers.get(id).sendMessage(msg.getBytes());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void sendMessageToAllClients(String msg) {
+        try {
+            Iterator<Entry<Integer, ClientHandler>> it = clientHandlers
+                            .entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                                .next();
+                pairs.getValue().sendMessage(msg.getBytes());
+                it.remove(); // avoids a ConcurrentModificationException
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
     /** Server socket and client sockets does a firm and manly handshake. */
-    private boolean handshake() throws IOException {
+    private boolean handshake(Socket socket) throws IOException {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(
                         socket.getInputStream()));
@@ -77,8 +120,7 @@ public class WebSocketServer extends ConsolePrinter{
         String str;
 
         // Reading client handshake
-        print("READ CLIENT HANDSHAKE:");  
-             
+        print("Reading client handshake");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
             // print(str);
@@ -106,79 +148,43 @@ public class WebSocketServer extends ConsolePrinter{
         String response = "HTTP/1.1 101 Switching Protocols\r\n"
                         + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n"
                         + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
-        print("WRITING RESPONSE TO CLIENT:");
-        print(response);
+        print("Writing response");
+        // print(response);
         out.write(response);
         out.flush();
 
         return true;
     }
 
-    private byte[] readBytes(int numOfBytes) throws IOException {
-        // print("numOfBytes = " + numOfBytes);
-        byte[] b = new byte[numOfBytes];
-        socket.getInputStream().read(b);
-        return b;
+    private void addHandlerForClient(Socket socket) {
+        ClientHandler ch = new ClientHandler(socket, get_next_client_id());
+
+        clientHandlers.put(ch.id, ch);
+        ch.listenToClient();
+
+        print("Clients connected: " + clientHandlers.size());
+        print("Added client with ID " + ch.id);
     }
 
-    public void sendMessage(byte[] msg) throws IOException {
-        print("Sending to client");
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        BufferedOutputStream os = new BufferedOutputStream(
-                        socket.getOutputStream());
-        baos.write(SINGLE_FRAME_UNMASKED);
-        baos.write(msg.length);
-        baos.write(msg);
-        baos.flush();
-        baos.close();
-        // convertAndPrint(baos.toByteArray());
-        os.write(baos.toByteArray(), 0, baos.size());
-        os.flush();
-    }
+    private void removeDeadClientHandlers() {
 
-    public void listenerThread() {
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        String msg = reiceveMessage();
-                        print("Recieved from client: " + msg);
-                        commandStack.add(msg);
-//                        String msgApp = "value=1" + "\r\n";
-//                        tcphandler.sendMessage(msgApp);
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet()
+                        .iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                            .next();
+
+            if (!pairs.getValue().alive) {
+                clientHandlers.remove(pairs.getKey());
             }
-        });
-        t.start();
-        print("Started thread used to listen to client messages...");
+
+            // it.remove(); // avoids a ConcurrentModificationException
+        }
     }
 
-    public String reiceveMessage() throws IOException {
-        byte[] buf = readBytes(2);
-        // print("Headers:");
-        // convertAndPrint(buf);
-        int opcode = buf[0] & 0x0F;
-        if (opcode == 8) {
-            // Client want to close connection!
-            print("Client closed!");
-            socket.close();
-            System.exit(0);
-            return null;
-        } else {
-            final int payloadSize = getSizeOfPayload(buf[1]);
-            // print("Payloadsize: " + payloadSize);
-            buf = readBytes(MASK_SIZE + payloadSize);
-            // print("Payload:");
-            // convertAndPrint(buf);
-            buf = unMask(Arrays.copyOfRange(buf, 0, 4),
-                            Arrays.copyOfRange(buf, 4, buf.length));
-            String message = new String(buf);
-            return message;
-        }
+    private static int get_next_client_id() {
+        ++next_client_id;
+        return next_client_id;
     }
 
     private int getSizeOfPayload(byte b) {
@@ -193,11 +199,156 @@ public class WebSocketServer extends ConsolePrinter{
         return data;
     }
 
-    private void convertAndPrint(byte[] bytes) {
-        StringBuilder sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02X ", b));
+    // private void convertAndPrint(byte[] bytes) {
+    // StringBuilder sb = new StringBuilder();
+    // for (byte b : bytes) {
+    // sb.append(String.format("%02X ", b));
+    // }
+    // print(sb.toString());
+    // }
+
+    /**
+     * This class is for handling clients. One instance of this class takes care
+     * of one client. It uses one separate thread for each client, which might
+     * not be the best solution. In the future we might use a limited number of
+     * threads in a so called "thread pool" and maybe gain performance?
+     * 
+     * @pros: We can have ID:s for clienthandlers instead of clients.
+     * @cons: Performance might decrease drastically when many clients connect
+     * 
+     */
+    private class ClientHandler extends ConsolePrinter{
+        /**
+         * An instance of the client socket. With this we can read and write to
+         * the client
+         */
+        private Socket clientSocket;
+
+        /** The thread used to listen to this handlers particular client */
+        private Thread listenerTread;
+
+        /** A clientHandler is alive as long as it has a connected client */
+        private boolean alive;
+
+        /** The ID of the client */
+        private int id;
+
+        /**
+         * Constructrs a handler for the current constructor, with a specified
+         * ID.
+         * 
+         * @param clientSocket
+         * clientSocket to be handled
+         * @param id
+         */
+        public ClientHandler(Socket clientSocket, int id) {
+            this.clientSocket = clientSocket;
+            this.id = id;
+            alive = true;
+            allowPrints = true;
         }
-        print(sb.toString());
+
+        /**
+         * Reads a chunk of bytes from the clientSockets inputstream.
+         * 
+         * @param numOfBytes
+         * Number of bytes to read
+         * @return Returns the read bytes
+         * @throws IOException
+         */
+        private byte[] readBytes(int numOfBytes) throws IOException {
+            // print("numOfBytes = " + numOfBytes);
+            byte[] b = new byte[numOfBytes];
+            clientSocket.getInputStream().read(b);
+            if (b.length < 0) {
+                stop();
+                return null;
+            }
+            return b;
+        }
+
+        /**
+         * Use this method to stop this client Handler from working.
+         * 
+         * @throws IOException
+         */
+        private void stop() throws IOException {
+            print("Client " + id + " closed!");
+            clientSocket.close();
+            alive = false;
+            // listenerTread.join();
+        }
+
+        /**
+         * Receives a message from the client socket
+         * 
+         * @return The received message from client
+         * @throws IOException
+         */
+        public String reiceveMessage() throws IOException {
+            byte[] buf = readBytes(2);
+            // print("Headers:");
+            // convertAndPrint(buf);
+            int opcode = buf[0] & 0x0F;
+            if (opcode == 8) {
+                // Client want to close connection!
+                stop();
+                return null;
+            } else {
+                final int payloadSize = getSizeOfPayload(buf[1]);
+                if (payloadSize == -128) {
+                    stop();
+                    return "disconnected";
+                }
+                buf = readBytes(MASK_SIZE + payloadSize);
+                // print("Payload:");
+                // convertAndPrint(buf);
+                buf = unMask(Arrays.copyOfRange(buf, 0, 4),
+                                Arrays.copyOfRange(buf, 4, buf.length));
+                String message = new String(buf);
+                return message;
+            }
+        }
+
+        /**
+         * Creates a thread for listening for client messages.
+         */
+        public void listenToClient() {
+            listenerTread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        while (alive) {
+                            String msg = reiceveMessage();
+                            print("Recieved from client " + id + ": " + msg);
+                            addCommand(msg);
+                        }
+                        print("The listening thread of clientHandler " + id
+                                        + " is done");
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            });
+            listenerTread.start();
+            print("Started thread used to listen to client messages...");
+        }
+
+        public void sendMessage(byte[] msg) throws IOException {
+            print("Sending to client");
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            BufferedOutputStream os = new BufferedOutputStream(
+                            clientSocket.getOutputStream());
+            baos.write(SINGLE_FRAME_UNMASKED);
+            baos.write(msg.length);
+            baos.write(msg);
+            baos.flush();
+            baos.close();
+            // convertAndPrint(baos.toByteArray());
+            os.write(baos.toByteArray(), 0, baos.size());
+            os.flush();
+        }
+
     }
+
 }
