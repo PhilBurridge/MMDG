@@ -41,6 +41,12 @@ void keyCallBack(int key, int action);
 sgct::SharedDouble curr_time(0.0);
 // Is the object spinning clockwise or not?
 sgct::SharedBool clockWise(false);
+// x-coord for a players avatar
+sgct::SharedFloat x_coord(0.0);
+// y-coord for a players avatar
+sgct::SharedFloat y_coord(0.0);
+// z-coord for a players avatar
+sgct::SharedFloat z_coord(0.0);
 
 /*** Global variables ***/
 // Something to hold the texture
@@ -49,6 +55,8 @@ size_t textureHandleQRBox;
 sgct_utils::SGCTBox *QRBox = NULL;
 // Is the QRCode visible or not?
 bool showQRCode = true;
+// How fast the controlled objects move
+float moveSpeed = 1.0f;
 
 int main( int argc, char* argv[] ) {
     // Allocate
@@ -110,7 +118,7 @@ void init() {
 void draw() {
     // Set the spinning speed
     float speed = 25.0f;
-    
+
     // Shall the QRCode be drawn or not?
     if(showQRCode) {
         /* DO BOX STUFF */
@@ -144,9 +152,8 @@ void draw() {
             glColor3f(0.0f, 1.0f, 0.0f);
         }
         // Rotation of the triangle
-        glTranslatef(0.0f, 0.0f, -3.0f);
-        glRotatef(static_cast<float>(
-            curr_time.getVal())*speed, 0.0f, 1.0f, 0.0f);
+        glTranslatef(x_coord.getVal(), y_coord.getVal(), -3.0f);
+        glRotatef(static_cast<float>(curr_time.getVal()) * speed, 0.0f, 1.0f, 0.0f);
         // Draw the triangle
         glBegin(GL_TRIANGLES);
             glVertex3f(-0.5, -0.5, 0.0f);
@@ -189,23 +196,42 @@ To prevent NULL pointer errors the length of the received message will be checke
 (unnecessary in this case but a good practice if more complex messages will be added).
 - From sgct wiki. 
 */
+
 void externalControlCallback(
     const char * recievedChars, int size, int clientId) {
 
-    // Only decode the messages if SGCT is the master
+    // Only decode the messages if this is the master
+    // getDt() is an SGCT-function build in to the engine that gets the delta time
     if(gEngine->isMaster()) {
         // Check length of message and print it
-        if(size != 0)
+        if(size != 0) {
             std::cout << std::endl << "message: " << recievedChars << std::endl << std::endl;
-        // Check length and handle the message
-        if(size == 7 && strncmp(recievedChars, "value", 5) == 0)
+        }
+        // Check the length of the messages and what they contain
+        // Set clockWise true or false, value 1 = true and value 0 = false
+        if(size == 7 && strncmp(recievedChars, "value", 5) == 0) {
             clockWise.setVal(strncmp(recievedChars + 6, "1", 1) == 0);
+        }
+        // Sets the "move" variables which translates a players avatar, up down, left or right
+        if(size == 2 && strncmp(recievedChars, "up", 2) == 0) {
+            y_coord.setVal(y_coord.getVal() + moveSpeed * gEngine->getDt());
+        }
+        if(size == 4 && strncmp(recievedChars, "down", 4) == 0) {
+            y_coord.setVal(y_coord.getVal() - moveSpeed * gEngine->getDt());
+        }
+        if(size == 4 && strncmp(recievedChars, "left", 4) == 0) {
+            x_coord.setVal(x_coord.getVal() - moveSpeed * gEngine->getDt());
+        }
+        if(size == 5 && strncmp(recievedChars, "right", 5) == 0) {
+            x_coord.setVal(x_coord.getVal() + moveSpeed * gEngine->getDt());
+        }
     }
 }
 
 /**
 This function handles keyboard presses
 */
+
 void keyCallBack(int key, int action) {
     // Check if SGCT is master
     if(gEngine->isMaster()) {
@@ -218,7 +244,7 @@ void keyCallBack(int key, int action) {
                 }
             break;
 
-            case 'W':
+            case 'E':
                 std::cout << "W PRESSED - QR TURNED ON" << std::endl;
                 // Toggle the QRCode on button press (Make it appear)
                 if(!showQRCode) {
