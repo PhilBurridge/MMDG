@@ -90,13 +90,17 @@ public class MMDGServer extends ConsolePrinter{
         //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         Vector<String> commandStack;
+        Vector<String> appMessageStack;
         while (true) {
             
             
             // To send a message from console in eclipse
             //print("Write something to TCP!");
             //tcpHandler.sendMessage(br.readLine());
-
+        	appMessageStack = tcpHandler.getMessageStack();
+        	if(appMessageStack.size()!=0)
+        		webSocketServer.sendMessageToAllClients(appMessageStack.firstElement());
+        	
             // Send messages from web site to connected application 
             commandStack = webSocketServer.getCommandStack();
             tcpHandler.sendToApplication(commandStack);

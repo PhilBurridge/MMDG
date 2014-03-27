@@ -144,6 +144,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
                     // clients
                     if (message.startsWith("id=")) {
                         messagesFromApp.add(message);
+                    }else if (message.startsWith("ping")) {
+                        messagesFromApp.add(message);
                     }
 
                 } else {
@@ -230,4 +232,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         // Update status
         appConnected = newStatus;
     }
+    public Vector<String> getMessageStack() {
+        return messagesFromApp;
+    }
 }
+

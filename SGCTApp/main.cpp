@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "sgct/SGCTNetwork.h"
+#include <time.h> 
 
 // Create pointer to the sgct engine
 sgct::Engine * gEngine;
@@ -15,10 +16,18 @@ void decode();
 void cleanUp();
 void toggleDirection(sgct::SharedBool clockWise);
 void externalControlCallback(const char * recievedChars, int size, int clientId);
+void keyCallBack(int key, int action);
+void stopBenchmark();
+void endBenchmark();
 
 // Shared vars
 sgct::SharedDouble curr_time(0.0);
 sgct::SharedBool clockWise(false);
+bool QROn = false;
+std::string msg = "pingClient\r\n";
+double secondsPast;
+time_t timeStart;
+time_t timeEnd;
 
 // Global vars
 GLuint vertexArray = GL_FALSE;
@@ -37,6 +46,7 @@ int main( int argc, char* argv[] ) {
     gEngine->setPreSyncFunction( preSync );
     gEngine->setCleanUpFunction( cleanUp );
     gEngine->setExternalControlCallback( externalControlCallback );
+    gEngine->setKeyboardCallbackFunction(keyCallBack);
 
     // Set the functions that handles the shared vars accros the cluster
     sgct::SharedData::instance()->setEncodeFunction( encode );
@@ -186,5 +196,44 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
             std::cout << std::endl << "message: " << recievedChars << std::endl << std::endl;
         if(size == 7 && strncmp(recievedChars, "value", 5) == 0)
             clockWise.setVal(strncmp(recievedChars + 6, "1", 1) == 0);
+        if(size == 4 && strncmp(recievedChars, "pingback", 4) == 0)
+            stopBenchmark();
     //}
+}
+
+void startBenchmark() {
+
+    gEngine->sendMessageToExternalControl( msg );
+    time(&timeStart);
+
+}
+
+void stopBenchmark() {
+    
+    time(&timeEnd);
+    secondsPast = difftime(timeStart, timeEnd);
+    long double sysTimeMS = secondsPast*1000;
+    std::cout << "Benchmark App->Server elapsed time: " << sysTimeMS << std::endl;
+
+}
+
+
+void keyCallBack(int key, int action) {
+    // Check if SGCT is master
+    if(gEngine->isMaster()) {
+        switch(key) {
+        //case GLFW_KEY_Q:
+            case 'Q':
+            
+            // toggle the QRCode on button press
+            if(QROn) {
+                std::cout << "Jag vill ta tid" << std::endl;
+                startBenchmark();
+                QROn = false;
+            } else {
+                QROn = true;
+            }
+        break;
+        }
+    }
 }
