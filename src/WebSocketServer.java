@@ -77,7 +77,8 @@ public class WebSocketServer extends ConsolePrinter{
         String str;
 
         // Reading client handshake
-        print("READ CLIENT HANDSHAKE:");
+        print("READ CLIENT HANDSHAKE:");  
+             
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
             // print(str);
