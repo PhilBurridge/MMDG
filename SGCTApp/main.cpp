@@ -24,7 +24,7 @@ void endBenchmark();
 sgct::SharedDouble curr_time(0.0);
 sgct::SharedBool clockWise(false);
 bool QROn = false;
-std::string msg = "pingClient\r\n";
+std::string msg = "ping\r\n";
 double secondsPast;
 time_t timeStart;
 time_t timeEnd;
@@ -196,7 +196,7 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
             std::cout << std::endl << "message: " << recievedChars << std::endl << std::endl;
         if(size == 7 && strncmp(recievedChars, "value", 5) == 0)
             clockWise.setVal(strncmp(recievedChars + 6, "1", 1) == 0);
-        if(size == 4 && strncmp(recievedChars, "pingback", 4) == 0)
+        if(size == 8 && strncmp(recievedChars, "pingback", 8) == 0)
             stopBenchmark();
     //}
 }
@@ -212,8 +212,7 @@ void stopBenchmark() {
     
     time(&timeEnd);
     secondsPast = difftime(timeStart, timeEnd);
-    long double sysTimeMS = secondsPast*1000;
-    std::cout << "Benchmark App->Server elapsed time: " << sysTimeMS << std::endl;
+    std::cout << "Benchmark App->Server elapsed time: " << secondsPast << std::endl;
 
 }
 
