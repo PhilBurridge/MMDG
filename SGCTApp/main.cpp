@@ -4,6 +4,7 @@
 #include <iostream>
 #include "sgct/SGCTNetwork.h"
 #include <time.h> 
+#include <ctime>
 
 // Create pointer to the sgct engine
 sgct::Engine * gEngine;
@@ -28,6 +29,7 @@ std::string msg = "ping\r\n";
 double secondsPast;
 time_t timeStart;
 time_t timeEnd;
+std::clock_t start;
 
 // Global vars
 GLuint vertexArray = GL_FALSE;
@@ -204,6 +206,7 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
 void startBenchmark() {
 
     gEngine->sendMessageToExternalControl( msg );
+    start = std::clock();
     time(&timeStart);
 
 }
@@ -211,9 +214,9 @@ void startBenchmark() {
 void stopBenchmark() {
     
     time(&timeEnd);
-    secondsPast = difftime(timeStart, timeEnd);
-    std::cout << "Benchmark App->Server elapsed time: " << secondsPast << std::endl;
-
+    secondsPast = difftime(timeEnd, timeStart);
+    //std::cout << "Benchmark App->Server elapsed time: " << secondsPast << std::endl;
+    std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
 }
 
 

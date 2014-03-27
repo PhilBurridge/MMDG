@@ -33,7 +33,7 @@ public class MMDGServer extends ConsolePrinter{
      * Defines how many times per second the MMDG Server should unload the stack
      * of client  s to the application
      */
-    private double unloadsPerSecond = 10;
+    private double unloadsPerSecond = 10000;
 
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */
@@ -47,7 +47,7 @@ public class MMDGServer extends ConsolePrinter{
 
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
-        tcpHandler = new TCPHandler(LOCALHOST, TCP_PORT);
+        tcpHandler = new TCPHandler("130.236.112.129", TCP_PORT);
 
         // Manage print outs
         httpServer.allowPrints = true;
