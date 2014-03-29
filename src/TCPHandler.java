@@ -63,6 +63,10 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
     public Vector<String> getMessagesFromApp() {
         return messagesFromApp;
     }
+    
+    public void clearMessagesFromApp(){
+        messagesFromApp.clear();
+    }
 
     /**
      * Sends a ASCII string to the application.

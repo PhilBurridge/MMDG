@@ -47,7 +47,7 @@ public class MMDGServer extends ConsolePrinter{
 
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
-        tcpHandler = new TCPHandler("130.236.112.129", TCP_PORT);
+        tcpHandler = new TCPHandler(serverIP, TCP_PORT);
 
         // Manage print outs
         httpServer.allowPrints = true;
@@ -98,8 +98,14 @@ public class MMDGServer extends ConsolePrinter{
             //print("Write something to TCP!");
             //tcpHandler.sendMessage(br.readLine());
         	appMessageStack = tcpHandler.getMessageStack();
-        	if(appMessageStack.size()!=0)
+        	if(appMessageStack.size()!=0){
+        	    print("Sending message: " + appMessageStack.firstElement());
+        	    //Only one message from App will be send per each unload, 
         		webSocketServer.sendMessageToAllClients(appMessageStack.firstElement());
+        	}
+        	tcpHandler.clearMessagesFromApp();
+        	
+       
         	
             // Send messages from web site to connected application 
             commandStack = webSocketServer.getCommandStack();

@@ -103,7 +103,7 @@ public class WebSocketServer extends ConsolePrinter{
                 Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
                                 .next();
                 pairs.getValue().sendMessage(msg.getBytes());
-                it.remove(); // avoids a ConcurrentModificationException
+                //it.remove(); // avoids a ConcurrentModificationException
             }
         } catch (IOException e) {
             e.printStackTrace();
