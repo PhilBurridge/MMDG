@@ -1,10 +1,12 @@
 #include "sgct.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <iomanip>
 #include <iostream>
 #include "sgct/SGCTNetwork.h"
 #include <time.h> 
 #include <ctime>
+#include <chrono>
 
 // Create pointer to the sgct engine
 sgct::Engine * gEngine;
@@ -26,10 +28,12 @@ sgct::SharedDouble curr_time(0.0);
 sgct::SharedBool clockWise(false);
 bool QROn = false;
 std::string msg = "ping\r\n";
-double secondsPast;
-time_t timeStart;
-time_t timeEnd;
-std::clock_t start;
+
+clock_t startClock;
+clock_t endClock;
+
+// a more precise timer from c++11. will keep code from ctime in case of incompatibility.
+std::chrono::time_point<std::chrono::system_clock> startSystemTime, endSystemTime;
 
 // Global vars
 GLuint vertexArray = GL_FALSE;
@@ -202,21 +206,31 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
             stopBenchmark();
     //}
 }
-
+/**
+* Will start the benchmark timer when called
+*/
 void startBenchmark() {
 
     gEngine->sendMessageToExternalControl( msg );
-    start = std::clock();
-    time(&timeStart);
+
+    startSystemTime = std::chrono::system_clock::now();
+    startClock = clock();
 
 }
 
+/**
+* Will stop and print the benchmark timer when called
+*/
 void stopBenchmark() {
     
-    time(&timeEnd);
-    secondsPast = difftime(timeEnd, timeStart);
-    //std::cout << "Benchmark App->Server elapsed time: " << secondsPast << std::endl;
-    std::cout << "Time: " << (std::clock() - start) / (double)(CLOCKS_PER_SEC / 1000) << " ms" << std::endl;
+    endClock = clock();
+    endSystemTime = std::chrono::system_clock::now();
+
+    double secondsElapsedClock = endClock - startClock;
+    std::chrono::duration<double> secondsElapsedSystemTime = endSystemTime-startSystemTime;
+
+    std::cout << "Ping roundtrip with clock:  " << secondsElapsedClock / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
+    std::cout << "Ping roundtrip with chrono: " << secondsElapsedSystemTime.count() << "s" << std::endl;
 }
 
 

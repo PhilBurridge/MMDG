@@ -103,7 +103,7 @@ public class MMDGServer extends ConsolePrinter{
         	    //Only one message from App will be send per each unload, 
         		webSocketServer.sendMessageToAllClients(appMessageStack.firstElement());
         	}
-        	tcpHandler.clearMessagesFromApp();
+        	tcpHandler.clearMessageStack();
         	
        
         	

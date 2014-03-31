@@ -60,11 +60,15 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * 
      * @return A vector of messages from the application
      */
-    public Vector<String> getMessagesFromApp() {
+    public Vector<String> getMessageStack() {
         return messagesFromApp;
     }
     
-    public void clearMessagesFromApp(){
+    /**
+     * The TCPHandler class stores incoming messages from the Application in a
+     * Vector. The vector is cleared when this function is called
+     */
+    public void clearMessageStack(){
         messagesFromApp.clear();
     }
 
@@ -235,9 +239,6 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
 
         // Update status
         appConnected = newStatus;
-    }
-    public Vector<String> getMessageStack() {
-        return messagesFromApp;
     }
 }
 
