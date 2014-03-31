@@ -62,6 +62,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      */
     public Vector<String> getMessagesFromApp() {
         return messagesFromApp;
+
     }
 
     /**
