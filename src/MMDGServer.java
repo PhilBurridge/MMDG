@@ -47,12 +47,14 @@ public class MMDGServer extends ConsolePrinter{
 
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
-        tcpHandler = new TCPHandler(TCP_PORT);
+        tcpHandler = new TCPHandler(LOCALHOST, TCP_PORT);
+
 
         // Manage print outs
         httpServer.allowPrints = true;
         webSocketServer.allowPrints = true;
 
+        System.out.println(getLinkToQRCode(600, "000000", "FFFFFF"));
         print("MMDGServer constructor done!\n");
     }
 
@@ -81,19 +83,18 @@ public class MMDGServer extends ConsolePrinter{
                         + "/mmdg.html>");
         
         httpServer.listenForNewConnections();
+        
+        //will start the listener thread for the tcpHandler.
+        tcpHandler.listener.start();
         webSocketServer.connect();
-        
-        // will be used to send messages to clients from server
-        
-        // Receives messages from application, Not inuse atm
-        tcpHandler.receiveMessages();
+
 
         // Read from console in Eclipse
         //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         Vector<String> commandStack;
         while (true) {
-            
+
             
             // To send a message from console in eclipse
             //print("Write something to TCP!");
@@ -101,9 +102,10 @@ public class MMDGServer extends ConsolePrinter{
 
             // Send messages from web site to connected application 
             commandStack = webSocketServer.getCommandStack();
-            tcpHandler.sendMessages(commandStack);
+            tcpHandler.sendToApplication(commandStack);
             webSocketServer.clearCommandStack();
             //print("Sent message to TCP handler");
+
 
             // sleep for 1/unloadPerSeconds seconds
 
@@ -119,10 +121,64 @@ public class MMDGServer extends ConsolePrinter{
     }
 
     public void sendTestMessageViaTCP(String msg) {
-        tcpHandler.sendMessage(msg);
+        tcpHandler.sendToApplication(msg);
     }
 
     /**
+     * Calls a with proper parameters to generate a QR code as an image.
+     * 
+     * @param size
+     * Defines the size of the generated image
+     * @param color
+     * The foreground color as a string defining the hexadecimal color code.
+     * @param bgColor
+     * The background color as a string defining the hexadecimal color code.
+     * @return a link to an image generated on the web, containing the QR code
+     * @example getLinkToQRCode(400, "000000", "FFFFFF");
+     */
+    public String getLinkToQRCode(int size, String color,
+                    String bgColor) {
+
+        if (!(isValidColorString(color) && isValidColorString(bgColor))) {
+            System.out.println("Using default colors for QR code");
+            color = "000000";
+            bgColor = "FFFFFF";
+        }
+
+        String link = "";
+        link += "http://api.qrserver.com/v1/create-qr-code/";
+        link += "?color=" + color + "&bgcolor=" + bgColor;
+        link += "&data=http%3A%2F%2F" + serverIP + "%3A" + HTTP_PORT
+                        + "%2Fmmdg.html";
+        link += "&qzone=1&margin=0&";
+        link += "size=" + size + "x" + size + "&ecc=L";
+        return link;
+    }
+
+    /**
+     * Checks whether or not a string is a valid color string in hexadecimal
+     * format. Example of a correct string: "0359AF".
+     * 
+     * @param s
+     * The string to be checked
+     * @return true is the string is a valid color string
+     */
+    private boolean isValidColorString(String s) {
+        if (s.length() != 6) {
+            System.out.println("Error! Color string length = " + s.length());
+            return false;
+        }
+        char c;
+        for (int i = 0; i < 6; ++i) {
+            c = s.charAt(i);
+            if (!(('0' <= c && c <= '9') || ('A' <= c && c <= 'F'))) {
+                System.out.println("Error: Color string cannot contain " + c);
+            }
+        }
+        return true;
+    }
+
+     /**
      * Tries to get local host address via Java InetAdress. If that doesn't
      * work, it tries to get the IP address from http://checkip.amazonaws.com/.
      * 

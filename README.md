@@ -1,4 +1,4 @@
 MMDG
-===========
+======
 
-Framework for massive multiplayer dome game.
+A framework for massive multiplayer dome games.
