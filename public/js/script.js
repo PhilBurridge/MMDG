@@ -5,7 +5,6 @@ console.log("Server ip is: %s", config.serverIP);
 console.log("Server ws port is: %s", config.serverWsPort);
 
 ws.onopen = function() {
-    alert("Opened!");
     ws.send("TJenare! I am a client, This is from JS!");
     init(ws);
 };
@@ -23,10 +22,8 @@ function buttonDownVal0() {
 }
 
 function buttonUp(){
-
 	document.getElementById('content').innerHTML += '<br>Button released!';
 	ws.send("value=0");
-
 }
 
 
