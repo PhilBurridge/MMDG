@@ -261,6 +261,7 @@ public class WebSocketServer extends ConsolePrinter{
             byte[] b = new byte[numOfBytes];
             clientSocket.getInputStream().read(b);
             if (b.length < 0) {
+                print("Negative byte size..");
                 stop();
                 return null;
             }
@@ -291,12 +292,13 @@ public class WebSocketServer extends ConsolePrinter{
             // convertAndPrint(buf);
             int opcode = buf[0] & 0x0F;
             if (opcode == 8) {
-                // Client want to close connection!
+                print("Client want to close connection");
                 stop();
                 return null;
             } else {
                 final int payloadSize = getSizeOfPayload(buf[1]);
                 if (payloadSize == -128) {
+                    print("playloadSize is -128");
                     stop();
                     return "disconnected";
                 }
