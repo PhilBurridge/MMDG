@@ -1,9 +1,7 @@
-#include "sgct.h"
+#ifdef PLAYER_H
+#define PLAYER_H
 
-using namespace std;
-
-
-class player {
+class Player {
 
 private:
 
@@ -12,6 +10,7 @@ private:
     glm::vec2 position;
     glm::vec2 direction;
 public:
+    Player(glm::vec2 pos, bool state)
 	void switchToCop();
     void switchToRobber();
     bool isCop();
@@ -19,5 +18,5 @@ public:
     void movePlayer();
     void update();
     void draw();
-
-}
+}:
+#endif PLAYER_H

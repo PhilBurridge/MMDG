@@ -7,6 +7,7 @@ private:
     int width;
     int height;
     std::vector<Player> player_vec;
+    Player *player;
     float dt; // Behövs ej?
 
 public:
