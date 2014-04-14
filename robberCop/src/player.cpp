@@ -6,22 +6,25 @@
 
 using namespace std;
 
-
+    //robber switches to cop
     void switchToCop()
     {
         cop = true;
     }
 
+    //cop switches to robber
     void switchToRobber()
     {
         cop = false;
     }
 
+    //the state of the player is returned
     bool isCop()
     {
         return cop;
     }
 
+    //the direction of the movement is set depending on which button is pressed
     void setMoveDirection(int button, bool pressed)
     {
         if(button == 1)
@@ -71,11 +74,13 @@ using namespace std;
         }
     }
 
+    //The new position is calculated with direction and speed
     void movePlayer()
     {
         position += speed*direction;
     }
 
+    //updates size and color of player when their state is changed
     void update()
     {
        
