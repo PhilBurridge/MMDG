@@ -3,10 +3,9 @@
 
 class Scene {
 private:
-    DrawableObject background;
+    DrawableObject *background;
     int width;
     int height;
-    std::vector<Player> player_vec;
     Player *player;
     float dt; // Behövs ej?
 
@@ -14,8 +13,11 @@ public:
     Scene() {};
     void update();
     void updatePositions();
-    void checkCollisons();
+    void checkCollisions();
+    void addPlayer();
     void draw();
+
+    std::vector<Player *> player_vec;
 };
 
 #endif // SCENE_H

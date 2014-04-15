@@ -88,6 +88,6 @@ void Core::setMessage(std::string msg) {
 }
 
 // Gets a message that is to be sent
-std::string getMessage() {
+std::string Core::getMessage() {
     return message;
 }

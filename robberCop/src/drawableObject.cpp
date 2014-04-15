@@ -1,4 +1,5 @@
 #include "sgct.h"
+#include "drawableObject.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>

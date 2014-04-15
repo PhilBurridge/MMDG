@@ -9,15 +9,15 @@ void Scene::update() {
 }
 
 void Scene::updatePositions() {
-    for(std::vector<Player> it = player_vec; it != player_vec.end(); it++) { 
+    for(std::vector<Player *> it = player_vec; it != player_vec.end(); it++) { 
         (*it)->movePlayer();
     }
 }
 
 void Scene::checkCollisions() {
-    for(std::vector<Player> itCop = player_vec.begin(); itCop != player_vec.end(); itCop++) { // jag hade ingen bättre fantasi än 
+    for(std::vector<Player *> itCop = player_vec.begin(); itCop != player_vec.end(); itCop++) { // jag hade ingen bättre fantasi än 
         if((*itCop)->isCop()) {
-            for(std::vector<Player> itRob = player_vec.begin(); itRob != player_vec.end(); itRob++) {
+            for(std::vector<Player *> itRob = player_vec.begin(); itRob != player_vec.end(); itRob++) {
                 if(!(*itRob)->isCop() && 
                     lenght((*isCop)->position - (*isRob)->position) > ((*isCop)->size + (*isRob)->size)) { // oskäer på length
                     // Do somthing when collision happens. KILL THA ROBBBA
