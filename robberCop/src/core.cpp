@@ -32,13 +32,15 @@ void Core::interpret(const char * recievedChars, int size, int clientId) {
         // i.e from "id=2" get "2" as id
         std::string id_ = recChars.substr(recChars.find(keywordId) + keywordId.length());
 
+        const char * temp_id = id_.c_str();
+        temp_id = atoi();
         // Find position of the second delimiter in the message
         secondDelimiterIndex = recChars.find(delimiter, firstDelimiterIndex + 1);
 
         // Obtain action to be carried out, from the message
         // Find btn keyword and get the substring from after the keyword to the delimiter
         // i.e from "btn=1" get "1" as action
-        action = atoi(recChars.substr(recChars.find(keywordBtn) + keywordBtn.length(), secondDelimiterIndex).c_str);
+        std::string action_ = recChars.substr(recChars.find(keywordBtn) + keywordBtn.length());
 
         // Check if the message contains the word "connected"
         // Connected is repressented by the int 0
