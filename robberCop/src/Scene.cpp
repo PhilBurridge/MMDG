@@ -37,7 +37,9 @@ void Scene::addPlayer() {
 }
 
 void Scene::draw() {
-    // Borde bara loopa igenom alla player och rita ut dem mha draw i drawableObject
+    for (std::vector<Player *>::iterator it = player_vec.begin() ; it != player_vec.end(); ++it) {
+        (*it)->Player->DrawableObject.draw(Player->position);
+    }
 }
 
 

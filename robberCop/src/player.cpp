@@ -83,9 +83,9 @@ void Player::update()
    
 }
 
-void Player::draw()
+/*void Player::draw()
 {
 
-}
+}*/
 
 

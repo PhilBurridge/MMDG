@@ -7,6 +7,7 @@
 
 // Create pointer to the sgct engine
 sgct::Engine * gEngine;
+Scene *scene;
 Core *core;
 
 void init();
@@ -61,15 +62,11 @@ int main( int argc, char* argv[] ) {
 }
 
 void init() {
-
-    // TODO
-
+    Scene->init();
 }
 
 void draw() {
-
-    // TODO
-
+    Scene->draw();
 }
 
 void preSync() {

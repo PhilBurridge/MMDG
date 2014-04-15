@@ -9,3 +9,4 @@ void RobberCop::process(int id, int action, bool value) {
     else{
         scene->player_vec[id].setMoveDirection(action, value);
     }
+}

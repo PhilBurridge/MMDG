@@ -5,11 +5,11 @@ class Core {
 public:
     Core() { };
     void interpret(const char *recievedChars, int size, int clientId);
-    void process(int id, int action, bool value);
-    std::String sendToAll(std::String msg);
-    std::String sendTo(std::String msg, int id);
-    void setMessage(std::String msg);
-    std::String getMessage();
+    //void process(int id, int action, bool value);
+    std::string sendToAll(std::string msg);
+    std::string sendTo(std::string msg, int id);
+    void setMessage(std::string msg);
+    std::string getMessage();
 
 private:
     int id;
@@ -17,7 +17,7 @@ private:
     bool isPressed;
     size_t firstDelimiterIndex;
     size_t secondDelimiterIndex;  
-    std::String message; 
+    std::string message; 
 };
 
 #endif // CORE_H

@@ -6,6 +6,7 @@ private:
     Scene *scene;
 
 public:
+    RobberCop() { };
     void process(int id, int action, bool value);
 
 };

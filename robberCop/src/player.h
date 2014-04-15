@@ -17,6 +17,6 @@ public:
     void setMoveDirection(string button, bool pressed);
     void movePlayer();
     void update();
-    void draw();
+   // void draw();
 }:
-#endif PLAYER_H
+#endif // PLAYER_H

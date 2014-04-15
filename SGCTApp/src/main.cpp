@@ -39,7 +39,7 @@ void keyCallBack(int key, int action);
 // Something to hold the texture
 size_t textureHandleQRBox;
 // Create a pointer to the box displaying our QRCode
-sgct_utils::SGCTBox *QRBox = NULL;
+//sgct_utils::SGCTBox *QRBox = NULL;
 // Is the QRCode visible or not?
 bool showQRCode = true;
 
@@ -93,12 +93,15 @@ void init() {
     sgct::TextureManager::instance()->setAnisotropicFilterSize(8.0f);
     // Set the compression to be used on the texture
     sgct::TextureManager::instance()->setCompression(sgct::TextureManager::S3TC_DXT);
+
+    //sgct::TextureManager::instance()->setWarpingMode(GL_CLAMP_TO_EDGE, GL_CLAMP_TO_EDGE);
+
     // Load the texture to the texturehandle
     sgct::TextureManager::instance()->loadTexure(
-        textureHandleQRBox, "QRBox", "./textures/qrcode.png", true);
+        textureHandleQRBox, "QRBox", "./textures/box.png", true);
 
     // Create the box object (assign a SGCTBox to the box-pointer)
-    QRBox = new sgct_utils::SGCTBox(2.0f, sgct_utils::SGCTBox::Regular);
+    //QRBox = new sgct_utils::SGCTBox(2.0f, sgct_utils::SGCTBox::Regular);
 
     // Enable some openGL stuff
     glEnable( GL_DEPTH_TEST );
@@ -117,8 +120,8 @@ void draw() {
     float speed = 25.0f;
 
     // Shall the QRCode be drawn or not?
-    if(showQRCode) {
-        /* DO BOX STUFF */
+    /*if(showQRCode) {
+        // DO BOX STUFF 
 
         // Translate the box
         glTranslatef(0.0f, 0.0f, -4.0f);
@@ -132,7 +135,8 @@ void draw() {
 
         // Draw the QRBox
         QRBox->draw();
-    } else {
+        */
+
         /* TRIANGLE:
         Swaps the direcion and color of the triangle
         when the user presses buttons.
@@ -142,20 +146,30 @@ void draw() {
         */
         if(clockWise.getVal() == false) {
             speed *= -1;
-            glColor3f(1.0f, 0.0f, 0.0f);
+            //glColor3f(1.0f, 0.0f, 0.0f);
         } else {
-            glColor3f(0.0f, 1.0f, 0.0f);
+            //glColor3f(0.0f, 1.0f, 0.0f);
         }
         // Rotation of the triangle
         glTranslatef(x_coord.getVal(), y_coord.getVal(), -3.0f);
-        glRotatef(static_cast<float>(curr_time.getVal()) * speed, 0.0f, 1.0f, 0.0f);
+        //glRotatef(static_cast<float>(curr_time.getVal()) * speed, 0.0f, 1.0f, 0.0f);
+
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByHandle(textureHandleQRBox));
+
         // Draw the triangle
-        glBegin(GL_TRIANGLES);
-            glVertex3f(-0.5, -0.5, 0.0f);
-            glVertex3f(0.0, 0.5, 0.0f);
-            glVertex3f(0.5, -0.5, 0.0f);
+        glBegin(GL_QUADS);
+            glNormal3f(0.0, 0.0, 1.0);
+            glTexCoord2d(0, 0);
+            glVertex3f(-1.0f, -1.0f, 0.0f);
+            glTexCoord2d(0, 1);
+            glVertex3f(-1.0f, 1.0f, 0.0f);
+            glTexCoord2d(1, 1);
+            glVertex3f(1.0f, 1.0f, 0.0f);
+            glTexCoord2d(1, 0);
+            glVertex3f(1.0f, -1.0f, 0.0f);
         glEnd();
-    }
+    
 }
 
 // Set the time only on the master
@@ -180,8 +194,9 @@ void decode() {
 
 // Remove QRBox object when exiting the program
 void cleanUp() {
-    if(QRBox != NULL)
+    /*if(QRBox != NULL)
         delete QRBox;
+        */
 }
 
 /**
