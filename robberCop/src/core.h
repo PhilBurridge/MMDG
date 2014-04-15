@@ -12,12 +12,14 @@ public:
     std::string getMessage();
 
 private:
+    RobberCop *robberCop;
+    
     int id;
     int action;
     bool isPressed;
     size_t firstDelimiterIndex;
     size_t secondDelimiterIndex;  
-    std::string message; 
+    std::string message;
 };
 
 #endif // CORE_H

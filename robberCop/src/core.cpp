@@ -1,12 +1,10 @@
 #include "sgct.h"
+#include "core.h"
+#include "robberCop.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
 #include <string>
-#include "core.h"
-#include "robberCop.h"
-
-RobberCop *robberCop;
 
 // Decodes the received message and sends it to the process function
 void Core::interpret(const char * recievedChars, int size, int clientId) {
@@ -30,28 +28,31 @@ void Core::interpret(const char * recievedChars, int size, int clientId) {
         // Get the id of the client, from the message
         // Find keyword and get substring from after the keyword to the delimiter
         // i.e from "id=2" get "2" as id
-        std::string id_ = recChars.substr(recChars.find(keywordId) + keywordId.length());
+        std::string _id = recChars.substr(recChars.find(keywordId) + keywordId.length(), firstDelimiterIndex - keywordId.length());
 
-        const char * temp_id = id_.c_str();
-        temp_id = atoi();
+        const char * temp_id = _id.c_str();
+        id = atoi(temp_id);
         // Find position of the second delimiter in the message
         secondDelimiterIndex = recChars.find(delimiter, firstDelimiterIndex + 1);
 
         // Obtain action to be carried out, from the message
         // Find btn keyword and get the substring from after the keyword to the delimiter
         // i.e from "btn=1" get "1" as action
-        std::string action_ = recChars.substr(recChars.find(keywordBtn) + keywordBtn.length());
+        std::string _action = recChars.substr(recChars.find(keywordBtn) + keywordBtn.length(), secondDelimiterIndex - keywordBtn.length());
+
+        const char * temp_action = _action.c_str();
+        action = atoi(temp_action);
 
         // Check if the message contains the word "connected"
         // Connected is repressented by the int 0
-        if(strncmp(action + firstDelimiterIndex + 1, connected, connected.length())) {
+        if(recChars.compare(firstDelimiterIndex + 1, connected.length(), connected) == 0) {
             action = 0;
         }
 
         // Check if the message contains keyword "pressed"
         // if it does, isPressed is set to true
         // else isPressed is set to false
-        if(recChars.strncmp(recChars + secondDelimiterIndex + 1, keywordPressed, keywordPressed.length())) {
+        if(recChars.compare(secondDelimiterIndex + 1, keywordPressed.length(), keywordPressed) == 0) {
             isPressed = true;
         } else {
             isPressed = false;
@@ -78,7 +79,7 @@ std::string Core::sendToAll(std::string msg) {
 std::string Core::sendTo(std::string msg, int id) {
     
     // Add an id and delimiter to the message to be sent
-    setMessage("id=" + id + ";" + msg);
+    setMessage("id=" + std::to_string(id) + ";" + msg);
 }
 
 // Sets a message that is to be sent
