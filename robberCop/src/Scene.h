@@ -1,4 +1,4 @@
-#ifdef SCENE_H
+#ifndef SCENE_H
 #define SCENE_H
 
 class Scene {

@@ -11,7 +11,7 @@ ifeq ($(OS), Windows_NT)
 else ifeq ($(shell uname), Linux)
 	FRAMEWORKS = -lsgct -lGL -lGLU -lX11 -lXrandr -lXi -lXxf86vm -pthread
 else
-	FRAMEWORKS = -lsgct -framework Opengl -framework Cocoa -framework IOKit -stdlib=libstdc++
+	FRAMEWORKS = -lsgct -framework Opengl -framework Cocoa -framework IOKit -std=c++11
 endif
 
 # Even more flags:

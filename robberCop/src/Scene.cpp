@@ -1,5 +1,5 @@
 #include "Scene.h"
-#include "Player.h"
+#include "player.h"
 #include "sgct.h"
 #include "DrawableObject.h"
 

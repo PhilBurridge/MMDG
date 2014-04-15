@@ -1,4 +1,4 @@
-#ifdef ROBBERCOP_H
+#ifndef ROBBERCOP_H
 #define ROBBERCOP_H
 
 class RobberCop {

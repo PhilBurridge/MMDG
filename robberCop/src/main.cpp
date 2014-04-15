@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <iostream>
 #include "core.h"
+#include "Scene.h"
 
 // Create pointer to the sgct engine
 sgct::Engine * gEngine;
@@ -62,11 +63,11 @@ int main( int argc, char* argv[] ) {
 }
 
 void init() {
-    Scene->init();
+    scene->init();
 }
 
 void draw() {
-    Scene->draw();
+    scene->draw();
 }
 
 void preSync() {
