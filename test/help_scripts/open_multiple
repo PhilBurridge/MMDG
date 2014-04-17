@@ -2,9 +2,12 @@
 
 # This script connects to a website using Google Chrome.
 #
-# Run in Terminal with the following commands
-# sh open_multiple <address> <numberOfConnections> <timeIntervall>
-#   
+# Run from Terminal with the following arguments:
+# 	sh open_multiple <address> <numberOfConnections> <timeIntervall>
+# address: url starting with "http://"
+# numberOfConnections: an integer specifying how many connections to open (tabs in Chrome)
+# timeIntervall: an integer or double specifying a sleep time (seconds) between each connection 
+#
 # Example: 
 # sh open_multiple http://www.dn.se 3 0.5
 
@@ -22,17 +25,20 @@ else
 fi
 
 #Number of calls to do
-N_CALLS=1 # default
-if [ $2 -gt $N_CALLS ]
+if [ $2 -gt 0 ]
 then
 	N_CALLS=$2
+else
+	N_CALLS=1
 fi
 
 #Time intervall
-TIME_INTERVALL=0.0 #seconds
-if [ $3 -gt 0 ]
+echo $3
+if [ "$3">"0.0" ];
 then
 	TIME_INTERVALL=$3
+else
+	TIME_INTERVALL=0.0 #seconds
 fi
 
 
@@ -40,11 +46,12 @@ fi
 
 
 #Print all variables for debugging
-#echo "url =" $URL
-#echo "number of calls =" $N_CALLS
-#echo "caller =" $RUN
-#echo "application =" $APP
-#echo "calls to be done:" $CALL_COMMAND
+echo "url =" $URL
+echo "number of calls =" $N_CALLS
+echo "caller =" $RUN
+echo "application =" $APP
+echo "calls to be done =" $CALL_COMMAND
+echo "time intervall =" $TIME_INTERVALL
 
 COUNTER=0
 while [ $COUNTER -lt $N_CALLS ]

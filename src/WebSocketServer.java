@@ -57,7 +57,7 @@ public class WebSocketServer extends ConsolePrinter{
     }
 
     /**
-     * will listen for client connections in a seperate thread, create a new
+     * will listen for client connections in a separate thread, create a new
      * socket and add it to a socket array/vector. so far it is not in a
      * seperate thread, and it only has 1 socket, only 1 person can connect at a
      * time.
