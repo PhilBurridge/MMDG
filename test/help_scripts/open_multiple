@@ -34,7 +34,7 @@ fi
 
 #Time intervall
 echo $3
-if [ "$3">"0.0" ];
+if [ $3 -gt 0 ];
 then
 	TIME_INTERVALL=$3
 else

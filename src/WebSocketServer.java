@@ -68,10 +68,10 @@ public class WebSocketServer extends ConsolePrinter{
             public void run() {
                 try {
                     while (true) {
-                        print("Waiting for connections ...");
+                        //print("Waiting for connections ...");
                         Socket socket = serverSocket.accept();
                         System.out.println();
-                        print("Connecting!");
+                        //print("Connecting!");
 
                         removeDeadClientHandlers();
                         if (handshake(socket)) {
@@ -120,7 +120,7 @@ public class WebSocketServer extends ConsolePrinter{
         String str;
 
         // Reading client handshake
-        print("Reading client handshake");
+        //print("Reading client handshake");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
             // print(str);
@@ -148,7 +148,7 @@ public class WebSocketServer extends ConsolePrinter{
         String response = "HTTP/1.1 101 Switching Protocols\r\n"
                         + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n"
                         + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
-        print("Writing response");
+        //print("Writing response");
         // print(response);
         out.write(response);
         out.flush();
@@ -162,7 +162,7 @@ public class WebSocketServer extends ConsolePrinter{
         clientHandlers.put(ch.id, ch);
         ch.listenToClient();
 
-        print("Clients connected: " + clientHandlers.size());
+        print("Number of clients: " + clientHandlers.size());
         print("Added client with ID " + ch.id);
     }
 
@@ -333,7 +333,7 @@ public class WebSocketServer extends ConsolePrinter{
                 }
             });
             listenerTread.start();
-            print("Started thread used to listen to client messages...");
+            //print("Started thread used to listen to client messages...");
         }
 
         public void sendMessage(byte[] msg) throws IOException {
