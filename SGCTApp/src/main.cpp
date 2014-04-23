@@ -78,7 +78,7 @@ int main( int argc, char* argv[] ) {
         return EXIT_FAILURE;
     }
 
-    std::string s = "id=1 var=btn1 val=pressed;";
+    std::string s = "id=1 var=btn1 val=pressed;id=2 var=slider1 val=123;";
     core.handleExternalInput(s.c_str(), s.length(), -1);
 
     // Main loop

@@ -25,6 +25,7 @@ public:
 private:
 	std::string cmd_delimiter;
 	std::string arg_delimiter;
+	std::vector<std::string> cmd_args;
 
     std::vector<std::string> extractCommands(std::string externalInputString);
     bool analyzeCommand(std::string command, int &id, std::string &variable, std::string &value);

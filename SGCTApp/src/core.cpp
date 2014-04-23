@@ -1,8 +1,16 @@
 #include "core.h"
 
 Core::Core(){
-    cmd_delimiter = ";";
+
+    //The code below definds that commands must have this exact format:
+    // "id=<id> var=<var> val=<val>;"
+    cmd_args.push_back("id=");
+    cmd_args.push_back("var=");
+    cmd_args.push_back("val=");
+
     arg_delimiter = " ";
+    cmd_delimiter = ";";
+    
 }
 
 void Core::handleExternalInput(const char * recievedChars, int size, int clientId){
@@ -14,9 +22,8 @@ void Core::handleExternalInput(const char * recievedChars, int size, int clientI
     std::string value = "";
     for (int i = 0; i < command_vec.size(); ++i){
         analyzeCommand(command_vec[i], id, variable, value);
+        process(id,variable,value);
     }
-
-    process(id,variable,value);
 }
 
 
@@ -41,34 +48,36 @@ std::vector<std::string> Core::extractCommands(std::string externalInputString){
 bool Core::analyzeCommand(std::string command, int &id, std::string &var, std::string &val) {
     
     const size_t n_find_keys = 3;
-    std::string keys[] = {"id=", "var=", "val="};
-    std::string found_values[n_find_keys];
+    //std::string cmd_args[] = {"id=", "var=", "val="};
+    std::string extracted_values[n_find_keys];
     
     size_t delimiter_pos;
 
+    //Loop through all cmd_args
     for (int i = 0; i < n_find_keys; ++i){
         std::cout << "to be analyzed: " << command << std::endl;
 
-        //Make sure that keys match
-        if(command.substr(0,keys[i].length()) != keys[i]){
-            std::cout << "ERROR! expected \"" << keys[i] << "\" but recieved \"" << command.substr(0,keys[i].length()) << std::endl;
+        //Make sure that cmd_args match
+        if(command.substr(0,cmd_args[i].length()) != cmd_args[i]){
+            std::cout << "ERROR! expected \"" << cmd_args[i] << "\" but recieved \"" << command.substr(0,cmd_args[i].length()) << std::endl;
             return false;
         }
-        command.erase(0,keys[i].length());
+        command.erase(0,cmd_args[i].length());
 
         //Grabs everything after key until arg_delimiter is found
         delimiter_pos = command.find(arg_delimiter);
         if(delimiter_pos == std::string::npos){
-            std::cout << "ERROR! Couldn't find any delimiter for key \"" << keys[i] << "\""<< std::endl;
+            std::cout << "ERROR! Couldn't find any delimiter for key \"" << cmd_args[i] << "\""<< std::endl;
             return false;
         }
-        found_values[i] = command.substr(0,delimiter_pos);
+        extracted_values[i] = command.substr(0,delimiter_pos);
         command.erase(0,delimiter_pos + arg_delimiter.length());
     }
 
-    id = atoi(found_values[0].c_str());
-    var = found_values[1];
-    val = found_values[2];
+    //Bind the variables passed by reference to the extracted values
+    id = atoi(extracted_values[0].c_str());
+    var = extracted_values[1];
+    val = extracted_values[2];
 
     return true;
 }
