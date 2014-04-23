@@ -78,8 +78,8 @@ int main( int argc, char* argv[] ) {
         return EXIT_FAILURE;
     }
 
-    std::string s = "id=1 var=btn1 val=pressed;id=2 var=slider1 val=123;";
-    core.handleExternalInput(s.c_str(), s.length(), -1);
+    std::string testString = "id=1 var=btn1 val=pressed;id=2 var=slider1 val=123;";
+    core.handleExternalInput(testString.c_str(), testString.length(), -1);
 
     // Main loop
     gEngine->render();
@@ -211,40 +211,9 @@ To prevent NULL pointer errors the length of the received message will be checke
 */
 void externalControlCallback(const char * recievedChars, int size, int clientId) {
 
-    std::cout << "clientId = " << clientId << std::endl;
+    core.handleExternalInput(recievedChars, size, clientId);
 
     
-
-    /*
-    // How fast the controlled objects move
-    float moveSpeed = 1.0f;
-    // Only decode the messages if this is the master
-    // getDt() is an SGCT-function build in to the engine that gets the delta time
-    if(gEngine->isMaster()) {
-        // Check length of message and print it
-        if(size != 0) {
-            std::cout << std::endl << "message: " << recievedChars << std::endl << std::endl;
-        }
-        // Check the length of the messages and what they contain
-        // Set clockWise true or false, value 1 = true and value 0 = false
-        if(size == 7 && strncmp(recievedChars, "value", 5) == 0) {
-            clockWise.setVal(strncmp(recievedChars + 6, "1", 1) == 0);
-        }
-        // Sets the "move" variables which translates a players avatar, up down, left or right
-        if(size == 2 && strncmp(recievedChars, "up", 2) == 0) {
-            y_coord.setVal(y_coord.getVal() + moveSpeed * gEngine->getDt());
-        }
-        if(size == 4 && strncmp(recievedChars, "down", 4) == 0) {
-            y_coord.setVal(y_coord.getVal() - moveSpeed * gEngine->getDt());
-        }
-        if(size == 4 && strncmp(recievedChars, "left", 4) == 0) {
-            x_coord.setVal(x_coord.getVal() - moveSpeed * gEngine->getDt());
-        }
-        if(size == 5 && strncmp(recievedChars, "right", 5) == 0) {
-            x_coord.setVal(x_coord.getVal() + moveSpeed * gEngine->getDt());
-        }
-    }
-    */
 }
 
 /**

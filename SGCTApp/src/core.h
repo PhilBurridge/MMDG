@@ -23,15 +23,13 @@ public:
     void sendTo(std::string msg, int id);
 
 private:
-	std::string cmd_delimiter;
-	std::string arg_delimiter;
+	static const std::string CMD_DELIMITER;
+	static const std::string ARG_DELIMITER;
 	std::vector<std::string> cmd_args;
 
     std::vector<std::string> extractCommands(std::string externalInputString);
-    bool analyzeCommand(std::string command, int &id, std::string &variable, std::string &value);
+    bool analyzeCommand(std::string command, int *id, std::string *variable, std::string *value);
 
-    size_t firstDelimiterIndex;
-    size_t secondDelimiterIndex;
 };
 
 #endif // CORE_H

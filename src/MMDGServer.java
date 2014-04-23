@@ -223,6 +223,7 @@ public class MMDGServer extends ConsolePrinter{
             writer.println("(function (exports) {");
             writer.println("    exports.serverIP = \"" + serverIP + "\";");
             writer.println("    exports.serverWsPort= " + WEB_SOCKET_PORT + ";");
+            writer.println("    exports.arg_delimiter= \"" + ARG_DELIMITER + "\";");
             writer.println("})(typeof exports === 'undefined' ? this['config']={} : exports);");
 
             writer.close();
