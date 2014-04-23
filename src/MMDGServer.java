@@ -31,13 +31,23 @@ public class MMDGServer extends ConsolePrinter{
 
     /**
      * Defines how many times per second the MMDG Server should unload the stack
-     * of client  s to the application
+     * of client s to the application
      */
-    private double unloadsPerSecond = 10;
-    
-    public static final String ARG_DELIMITER = " ";
+    private double unloadsPerSecond = 10000;
+
+    /**
+     * A string used for marking the end of a client's "command" sent to the
+     * application
+     */
     public static final String CMD_DELIMITER = ";";
 
+    /**
+     * A string marking the end of each argument in a client's command sent to
+     * the application
+     */
+    public static final String ARG_DELIMITER = " ";
+
+    
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() throws IOException {
@@ -50,8 +60,7 @@ public class MMDGServer extends ConsolePrinter{
 
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
-        tcpHandler = new TCPHandler(LOCALHOST, TCP_PORT);
-
+        tcpHandler = new TCPHandler(serverIP, TCP_PORT);
 
         // Manage print outs
         httpServer.allowPrints = true;
@@ -81,34 +90,41 @@ public class MMDGServer extends ConsolePrinter{
      * @throws IOException
      */
     public void run() throws IOException {
-        
+
         print("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
                         + "/mmdg.html>");
-        
+
         httpServer.listenForNewConnections();
-        
-        //will start the listener thread for the tcpHandler.
+
+        // will start the listener thread for the tcpHandler.
         tcpHandler.listener.start();
         webSocketServer.connect();
 
-
         // Read from console in Eclipse
-        //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        // BufferedReader br = new BufferedReader(new
+        // InputStreamReader(System.in));
 
         Vector<String> commandStack;
+        Vector<String> appMessageStack;
         while (true) {
 
-            
             // To send a message from console in eclipse
-            //print("Write something to TCP!");
-            //tcpHandler.sendMessage(br.readLine());
+            // print("Write something to TCP!");
+            // tcpHandler.sendMessage(br.readLine());
+            appMessageStack = tcpHandler.getMessageStack();
+            if (appMessageStack.size() != 0) {
+                print("Sending message: " + appMessageStack.firstElement());
+                // Only one message from App will be send per each unload,
+                webSocketServer.sendMessageToAllClients(appMessageStack
+                                .firstElement());
+            }
+            tcpHandler.clearMessageStack();
 
-            // Send messages from web site to connected application 
+            // Send messages from web site to connected application
             commandStack = webSocketServer.getCommandStack();
             tcpHandler.sendToApplication(commandStack);
             webSocketServer.clearCommandStack();
-            //print("Sent message to TCP handler");
-
+            // print("Sent message to TCP handler");
 
             // sleep for 1/unloadPerSeconds seconds
 
@@ -139,8 +155,7 @@ public class MMDGServer extends ConsolePrinter{
      * @return a link to an image generated on the web, containing the QR code
      * @example getLinkToQRCode(400, "000000", "FFFFFF");
      */
-    public String getLinkToQRCode(int size, String color,
-                    String bgColor) {
+    public String getLinkToQRCode(int size, String color, String bgColor) {
 
         if (!(isValidColorString(color) && isValidColorString(bgColor))) {
             System.out.println("Using default colors for QR code");
@@ -181,7 +196,7 @@ public class MMDGServer extends ConsolePrinter{
         return true;
     }
 
-     /**
+    /**
      * Tries to get local host address via Java InetAdress. If that doesn't
      * work, it tries to get the IP address from http://checkip.amazonaws.com/.
      * 
@@ -223,7 +238,8 @@ public class MMDGServer extends ConsolePrinter{
             writer.println("(function (exports) {");
             writer.println("    exports.serverIP = \"" + serverIP + "\";");
             writer.println("    exports.serverWsPort= " + WEB_SOCKET_PORT + ";");
-            writer.println("    exports.arg_delimiter= \"" + ARG_DELIMITER + "\";");
+            writer.println("    exports.arg_delimiter= \"" + ARG_DELIMITER
+                            + "\";");
             writer.println("})(typeof exports === 'undefined' ? this['config']={} : exports);");
 
             writer.close();

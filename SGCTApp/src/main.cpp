@@ -32,6 +32,11 @@ void decode();
 void cleanUp();
 void externalControlCallback(const char * recievedChars,int size,int clientId);
 void keyCallBack(int key, int action);
+void startBenchmark();
+void stopBenchmark();
+void getPingStats(double &min, double &max, double &avg);
+
+
 
 /*** Global variables ***/
 // Something to hold the texture
@@ -54,9 +59,18 @@ sgct::SharedFloat y_coord(0.0);
 sgct::SharedFloat z_coord(0.0);
 
 
+<<<<<<< HEAD
 
 Core core;
 void testCoreInputHandling();
+=======
+/* BENCHMARKING VARIABLES */
+clock_t startClock;
+clock_t endClock;
+const std::string PING_MESSAGE = "ping\r\n";
+std::vector<double> pingResponses;
+
+>>>>>>> master
 
 int main( int argc, char* argv[] ) {
     // Allocate
@@ -81,7 +95,11 @@ int main( int argc, char* argv[] ) {
         return EXIT_FAILURE;
     }
 
+<<<<<<< HEAD
     testCoreInputHandling();
+=======
+    pingResponses = std::vector<double>();
+>>>>>>> master
 
     // Main loop
     gEngine->render();
@@ -211,6 +229,7 @@ To prevent NULL pointer errors the length of the received message will be checke
 (unnecessary in this case but a good practice if more complex messages will be added).
 - From sgct wiki.
 */
+<<<<<<< HEAD
 void externalControlCallback(const char * recievedChars, int size, int clientId) {
     core.handleExternalInput(recievedChars, size, clientId);
 }
@@ -256,6 +275,44 @@ void testCoreInputHandling(){
     s = "id=1" + arg_d + "id=3" + arg_d + "var=btn1" + arg_d + "val=1" + cmd_d;
     core.handleExternalInput(s.c_str(), s.length(), -1);
     std::cout << std::endl;
+=======
+void externalControlCallback(
+    const char * recievedChars, int size, int clientId) {
+    // How fast the controlled objects move
+    float moveSpeed = 1.0f;
+    // Only decode the messages if this is the master
+    // getDt() is an SGCT-function build in to the engine that gets the delta time
+    if(gEngine->isMaster()) {
+        // Check length of message and print it
+        if(size != 0) {
+            std::cout << std::endl << "message: " << recievedChars << std::endl << std::endl;
+        }
+        // Check the length of the messages and what they contain
+        // Set clockWise true or false, value 1 = true and value 0 = false
+        if(size == 7 && strncmp(recievedChars, "value", 5) == 0) {
+            clockWise.setVal(strncmp(recievedChars + 6, "1", 1) == 0);
+        }
+        // Sets the "move" variables which translates a players avatar, up down, left or right
+        if(size == 2 && strncmp(recievedChars, "up", 2) == 0) {
+            y_coord.setVal(y_coord.getVal() + moveSpeed * gEngine->getDt());
+        }
+        if(size == 4 && strncmp(recievedChars, "down", 4) == 0) {
+            y_coord.setVal(y_coord.getVal() - moveSpeed * gEngine->getDt());
+        }
+        if(size == 4 && strncmp(recievedChars, "left", 4) == 0) {
+            x_coord.setVal(x_coord.getVal() - moveSpeed * gEngine->getDt());
+        }
+        if(size == 5 && strncmp(recievedChars, "right", 5) == 0) {
+            x_coord.setVal(x_coord.getVal() + moveSpeed * gEngine->getDt());
+        }
+        if(size == 7 && strncmp(recievedChars, "value", 5) == 0){
+            clockWise.setVal(strncmp(recievedChars + 6, "1", 1) == 0);
+        }
+        if(size == 8 && strncmp(recievedChars, "pingback", 8) == 0){
+            stopBenchmark();
+        }
+    }
+>>>>>>> master
 }
 
 /**
@@ -263,8 +320,23 @@ This function handles keyboard presses
 */
 void keyCallBack(int key, int action) {
     // Check if SGCT is master
-    if(gEngine->isMaster()) {
+    if(gEngine->isMaster() && action == GLFW_PRESS) {
         switch(key) {
+
+            case 'T':
+                double min, max, avg;
+                getPingStats(min,max,avg);
+                std::cout << "Number of ping responses: " << pingResponses.size() << std::endl;
+                std::cout << "min: " << min << " ms" << std::endl;
+                std::cout << "max: " << max << " ms" << std::endl;
+                std::cout << "avg: " << avg << " ms" << std::endl;
+            break;
+
+            case 'P':
+                std::cout << "Pinging clients " << std::endl;
+                startBenchmark();
+            break;
+
             case 'Q':
                 std::cout << "Q PRESSED - QR TURNED OFF" << std::endl;
                 // Toggle the QRCode on button press (Make it disappear)
@@ -280,6 +352,56 @@ void keyCallBack(int key, int action) {
                     showQRCode = true;
                 }
             break;
+
+
         }
     }
 }
+
+/**
+* Will start the benchmark timer when called
+*/
+void startBenchmark() {
+    pingResponses.clear();
+    gEngine->sendMessageToExternalControl( PING_MESSAGE );
+    startClock = clock();
+}
+
+/**
+* Will stop and store the benchmark time when called
+*/
+void stopBenchmark() {
+    endClock = clock();
+    double secondsElapsedClock = (endClock - startClock) / (double)(CLOCKS_PER_SEC);
+    double millisElapsedClock = 1000*secondsElapsedClock;
+    pingResponses.push_back(millisElapsedClock);
+}
+
+/**
+*  Gets stats from stored benchmarks times
+*/
+void getPingStats(double &min, double &max, double &avg){
+    if(!pingResponses.size()){
+        std::cout << "No ping data collected. Press P to ping clients" << std::endl;
+        return;
+    }
+
+    double tmp = pingResponses[0];
+    double sum = tmp;
+    min = tmp;
+    max = tmp;
+
+    for (int i = 1; i < pingResponses.size(); ++i){
+        tmp = pingResponses[i];
+        sum += tmp;
+        if(tmp < min) {
+            min = tmp;
+        }
+        else if(tmp > max){
+            max = tmp;
+        }
+    }
+
+    avg = sum / pingResponses.size();
+}
+

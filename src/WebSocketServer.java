@@ -46,6 +46,7 @@ public class WebSocketServer extends ConsolePrinter{
 
     public synchronized void addCommand(String command) {
         commandStack.add(command + MMDGServer.CMD_DELIMITER);
+        print("Added \"" + command + "\" to command stack");
     }
 
     public synchronized Vector<String> getCommandStack() {
@@ -103,7 +104,7 @@ public class WebSocketServer extends ConsolePrinter{
                 Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
                                 .next();
                 pairs.getValue().sendMessage(msg.getBytes());
-                it.remove(); // avoids a ConcurrentModificationException
+                //it.remove(); // avoids a ConcurrentModificationException
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -320,7 +321,7 @@ public class WebSocketServer extends ConsolePrinter{
                     try {
                         while (alive) {
                             String msg = reiceveMessage();
-                            print("Recieved from client " + id + ": " + msg);
+                            print("Recieved from client " + id + ": " + msg + "\". Adding as command.");
                             addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
                         }
                         print("The listening thread of clientHandler " + id
@@ -348,7 +349,6 @@ public class WebSocketServer extends ConsolePrinter{
             os.write(baos.toByteArray(), 0, baos.size());
             os.flush();
         }
-
     }
 
 }
