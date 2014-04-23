@@ -113,7 +113,7 @@ void Core::process(int id, std::string variable, std::string value){
 // Sends a message to all connected clients
 void Core::sendToAll(std::string msg) {
     // Add an id (in this case all) and delimiter to the message to be sent
-    std::string toSend = "id=all" + ARG_DELIMITER + msg + CMD_DELIMITER + "\r\n";
+    std::string toSend = "id=all" + ARG_DELIMITER + msg + "\r\n";
     gEngine->sendMessageToExternalControl(toSend.c_str());
 }
 
@@ -122,7 +122,7 @@ void Core::sendTo(std::string msg, int id) {
     std::stringstream ss;
     ss << id;
     std::string id_str = ss.str();
-    std::string toSend = "id=" + id_str + ARG_DELIMITER + msg + CMD_DELIMITER + "\r\n";
+    std::string toSend = "id=" + id_str + ARG_DELIMITER + msg + "\r\n";
     gEngine->sendMessageToExternalControl(toSend.c_str());
 }
 
@@ -131,7 +131,7 @@ void Core::sendTo(std::string msg, int id) {
 */
 void Core::startBenchmark() {
     pingResponses.clear();
-    gEngine->sendMessageToExternalControl(PING_MESSAGE);
+    sendToAll(PING_MESSAGE);
     startClock = clock();
 }
 
@@ -154,7 +154,9 @@ void Core::getPingStats(double &min, double &max, double &avg){
         return;
     }
 
+    //Init value 
     double tmp = pingResponses[0];
+
     double sum = tmp;
     min = tmp;
     max = tmp;

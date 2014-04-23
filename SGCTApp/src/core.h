@@ -44,7 +44,7 @@ public:
 	std::vector<std::string> cmd_args;
 
 
-	//Benchmarks
+	//Benchmarking
 	void startBenchmark();
 	void stopBenchmark();
 	void getPingStats(double &min, double &max, double &avg);
@@ -68,7 +68,7 @@ private:
     /* BENCHMARKING VARIABLES */
 	clock_t startClock;
 	clock_t endClock;
-	const std::string PING_MESSAGE = "ping\r\n";
+	const std::string PING_MESSAGE = "ping";
 	std::vector<double> pingResponses;
 };
 

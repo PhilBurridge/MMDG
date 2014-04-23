@@ -106,6 +106,9 @@ public class MMDGServer extends ConsolePrinter{
 
         Vector<String> commandStack;
         Vector<String> appMessageStack;
+        String outputString = "";
+        String receiver = "";
+        int delimiter_pos = -1;
         while (true) {
 
             // To send a message from console in eclipse
@@ -113,10 +116,10 @@ public class MMDGServer extends ConsolePrinter{
             // tcpHandler.sendMessage(br.readLine());
             appMessageStack = tcpHandler.getMessageStack();
             if (appMessageStack.size() != 0) {
-                print("Sending message: " + appMessageStack.firstElement());
-                // Only one message from App will be send per each unload,
-                webSocketServer.sendMessageToAllClients(appMessageStack
-                                .firstElement());
+                
+                outputString = appMessageStack.firstElement();
+                forwardMessageFromApp(outputString);
+
             }
             tcpHandler.clearMessageStack();
 
@@ -127,7 +130,6 @@ public class MMDGServer extends ConsolePrinter{
             // print("Sent message to TCP handler");
 
             // sleep for 1/unloadPerSeconds seconds
-
             try {
                 // How often stacks get sent to application
                 Thread.sleep((int) (1000 / unloadsPerSecond));
@@ -138,7 +140,7 @@ public class MMDGServer extends ConsolePrinter{
         }
         print("Server stopped");
     }
-
+    
     public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendToApplication(msg);
     }
@@ -172,7 +174,38 @@ public class MMDGServer extends ConsolePrinter{
         link += "size=" + size + "x" + size + "&ecc=L";
         return link;
     }
-
+    
+    private boolean forwardMessageFromApp(String outputString){
+        if(outputString.startsWith("id=")){
+            int delimiter_pos = outputString.indexOf(ARG_DELIMITER);
+            String receiver = outputString.substring(3, delimiter_pos);
+            String toSend = outputString.substring(delimiter_pos+1);
+            
+            if (receiver.equalsIgnoreCase("all")) {
+                print("Sending \"" + toSend + "\" to all clients");
+                webSocketServer.sendMessageToAllClients(toSend);
+            }
+            else {
+                try{
+                    int id = Integer.parseInt(receiver);
+                    print("Sending " + toSend + " to clients with id " + id);
+                    webSocketServer.sendMessageToClient(id, toSend);
+                }catch(Exception e){
+                    e.printStackTrace();
+                    print("Error: Receiver index is not an integer!");
+                    return false;
+                }
+            }
+            return true;
+        }
+        else{
+            print("Error: Message from appilcation has no reciever!");
+            print("Message from appilcation should start with: id=<int> or \"all\"");
+            return false;
+        }
+        
+    }
+    
     /**
      * Checks whether or not a string is a valid color string in hexadecimal
      * format. Example of a correct string: "0359AF".
