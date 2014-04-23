@@ -53,7 +53,10 @@ sgct::SharedFloat y_coord(0.0);
 // z-coord for a players avatar
 sgct::SharedFloat z_coord(0.0);
 
+
+
 Core core;
+void testCoreInputHandling();
 
 int main( int argc, char* argv[] ) {
     // Allocate
@@ -78,8 +81,7 @@ int main( int argc, char* argv[] ) {
         return EXIT_FAILURE;
     }
 
-    std::string testString = "id=1 var=btn1 val=pressed;id=2 var=slider1 val=123;";
-    core.handleExternalInput(testString.c_str(), testString.length(), -1);
+    testCoreInputHandling();
 
     // Main loop
     gEngine->render();
@@ -210,10 +212,50 @@ To prevent NULL pointer errors the length of the received message will be checke
 - From sgct wiki.
 */
 void externalControlCallback(const char * recievedChars, int size, int clientId) {
-
     core.handleExternalInput(recievedChars, size, clientId);
+}
 
-    
+void testCoreInputHandling(){
+    std::cout << std::endl;
+    std::cout << "*******************************" << std::endl;
+    std::cout << "* TESTING CORE INPUT HANDLING *" << std::endl;
+    std::cout << "*******************************" << std::endl;
+    std::cout << std::endl;
+    std::string s = "";
+    std::string cmd_d = Core::CMD_DELIMITER; 
+    std::string arg_d = Core::ARG_DELIMITER;
+    int n = 0;
+
+    std::cout << "TEST " << n++ << ": Normal input" << std::endl;
+    s = "id=1" + arg_d + "var=btn1" + arg_d + "val=1" + cmd_d;
+    core.handleExternalInput(s.c_str(), s.length(), -1);
+    std::cout << std::endl;
+
+    std::cout << "TEST " << n++ << ": Two commands in one string" << std::endl;
+    s = "id=1" + arg_d + "var=btn1" + arg_d + "val=1" + cmd_d + 
+        "id=2" + arg_d + "var=slider1" + arg_d + "val=123" + cmd_d;
+    core.handleExternalInput(s.c_str(), s.length(), -1);
+    std::cout << std::endl;
+
+    std::cout << "TEST " << n++ << ": Bad command argument" << std::endl;
+    s = "id=3" + arg_d + "hej=mjao" + arg_d + "gröt=3" + cmd_d;
+    core.handleExternalInput(s.c_str(), s.length(), -1);
+    std::cout << std::endl;
+
+    std::cout << "TEST " << n++ << ": Command without command delimiter" << std::endl;
+    s = "testid=1" + arg_d + "var=btn1" + arg_d + "val=1";
+    core.handleExternalInput(s.c_str(), s.length(), -1);
+    std::cout << std::endl;
+
+    std::cout << "TEST " << n++ << ": Command without argument delimiter" << std::endl;
+    s = "id=1" + arg_d + "var=btn1val=1" + cmd_d;
+    core.handleExternalInput(s.c_str(), s.length(), -1);
+    std::cout << std::endl;
+
+    std::cout << "TEST " << n++ << ": Double id" << std::endl;
+    s = "id=1" + arg_d + "id=3" + arg_d + "var=btn1" + arg_d + "val=1" + cmd_d;
+    core.handleExternalInput(s.c_str(), s.length(), -1);
+    std::cout << std::endl;
 }
 
 /**

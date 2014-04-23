@@ -45,6 +45,9 @@ std::vector<std::string> Core::extractCommands(std::string externalInputString){
         command_vec.push_back(token + ARG_DELIMITER); //Adding the ARG_DELIMITER makes analyzing the commands easier
         externalInputString.erase(0, delimiter_pos + CMD_DELIMITER.length());
     }
+    if(externalInputString.length() > 0){
+        std::cout << "WARNING! found command with no command delimiter" << std::endl;
+    }
 
     return command_vec;
 }
@@ -52,18 +55,20 @@ std::vector<std::string> Core::extractCommands(std::string externalInputString){
 // Decodes the received command and sends it to the process function
 bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::string *val) {
     
-    const size_t n_find_keys = 3;
-    std::string extracted_values[n_find_keys];
+    std::cout << "analyzing: " << command << std::endl;
+
+    const size_t n_cmd_args = 3;
+    std::string extracted_values[n_cmd_args];
     
     size_t delimiter_pos;
 
     //Loop through all cmd_args
-    for (int i = 0; i < n_find_keys; ++i){
-        std::cout << "to be analyzed: " << command << std::endl;
+    for (int i = 0; i < n_cmd_args; ++i){
+        //std::cout << "to be analyzed: " << command << std::endl;
 
         //Make sure that cmd_args match
         if(command.substr(0,cmd_args[i].length()) != cmd_args[i]){
-            std::cout << "ERROR! expected \"" << cmd_args[i] << "\" but recieved \"" << command.substr(0,cmd_args[i].length()) << std::endl;
+            std::cout << "ERROR! Bad command argument: expected \"" << cmd_args[i] << "\" but recieved \"" << command.substr(0,cmd_args[i].length()) << "\"" << std::endl;
             return false;
         }
         command.erase(0,cmd_args[i].length());
@@ -71,7 +76,7 @@ bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::s
         //Grabs everything after key until ARG_DELIMITER is found
         delimiter_pos = command.find(ARG_DELIMITER);
         if(delimiter_pos == std::string::npos){
-            std::cout << "ERROR! Couldn't find any delimiter for key \"" << cmd_args[i] << "\""<< std::endl;
+            std::cout << "ERROR! Couldn't find any delimiter for command argument \"" << cmd_args[i] << "\""<< std::endl;
             return false;
         }
         extracted_values[i] = command.substr(0,delimiter_pos);
@@ -90,13 +95,11 @@ bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::s
 void Core::process(int id, std::string variable, std::string value){
     //this method is to be overridden by applications like RobberCop
 
-    std::cout << "Input data to be processed: " << std::endl;
+    std::cout << "Extracted input data: " << std::endl;
     std::cout << "id = " << id << std::endl;
     std::cout << "variable = " << variable << std::endl;
     std::cout << "value = " << value << std::endl;
     std::cout << std::endl;
-
-
 
 }
 
