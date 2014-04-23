@@ -34,6 +34,9 @@ public class MMDGServer extends ConsolePrinter{
      * of client  s to the application
      */
     private double unloadsPerSecond = 10;
+    
+    public static final String ARG_DELIMITER = " ";
+    public static final String CMD_DELIMITER = ";";
 
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */

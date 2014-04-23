@@ -45,7 +45,7 @@ public class WebSocketServer extends ConsolePrinter{
     }
 
     public synchronized void addCommand(String command) {
-        commandStack.add(command);
+        commandStack.add(command + MMDGServer.CMD_DELIMITER);
     }
 
     public synchronized Vector<String> getCommandStack() {
@@ -321,7 +321,7 @@ public class WebSocketServer extends ConsolePrinter{
                         while (alive) {
                             String msg = reiceveMessage();
                             print("Recieved from client " + id + ": " + msg);
-                            addCommand(msg);
+                            addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
                         }
                         print("The listening thread of clientHandler " + id
                                         + " is done");
