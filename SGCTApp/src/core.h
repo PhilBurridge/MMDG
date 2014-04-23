@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <vector>
 
 #include "sgct.h"
 
@@ -11,9 +12,10 @@
 
 class Core{
 public:
-	Core(const std::string delimiter);
+	Core(const std::string delimiter = ";");
 
-    void interpret(const char *recievedChars, int size, int clientId);
+	std::vector<std::string> extractCommands(std::string externalInputString);
+    void interpretCommand(const char *recievedChars, int size, int clientId);
     void process(int id, int action, bool value);
 
     void sendToAll(std::string msg);
@@ -21,7 +23,7 @@ public:
 
 private:
     
-    std::string COMMAND_DELIMITER;
+    const std::string COMMAND_DELIMITER;
 
     size_t firstDelimiterIndex;
     size_t secondDelimiterIndex;  

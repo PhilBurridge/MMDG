@@ -1,4 +1,3 @@
-
 #include "core.h"
 
 Core::Core(const std::string delimiter):
@@ -6,9 +5,24 @@ COMMAND_DELIMITER(delimiter){
 
 }
 
+std::vector<std::string> Core::extractCommands(std::string externalInputString){
+    //Declare some variables
+    std::vector<std::string> command_vec;
+    size_t pos = 0;
+    std::string token;
+
+    //Do the job
+    while ((pos = externalInputString.find(COMMAND_DELIMITER)) != std::string::npos){
+        token = externalInputString.substr(0, pos);
+        command_vec.push_back(token);
+        externalInputString.erase(0, pos + COMMAND_DELIMITER.length());
+    }
+
+    return command_vec;
+}
 
 // Decodes the received message and sends it to the process function
-void Core::interpret(const char * recievedChars, int size, int clientId) {
+void Core::interpretCommand(const char * recievedChars, int size, int clientId) {
     // Check the length of the message, between 14 and 17 chars is valid
     if(size != 0 && size >= 17 && size <= 20) {
 

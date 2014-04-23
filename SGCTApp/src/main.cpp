@@ -17,6 +17,8 @@ Funny if you like DOTA
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+
+#include "core.h"
 //#include "sgct/SGCTNetwork.h"
 
 // Create pointer to the sgct engine
@@ -51,6 +53,8 @@ sgct::SharedFloat y_coord(0.0);
 // z-coord for a players avatar
 sgct::SharedFloat z_coord(0.0);
 
+Core core;
+
 int main( int argc, char* argv[] ) {
     // Allocate
     gEngine = new sgct::Engine( argc, argv );
@@ -73,6 +77,8 @@ int main( int argc, char* argv[] ) {
         delete gEngine;
         return EXIT_FAILURE;
     }
+
+    core.extractCommands("hej;jag;heter;Erik");
 
     // Main loop
     gEngine->render();
@@ -207,6 +213,11 @@ void externalControlCallback(
 
     std::cout << "clientId = " << clientId << std::endl;
 
+    std::string externalInputString(recievedChars);
+
+    core.interpretCommand(recievedChars, size, clientId);
+
+    /*
     // How fast the controlled objects move
     float moveSpeed = 1.0f;
     // Only decode the messages if this is the master
@@ -235,6 +246,7 @@ void externalControlCallback(
             x_coord.setVal(x_coord.getVal() + moveSpeed * gEngine->getDt());
         }
     }
+    */
 }
 
 /**
