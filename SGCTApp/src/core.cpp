@@ -1,17 +1,18 @@
 #include "core.h"
 
-Core::Core(){
+Core::Core(sgct::Engine * gEngine):
+gEngine(gEngine){
 
     //The code below definds that commands must have this exact format:
     // "id=<id> var=<var> val=<val>;"
     cmd_args.push_back("id=");
     cmd_args.push_back("var=");
     cmd_args.push_back("val=");
-    
 }
 
 const std::string Core::ARG_DELIMITER = " ";
 const std::string Core::CMD_DELIMITER = ";";
+
 
 void Core::handleExternalInput(const char * recievedChars, int size, int clientId){
     std::string externalInputString(recievedChars);
@@ -104,7 +105,7 @@ void Core::process(int id, std::string variable, std::string value){
     std::cout << std::endl;
 
     if(variable == "recieved_pings"){
-        
+        stopBenchmark();
     }
 }
 
@@ -112,11 +113,71 @@ void Core::process(int id, std::string variable, std::string value){
 // Sends a message to all connected clients
 void Core::sendToAll(std::string msg) {
     // Add an id (in this case all) and delimiter to the message to be sent
+    std::string toSend = "id=all" + ARG_DELIMITER + msg + CMD_DELIMITER + "\r\n";
+    gEngine->sendMessageToExternalControl(toSend.c_str());
 }
 
 // Sends a message to a specified client id
 void Core::sendTo(std::string msg, int id) {
-    // Add an id and delimiter to the message to be sent
-    //setMessage("id=" + std::to_string(id) + ";" + msg);
+    std::stringstream ss;
+    ss << id;
+    std::string id_str = ss.str();
+    std::string toSend = "id=" + id_str + ARG_DELIMITER + msg + CMD_DELIMITER + "\r\n";
+    gEngine->sendMessageToExternalControl(toSend.c_str());
 }
 
+/**
+* Will start the benchmark timer when called
+*/
+void Core::startBenchmark() {
+    pingResponses.clear();
+    gEngine->sendMessageToExternalControl(PING_MESSAGE);
+    startClock = clock();
+}
+
+/**
+* Will stop and store the benchmark time when called
+*/
+void Core::stopBenchmark() {
+    endClock = clock();
+    double secondsElapsedClock = (endClock - startClock) / (double)(CLOCKS_PER_SEC);
+    double millisElapsedClock = 1000*secondsElapsedClock;
+    pingResponses.push_back(millisElapsedClock);
+}
+
+/**
+*  Gets stats from stored benchmarks times
+*/
+void Core::getPingStats(double &min, double &max, double &avg){
+    if(!pingResponses.size()){
+        std::cout << "No ping data collected. Press P to ping clients" << std::endl;
+        return;
+    }
+
+    double tmp = pingResponses[0];
+    double sum = tmp;
+    min = tmp;
+    max = tmp;
+
+    for (int i = 1; i < pingResponses.size(); ++i){
+        tmp = pingResponses[i];
+        sum += tmp;
+        if(tmp < min) {
+            min = tmp;
+        }
+        else if(tmp > max){
+            max = tmp;
+        }
+    }
+
+    avg = sum / pingResponses.size();
+}
+
+void Core::printPingStats(){
+    double min, max, avg;
+    getPingStats(min,max,avg);
+    std::cout << "Number of ping responses: " << pingResponses.size() << std::endl;
+    std::cout << "min: " << min << " ms" << std::endl;
+    std::cout << "max: " << max << " ms" << std::endl;
+    std::cout << "avg: " << avg << " ms" << std::endl;
+}

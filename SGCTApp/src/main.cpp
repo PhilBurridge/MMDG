@@ -32,9 +32,6 @@ void decode();
 void cleanUp();
 void externalControlCallback(const char * recievedChars,int size,int clientId);
 void keyCallBack(int key, int action);
-void startBenchmark();
-void stopBenchmark();
-void getPingStats(double &min, double &max, double &avg);
 
 
 
@@ -59,15 +56,9 @@ sgct::SharedFloat y_coord(0.0);
 sgct::SharedFloat z_coord(0.0);
 
 
-Core core;
+//Core
+Core * core;
 void testCoreInputHandling();
-
-
-/* BENCHMARKING VARIABLES */
-clock_t startClock;
-clock_t endClock;
-const std::string PING_MESSAGE = "ping\r\n";
-std::vector<double> pingResponses;
 
 
 int main( int argc, char* argv[] ) {
@@ -93,14 +84,16 @@ int main( int argc, char* argv[] ) {
         return EXIT_FAILURE;
     }
 
-    testCoreInputHandling();
-    pingResponses = std::vector<double>();
+    core = new Core(gEngine);
+    //testCoreInputHandling();
 
     // Main loop
     gEngine->render();
 
     // Clean up (de-allocate)
     delete gEngine;
+
+    delete core;
 
     // Exit program
     exit(EXIT_SUCCESS);
@@ -226,7 +219,7 @@ To prevent NULL pointer errors the length of the received message will be checke
 */
 
 void externalControlCallback(const char * recievedChars, int size, int clientId) {
-    core.handleExternalInput(recievedChars, size, clientId);
+    core->handleExternalInput(recievedChars, size, clientId);
 }
 
 void testCoreInputHandling(){
@@ -242,33 +235,33 @@ void testCoreInputHandling(){
 
     std::cout << "TEST " << n++ << ": Normal input" << std::endl;
     s = "id=1" + arg_d + "var=btn1" + arg_d + "val=1" + cmd_d;
-    core.handleExternalInput(s.c_str(), s.length(), -1);
+    core->handleExternalInput(s.c_str(), s.length(), -1);
     std::cout << std::endl;
 
     std::cout << "TEST " << n++ << ": Two commands in one string" << std::endl;
     s = "id=1" + arg_d + "var=btn1" + arg_d + "val=1" + cmd_d + 
         "id=2" + arg_d + "var=slider1" + arg_d + "val=123" + cmd_d;
-    core.handleExternalInput(s.c_str(), s.length(), -1);
+    core->handleExternalInput(s.c_str(), s.length(), -1);
     std::cout << std::endl;
 
     std::cout << "TEST " << n++ << ": Bad command argument" << std::endl;
     s = "id=3" + arg_d + "hej=mjao" + arg_d + "gröt=3" + cmd_d;
-    core.handleExternalInput(s.c_str(), s.length(), -1);
+    core->handleExternalInput(s.c_str(), s.length(), -1);
     std::cout << std::endl;
 
     std::cout << "TEST " << n++ << ": Command without command delimiter" << std::endl;
     s = "testid=1" + arg_d + "var=btn1" + arg_d + "val=1";
-    core.handleExternalInput(s.c_str(), s.length(), -1);
+    core->handleExternalInput(s.c_str(), s.length(), -1);
     std::cout << std::endl;
 
     std::cout << "TEST " << n++ << ": Command without argument delimiter" << std::endl;
     s = "id=1" + arg_d + "var=btn1val=1" + cmd_d;
-    core.handleExternalInput(s.c_str(), s.length(), -1);
+    core->handleExternalInput(s.c_str(), s.length(), -1);
     std::cout << std::endl;
 
     std::cout << "TEST " << n++ << ": Double id" << std::endl;
     s = "id=1" + arg_d + "id=3" + arg_d + "var=btn1" + arg_d + "val=1" + cmd_d;
-    core.handleExternalInput(s.c_str(), s.length(), -1);
+    core->handleExternalInput(s.c_str(), s.length(), -1);
     std::cout << std::endl;
 }
 
@@ -281,17 +274,12 @@ void keyCallBack(int key, int action) {
         switch(key) {
 
             case 'T':
-                double min, max, avg;
-                getPingStats(min,max,avg);
-                std::cout << "Number of ping responses: " << pingResponses.size() << std::endl;
-                std::cout << "min: " << min << " ms" << std::endl;
-                std::cout << "max: " << max << " ms" << std::endl;
-                std::cout << "avg: " << avg << " ms" << std::endl;
+                core->printPingStats();
             break;
 
             case 'P':
                 std::cout << "Pinging clients " << std::endl;
-                startBenchmark();
+                core->startBenchmark();
             break;
 
             case 'Q':
@@ -313,52 +301,5 @@ void keyCallBack(int key, int action) {
 
         }
     }
-}
-
-/**
-* Will start the benchmark timer when called
-*/
-void startBenchmark() {
-    pingResponses.clear();
-    gEngine->sendMessageToExternalControl( PING_MESSAGE );
-    startClock = clock();
-}
-
-/**
-* Will stop and store the benchmark time when called
-*/
-void stopBenchmark() {
-    endClock = clock();
-    double secondsElapsedClock = (endClock - startClock) / (double)(CLOCKS_PER_SEC);
-    double millisElapsedClock = 1000*secondsElapsedClock;
-    pingResponses.push_back(millisElapsedClock);
-}
-
-/**
-*  Gets stats from stored benchmarks times
-*/
-void getPingStats(double &min, double &max, double &avg){
-    if(!pingResponses.size()){
-        std::cout << "No ping data collected. Press P to ping clients" << std::endl;
-        return;
-    }
-
-    double tmp = pingResponses[0];
-    double sum = tmp;
-    min = tmp;
-    max = tmp;
-
-    for (int i = 1; i < pingResponses.size(); ++i){
-        tmp = pingResponses[i];
-        sum += tmp;
-        if(tmp < min) {
-            min = tmp;
-        }
-        else if(tmp > max){
-            max = tmp;
-        }
-    }
-
-    avg = sum / pingResponses.size();
 }
 
