@@ -2,50 +2,67 @@
 <!-- 
 Example on what is available to modify in this xml file.
 
-Background:
--Background Color (CSS color): ex #00008B = deep blue, #40B3DF = light blue, #B4009E = purple... goolge it :)
+Background: 
+-COLOR: CSS color, for example #00008B = deep blue, #40B3DF = light blue, #B4009E = purple... Goolge: css colors! 
 
-Button:
--Name: any name, not too long. This name is sent to the application.
--Position: upleft,     upcenter,     upright,
-		  centerleft, centercenter, centerright, 
-		  downleft,   downcenter,   downright.
+Button: 
+-ICON: URL or path in folder. 
+-NAME: any name, not too long. This name is sent to the application. 
+-POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright. 
 
-Slider:
--Available: Y or N if you want an slider available
-
+SLIDER: 
+-NAME: any name, not too long. This name is sent to the application with the value. 
+-STARTVALUE: any value, not bigger than ENDVALUE. 
+-ENDVALUE: any value. 
+-POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
 	<BACKGROUND>
-		<COLOR>#00008B</COLOR>
+		<COLOR>#000000</COLOR>
 	</BACKGROUND>
 	<BUTTON>
 <!-- 	<COLOR>red</COLOR>
 		<HEIGHT>100</HEIGHT>
 		<WIDTH>100</WIDTH> -->
+		<ICON>gramps.png</ICON>
 		<NAME>btn1</NAME>
 		<POS>upleft</POS>
 	</BUTTON>
 	<BUTTON>
+		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
 		<NAME>btn2</NAME>
 		<POS>centerright</POS>
 	</BUTTON>
 	<BUTTON>
+		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
 		<NAME>btn3</NAME>
 		<POS>centercenter</POS>
 	</BUTTON>
 	<BUTTON>
+		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
 		<NAME>btn4</NAME>
 		<POS>centerleft</POS>
 	</BUTTON>
 	<BUTTON>
+		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
 		<NAME>btn5</NAME>
 		<POS>downright</POS>
 	</BUTTON>
+	<BUTTON>
+		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
+		<NAME>btn5</NAME>
+		<POS>downleft</POS>
+	</BUTTON>
+	<BUTTON>
+		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
+		<NAME>btn5</NAME>
+		<POS>upright</POS>
+	</BUTTON>
 	<SLIDER>
-		<TITLE>Fin slider:</TITLE>
+		<NAME>Fin slider:</NAME>
 		<ENDVALUE>80</ENDVALUE>
 		<STARTVALUE>60</STARTVALUE>
-		<POS>downleft</POS> <!-- kanske bara skall vara Ja/nej, placera en slider lr inte -->
+		<POS>downcenter</POS>
 	</SLIDER>
+	
 </CATALOG>

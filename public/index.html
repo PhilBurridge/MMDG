@@ -14,7 +14,6 @@
 </head>
 
 <body>
-
 <script>
 if (window.XMLHttpRequest){  // code for IE7+, Firefox, Chrome, Opera, Safari
 	xmlhttp=new XMLHttpRequest();
@@ -26,84 +25,104 @@ else{  // code for IE6, IE5
 xmlhttp.open("GET","xml/config.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML;
-
+try{
 var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
 
 function buttons(ori){
 	for (i=0;i<x.length;i++){   //x.lenght() is the amount of buttons
 		var pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
 		var name = x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
+		var icon = x[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
 		
 		if(pos == ori){
-			document.write("<input id='button' type='button' value='");
+			document.write("<input id='button' type='image' alt='");
 			document.write(name);
+			document.write("' src='")
+			document.write(icon)
 			document.write("' onclick='wsButton(");
 			document.write(name);
 			document.write(");'/>");
 		}
 	}
 }
-
+}
+catch(x)
+{}
 var y = xmlDoc.getElementsByTagName("SLIDER"); //Sliders
 
 function sliders(ori){
 	for (i=0;i<y.length;i++){
 		var Pos = y[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+		//var Posx = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
 		
 		if(Pos == ori){
-			var title = y[i].getElementsByTagName("TITLE")[0].childNodes[0].nodeValue;
+			var name = y[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
 			var endvalue = parseInt(y[i].getElementsByTagName("ENDVALUE")[0].childNodes[0].nodeValue);
 			var startvalue = parseInt(y[i].getElementsByTagName("STARTVALUE")[0].childNodes[0].nodeValue);
 			
-			document.write("<div data-role='main' class='ui-content'><form method='post' action='demoform.asp'><label for='points'>");
-			document.write(title);
+			document.write("<div id='slider' data-role='main' class='ui-content'><form method='post' action='demoform.asp'><label for='points'>");
+			document.write(name);
 			document.write("</label><input type='range' name='points' id='points' value='"); 
 			document.write(startvalue);
 			document.write("' min='0' max=");
 			document.write(endvalue);
 			document.write("></form></div>");
 		}
+		}
+		
+
 	}
-}
+
+
 
 var z = xmlDoc.getElementsByTagName("BACKGROUND"); //TABLE
 var color = z[0].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue; //table color
-
-document.write("<table style='background-color:");
+/*
+document.write("<table  style=background-color:");
 document.write(color);
 document.write(";'>");
+*/
 
-document.write("<tr><td>");
+document.write("<div>");
+	
+document.write("<div>");	
+
 sliders("upleft"); //skall skicka med upleft som sedan testas i funktionen
 buttons("upleft");
-document.write("</td><td>");
-sliders("upcenter");
-buttons("upcenter");
-document.write("</td><td>");
-sliders("upright");
-buttons("upright");
-document.write("</td></tr>");
-document.write("<tr><td>");
 sliders("centerleft");
 buttons("centerleft");
-document.write("</td><td>");
-sliders("centercenter");
-buttons("centercenter");
-document.write("</td><td>");
-sliders("centerright");
-buttons("centerright");
-document.write("</td></tr>");
-document.write("<tr><td>");
 sliders("downleft");
 buttons("downleft");
-document.write("</td><td>");
+
+document.write("</div>");	
+	
+
+document.write("<div>");
+
+document.write("<div>&nbsp;</div>");
+sliders("upcenter");
+buttons("upcenter");
+sliders("centercenter");
+buttons("centercenter");
 sliders("downcenter");
 buttons("downcenter");
-document.write("</td><td>");
+
+document.write("</div>");	
+
+
+document.write("<div>");	
+
+sliders("upright");
+buttons("upright");
+sliders("centerright");
+buttons("centerright");
 sliders("downright");
 buttons("downright");
-document.write("</td></tr>");
-document.write("</table>");
+
+document.write("</div>");	
+
+document.write("</div>");	
+
 </script>
 </body>
 </html>
