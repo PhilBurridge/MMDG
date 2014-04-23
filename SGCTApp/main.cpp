@@ -22,6 +22,7 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
 void keyCallBack(int key, int action);
 void stopBenchmark();
 void endBenchmark();
+void getPingStats(double &min, double &max, double &avg);
 
 // Shared vars
 sgct::SharedDouble curr_time(0.0);
@@ -231,11 +232,12 @@ void stopBenchmark() {
     //endSystemTime = std::chrono::system_clock::now();
 
     double secondsElapsedClock = (endClock - startClock) / (double)(CLOCKS_PER_SEC);
+    double millisElapsedClock = 1000*secondsElapsedClock;
     //std::chrono::duration<double> secondsElapsedSystemTime = endSystemTime-startSystemTime;
-    std::cout << "Ping roundtrip with clock:  " << 1000*secondsElapsedClock  << " ms" << std::endl;
+    
+    //std::cout << "Ping roundtrip with clock: " << millisElapsedClock << " ms" << std::endl;
     //std::cout << "Ping roundtrip with chrono: " << secondsElapsedSystemTime.count() << "s" << std::endl;
-    //pingResponses.push_back()
-
+    pingResponses.push_back(millisElapsedClock);
 }
 
 
@@ -244,6 +246,13 @@ void keyCallBack(int key, int action) {
     if(gEngine->isMaster() && action == GLFW_PRESS) {
         switch(key) {
         //case GLFW_KEY_Q:
+            case 'T':
+                double min, max, avg;
+                getPingStats(min,max,avg);
+                std::cout << "min: " << min << " ms" << std::endl;
+                std::cout << "max: " << max << " ms" << std::endl;
+                std::cout << "avg: " << avg << " ms" << std::endl;
+                break;
             case 'P':
                 std::cout << "Jag vill ta tid" << std::endl;
                 startBenchmark();
@@ -259,4 +268,29 @@ void keyCallBack(int key, int action) {
                 break;
         }
     }
+}
+
+void getPingStats(double &min, double &max, double &avg){
+    if(!pingResponses.size()){
+        std::cout << "No ping data collected. Press P to ping clients" << std::endl;
+        return;
+    }
+
+    double tmp = pingResponses[0];
+    double sum = tmp;
+    min = tmp;
+    max = tmp;
+
+    for (int i = 1; i < pingResponses.size(); ++i){
+        tmp = pingResponses[i];
+        sum += tmp;
+        if(tmp < min) {
+            min = tmp;
+        }
+        else if(tmp > max){
+            max = tmp;
+        }
+    }
+
+    avg = sum / pingResponses.size();
 }
