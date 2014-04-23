@@ -46,6 +46,7 @@ public class WebSocketServer extends ConsolePrinter{
 
     public synchronized void addCommand(String command) {
         commandStack.add(command);
+        print("Added \"" + command + "\" to command stack");
     }
 
     public synchronized Vector<String> getCommandStack() {
@@ -320,7 +321,7 @@ public class WebSocketServer extends ConsolePrinter{
                     try {
                         while (alive) {
                             String msg = reiceveMessage();
-                            print("Recieved from client " + id + ": " + msg);
+                            print("Recieved from client " + id + ": " + msg + "\". Adding as command.");
                             addCommand(msg);
                         }
                         print("The listening thread of clientHandler " + id

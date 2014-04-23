@@ -38,6 +38,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * to connect yet
      */
     private Boolean appConnected = null;
+    
+    private String COMMAND_DELIMITER = "";
 
     /**
      * Creates the socket and the outputStream. Exceptions are handled if
@@ -116,7 +118,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         // Currently we are using ";" as delimiter.
         String messages = "";
         for (int i = 0; i < commandStack.size(); ++i) {
-            messages += commandStack.elementAt(i) + "";
+            messages += commandStack.elementAt(i) + COMMAND_DELIMITER;
         }
         sendToApplication(messages);
     }
