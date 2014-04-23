@@ -31,7 +31,7 @@ else
 endif
 
 # Files:
-FILES = $(wildcard *.cpp)
+FILES = $(wildcard src/*.cpp)
 
 # Binary folder:
 BINFOLD = bin/
@@ -59,6 +59,14 @@ compile: $(FILES)
 
 run:
 	./$(BINFOLD)$(BINNAME) -config "configs/single.xml"
+.PHONY: run
+
+run-dome:
+	./$(BINFOLD)$(BINNAME) -config "configs/dome_sim.xml"
+.PHONY: run
+
+run-fisheye:
+	./$(BINFOLD)$(BINNAME) -config "configs/single_fisheye_fxaa.xml"
 .PHONY: run
 
 report:

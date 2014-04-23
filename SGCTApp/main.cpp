@@ -28,11 +28,12 @@ void getPingStats(double &min, double &max, double &avg);
 sgct::SharedDouble curr_time(0.0);
 sgct::SharedBool clockWise(false);
 bool QROn = false;
-const std::string PING_MESSAGE = "ping\r\n";
-std::vector<double> pingResponses;
+
 
 clock_t startClock;
 clock_t endClock;
+const std::string PING_MESSAGE = "ping\r\n";
+std::vector<double> pingResponses;
 
 // a more precise timer from c++11. will keep code from ctime in case of incompatibility.
 //std::chrono::time_point<std::chrono::system_clock> startSystemTime, endSystemTime;
