@@ -17,6 +17,7 @@ Funny if you like DOTA
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include <ctime>
 //#include "sgct/SGCTNetwork.h"
 
 // Create pointer to the sgct engine
