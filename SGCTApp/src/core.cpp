@@ -21,9 +21,13 @@ void Core::handleExternalInput(const char * recievedChars, int size, int clientI
     std::string variable = "";
     std::string value = "";
     for (int i = 0; i < command_vec.size(); ++i){
+
         //Pass pointer to variables. This method will update the variables values.
-        analyzeCommand(command_vec[i], &id, &variable, &value);
-        process(id,variable,value);
+        if(analyzeCommand(command_vec[i], &id, &variable, &value)){
+
+            //Now do something with the extracted information
+            process(id,variable,value);
+        }    
     }
 }
 
