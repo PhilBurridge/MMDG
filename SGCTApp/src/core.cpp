@@ -3,7 +3,7 @@
 
 Core::Core(const std::string delimiter):
 COMMAND_DELIMITER(delimiter){
-    
+
 }
 
 
@@ -61,13 +61,14 @@ void Core::interpret(const char * recievedChars, int size, int clientId) {
         } else {
             isPressed = false;
         }
-        //robberCop->process(id, action, isPressed);
+        process(id, action, isPressed);
     }
 }
 
 // Determines what to do with the messages
 void Core::process(int id, int action, bool value){
     //this is to be overrided by applications
+
 }
 
 
@@ -75,7 +76,6 @@ void Core::process(int id, int action, bool value){
 void Core::sendToAll(std::string msg) {
     
     // Add an id (in this case all) and delimiter to the message to be sent
-    setMessage("id=all;" + msg);
 }
 
 // Sends a message to a specified client id
@@ -85,12 +85,3 @@ void Core::sendTo(std::string msg, int id) {
     //setMessage("id=" + std::to_string(id) + ";" + msg);
 }
 
-// Sets a message that is to be sent
-void Core::setMessage(std::string msg) {
-    message = msg;
-}
-
-// Gets a message that is to be sent
-std::string Core::getMessage() {
-    return message;
-}

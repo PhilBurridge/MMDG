@@ -28,11 +28,7 @@ void preSync();
 void encode();
 void decode();
 void cleanUp();
-void externalControlCallback(
-    const char * recievedChars,
-    int size,
-    int clientId
-    );
+void externalControlCallback(const char * recievedChars,int size,int clientId);
 void keyCallBack(int key, int action);
 
 /*** Global variables ***/
@@ -208,6 +204,9 @@ To prevent NULL pointer errors the length of the received message will be checke
 */
 void externalControlCallback(
     const char * recievedChars, int size, int clientId) {
+
+    std::cout << "clientId = " << clientId << std::endl;
+
     // How fast the controlled objects move
     float moveSpeed = 1.0f;
     // Only decode the messages if this is the master

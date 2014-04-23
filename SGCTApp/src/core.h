@@ -12,14 +12,12 @@
 class Core{
 public:
 	Core(const std::string delimiter);
+
     void interpret(const char *recievedChars, int size, int clientId);
     void process(int id, int action, bool value);
 
     void sendToAll(std::string msg);
     void sendTo(std::string msg, int id);
-
-    void setMessage(std::string msg);
-    std::string getMessage();
 
 private:
     
@@ -27,7 +25,6 @@ private:
 
     size_t firstDelimiterIndex;
     size_t secondDelimiterIndex;  
-    std::string message;
 };
 
 #endif // CORE_H
