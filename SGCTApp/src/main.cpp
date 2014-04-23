@@ -78,7 +78,8 @@ int main( int argc, char* argv[] ) {
         return EXIT_FAILURE;
     }
 
-    core.extractCommands("hej;jag;heter;Erik");
+    std::string s = "id=1 var=btn1 val=pressed;";
+    core.handleExternalInput(s.c_str(), s.length(), -1);
 
     // Main loop
     gEngine->render();
@@ -208,14 +209,11 @@ To prevent NULL pointer errors the length of the received message will be checke
 (unnecessary in this case but a good practice if more complex messages will be added).
 - From sgct wiki.
 */
-void externalControlCallback(
-    const char * recievedChars, int size, int clientId) {
+void externalControlCallback(const char * recievedChars, int size, int clientId) {
 
     std::cout << "clientId = " << clientId << std::endl;
 
-    std::string externalInputString(recievedChars);
-
-    core.interpretCommand(recievedChars, size, clientId);
+    
 
     /*
     // How fast the controlled objects move

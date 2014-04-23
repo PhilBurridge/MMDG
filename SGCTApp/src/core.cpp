@@ -1,86 +1,87 @@
 #include "core.h"
 
-Core::Core(const std::string delimiter):
-COMMAND_DELIMITER(delimiter){
-
+Core::Core(){
+    cmd_delimiter = ";";
+    arg_delimiter = " ";
 }
 
+void Core::handleExternalInput(const char * recievedChars, int size, int clientId){
+    std::string externalInputString(recievedChars);
+    std::vector<std::string> command_vec = extractCommands(externalInputString);
+
+    int id;
+    std::string variable = "";
+    std::string value = "";
+    for (int i = 0; i < command_vec.size(); ++i){
+        analyzeCommand(command_vec[i], id, variable, value);
+    }
+
+    process(id,variable,value);
+}
+
+
 std::vector<std::string> Core::extractCommands(std::string externalInputString){
-    //Declare some variables
+    std::cout << "external input string: " << externalInputString << std::endl;
+
     std::vector<std::string> command_vec;
-    size_t pos = 0;
+    size_t delimiter_pos = 0;
     std::string token;
 
-    //Do the job
-    while ((pos = externalInputString.find(COMMAND_DELIMITER)) != std::string::npos){
-        token = externalInputString.substr(0, pos);
-        command_vec.push_back(token);
-        externalInputString.erase(0, pos + COMMAND_DELIMITER.length());
+    //Extract commands and put them into a vector
+    while ((delimiter_pos = externalInputString.find(cmd_delimiter)) != std::string::npos){
+        token = externalInputString.substr(0, delimiter_pos);
+        command_vec.push_back(token + arg_delimiter); //Adding the arg_delimiter makes analyzing the commands easier
+        externalInputString.erase(0, delimiter_pos + cmd_delimiter.length());
     }
 
     return command_vec;
 }
 
-// Decodes the received message and sends it to the process function
-void Core::interpretCommand(const char * recievedChars, int size, int clientId) {
-    // Check the length of the message, between 14 and 17 chars is valid
-    if(size != 0 && size >= 17 && size <= 20) {
+// Decodes the received command and sends it to the process function
+bool Core::analyzeCommand(std::string command, int &id, std::string &var, std::string &val) {
+    
+    const size_t n_find_keys = 3;
+    std::string keys[] = {"id=", "var=", "val="};
+    std::string found_values[n_find_keys];
+    
+    size_t delimiter_pos;
 
-        int id;
-        int action;
-        bool isPressed;
+    for (int i = 0; i < n_find_keys; ++i){
+        std::cout << "to be analyzed: " << command << std::endl;
 
-        std::string recChars (recievedChars);
-
-        // Define message keywords to search for
-        std::string keywordId = "id=";
-        std::string keywordBtn = "btn=";
-        std::string keywordPressed = "pressed";
-        std::string connected = "connected";
-
-        // Find position of the first delimiter in the message
-        firstDelimiterIndex = recChars.find(COMMAND_DELIMITER);
-
-        // Get the id of the client, from the message
-        // Find keyword and get substring from after the keyword to the delimiter
-        // i.e from "id=2" get "2" as id
-        std::string _id = recChars.substr(recChars.find(keywordId) + keywordId.length(), firstDelimiterIndex - keywordId.length());
-
-        const char * temp_id = _id.c_str();
-        id = atoi(temp_id);
-        // Find position of the second delimiter in the message
-        secondDelimiterIndex = recChars.find(COMMAND_DELIMITER, firstDelimiterIndex + 1);
-
-        // Obtain action to be carried out, from the message
-        // Find btn keyword and get the substring from after the keyword to the delimiter
-        // i.e from "btn=1" get "1" as action
-        std::string _action = recChars.substr(recChars.find(keywordBtn) + keywordBtn.length(), secondDelimiterIndex - keywordBtn.length());
-
-        const char * temp_action = _action.c_str();
-        action = atoi(temp_action);
-
-        // Check if the message contains the word "connected"
-        // Connected is repressented by the int 0
-        if(recChars.compare(firstDelimiterIndex + 1, connected.length(), connected) == 0) {
-            action = 0;
+        //Make sure that keys match
+        if(command.substr(0,keys[i].length()) != keys[i]){
+            std::cout << "ERROR! expected \"" << keys[i] << "\" but recieved \"" << command.substr(0,keys[i].length()) << std::endl;
+            return false;
         }
+        command.erase(0,keys[i].length());
 
-        // Check if the message contains keyword "pressed"
-        // if it does, isPressed is set to true
-        // else isPressed is set to false
-        if(recChars.compare(secondDelimiterIndex + 1, keywordPressed.length(), keywordPressed) == 0) {
-            isPressed = true;
-        } else {
-            isPressed = false;
+        //Grabs everything after key until arg_delimiter is found
+        delimiter_pos = command.find(arg_delimiter);
+        if(delimiter_pos == std::string::npos){
+            std::cout << "ERROR! Couldn't find any delimiter for key \"" << keys[i] << "\""<< std::endl;
+            return false;
         }
-        process(id, action, isPressed);
+        found_values[i] = command.substr(0,delimiter_pos);
+        command.erase(0,delimiter_pos + arg_delimiter.length());
     }
+
+    id = atoi(found_values[0].c_str());
+    var = found_values[1];
+    val = found_values[2];
+
+    return true;
 }
 
 // Determines what to do with the messages
-void Core::process(int id, int action, bool value){
-    //this is to be overrided by applications
+void Core::process(int id, std::string variable, std::string value){
+    //this method is to be overridden by applications like RobberCop
 
+    std::cout << "Input data to be processed: " << std::endl;
+    std::cout << "id = " << id << std::endl;
+    std::cout << "variable = " << variable << std::endl;
+    std::cout << "value = " << value << std::endl;
+    std::cout << std::endl;
 }
 
 

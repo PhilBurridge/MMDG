@@ -12,21 +12,25 @@
 
 class Core{
 public:
-	Core(const std::string delimiter = ";");
+	Core();
 
-	std::vector<std::string> extractCommands(std::string externalInputString);
-    void interpretCommand(const char *recievedChars, int size, int clientId);
-    void process(int id, int action, bool value);
+	//Handles communication from clients
+	void handleExternalInput(const char * recievedChars, int size, int clientId);
+	void process(int id, std::string variable, std::string value);
 
-    void sendToAll(std::string msg);
+	//Handles communication to clients
+	void sendToAll(std::string msg);
     void sendTo(std::string msg, int id);
 
 private:
-    
-    const std::string COMMAND_DELIMITER;
+	std::string cmd_delimiter;
+	std::string arg_delimiter;
+
+    std::vector<std::string> extractCommands(std::string externalInputString);
+    bool analyzeCommand(std::string command, int &id, std::string &variable, std::string &value);
 
     size_t firstDelimiterIndex;
-    size_t secondDelimiterIndex;  
+    size_t secondDelimiterIndex;
 };
 
 #endif // CORE_H
