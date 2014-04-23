@@ -10,7 +10,7 @@
 #ifndef CORE_H
 #define CORE_H
 
-class Core{
+class Core {
 public:
 	Core();
 
@@ -43,8 +43,6 @@ public:
 	std::vector<std::string> cmd_args;
 
 private:
-	
-	
 
     std::vector<std::string> extractCommands(std::string externalInputString);
     bool analyzeCommand(std::string command, int *id, std::string *variable, std::string *value);

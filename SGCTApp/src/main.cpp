@@ -59,18 +59,16 @@ sgct::SharedFloat y_coord(0.0);
 sgct::SharedFloat z_coord(0.0);
 
 
-<<<<<<< HEAD
-
 Core core;
 void testCoreInputHandling();
-=======
+
+
 /* BENCHMARKING VARIABLES */
 clock_t startClock;
 clock_t endClock;
 const std::string PING_MESSAGE = "ping\r\n";
 std::vector<double> pingResponses;
 
->>>>>>> master
 
 int main( int argc, char* argv[] ) {
     // Allocate
@@ -95,11 +93,8 @@ int main( int argc, char* argv[] ) {
         return EXIT_FAILURE;
     }
 
-<<<<<<< HEAD
     testCoreInputHandling();
-=======
     pingResponses = std::vector<double>();
->>>>>>> master
 
     // Main loop
     gEngine->render();
@@ -229,7 +224,7 @@ To prevent NULL pointer errors the length of the received message will be checke
 (unnecessary in this case but a good practice if more complex messages will be added).
 - From sgct wiki.
 */
-<<<<<<< HEAD
+
 void externalControlCallback(const char * recievedChars, int size, int clientId) {
     core.handleExternalInput(recievedChars, size, clientId);
 }
@@ -241,7 +236,7 @@ void testCoreInputHandling(){
     std::cout << "*******************************" << std::endl;
     std::cout << std::endl;
     std::string s = "";
-    std::string cmd_d = Core::CMD_DELIMITER; 
+    std::string cmd_d = Core::CMD_DELIMITER;
     std::string arg_d = Core::ARG_DELIMITER;
     int n = 0;
 
@@ -275,44 +270,6 @@ void testCoreInputHandling(){
     s = "id=1" + arg_d + "id=3" + arg_d + "var=btn1" + arg_d + "val=1" + cmd_d;
     core.handleExternalInput(s.c_str(), s.length(), -1);
     std::cout << std::endl;
-=======
-void externalControlCallback(
-    const char * recievedChars, int size, int clientId) {
-    // How fast the controlled objects move
-    float moveSpeed = 1.0f;
-    // Only decode the messages if this is the master
-    // getDt() is an SGCT-function build in to the engine that gets the delta time
-    if(gEngine->isMaster()) {
-        // Check length of message and print it
-        if(size != 0) {
-            std::cout << std::endl << "message: " << recievedChars << std::endl << std::endl;
-        }
-        // Check the length of the messages and what they contain
-        // Set clockWise true or false, value 1 = true and value 0 = false
-        if(size == 7 && strncmp(recievedChars, "value", 5) == 0) {
-            clockWise.setVal(strncmp(recievedChars + 6, "1", 1) == 0);
-        }
-        // Sets the "move" variables which translates a players avatar, up down, left or right
-        if(size == 2 && strncmp(recievedChars, "up", 2) == 0) {
-            y_coord.setVal(y_coord.getVal() + moveSpeed * gEngine->getDt());
-        }
-        if(size == 4 && strncmp(recievedChars, "down", 4) == 0) {
-            y_coord.setVal(y_coord.getVal() - moveSpeed * gEngine->getDt());
-        }
-        if(size == 4 && strncmp(recievedChars, "left", 4) == 0) {
-            x_coord.setVal(x_coord.getVal() - moveSpeed * gEngine->getDt());
-        }
-        if(size == 5 && strncmp(recievedChars, "right", 5) == 0) {
-            x_coord.setVal(x_coord.getVal() + moveSpeed * gEngine->getDt());
-        }
-        if(size == 7 && strncmp(recievedChars, "value", 5) == 0){
-            clockWise.setVal(strncmp(recievedChars + 6, "1", 1) == 0);
-        }
-        if(size == 8 && strncmp(recievedChars, "pingback", 8) == 0){
-            stopBenchmark();
-        }
-    }
->>>>>>> master
 }
 
 /**

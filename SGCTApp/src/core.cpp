@@ -54,6 +54,7 @@ std::vector<std::string> Core::extractCommands(std::string externalInputString){
 
 // Decodes the received command and sends it to the process function
 bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::string *val) {
+
     
     std::cout << "analyzing: " << command << std::endl;
 
@@ -63,6 +64,7 @@ bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::s
     size_t delimiter_pos;
 
     //Loop through all cmd_args
+
     for (int i = 0; i < n_cmd_args; ++i){
         //std::cout << "to be analyzed: " << command << std::endl;
 
@@ -101,18 +103,19 @@ void Core::process(int id, std::string variable, std::string value){
     std::cout << "value = " << value << std::endl;
     std::cout << std::endl;
 
+    if(variable == "recieved_pings"){
+        
+    }
 }
 
 
 // Sends a message to all connected clients
 void Core::sendToAll(std::string msg) {
-    
     // Add an id (in this case all) and delimiter to the message to be sent
 }
 
 // Sends a message to a specified client id
 void Core::sendTo(std::string msg, int id) {
-    
     // Add an id and delimiter to the message to be sent
     //setMessage("id=" + std::to_string(id) + ";" + msg);
 }
