@@ -18,8 +18,6 @@ void Core::interpret(const char * recievedChars, int size, int clientId) {
 
         std::string recChars (recievedChars);
 
-        // Define message delimiter, used to split message into components
-
         // Define message keywords to search for
         std::string keywordId = "id=";
         std::string keywordBtn = "btn=";
