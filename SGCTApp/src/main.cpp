@@ -245,12 +245,13 @@ This function handles keyboard presses
 */
 void keyCallBack(int key, int action) {
     // Check if SGCT is master
-    if(gEngine->isMaster()) {
+    if(gEngine->isMaster() && action == GLFW_PRESS) {
         switch(key) {
 
             case 'T':
                 double min, max, avg;
                 getPingStats(min,max,avg);
+                std::cout << "Number of ping responses: " << pingResponses.size() << std::endl;
                 std::cout << "min: " << min << " ms" << std::endl;
                 std::cout << "max: " << max << " ms" << std::endl;
                 std::cout << "avg: " << avg << " ms" << std::endl;
