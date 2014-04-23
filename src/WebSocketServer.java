@@ -348,7 +348,6 @@ public class WebSocketServer extends ConsolePrinter{
             os.write(baos.toByteArray(), 0, baos.size());
             os.flush();
         }
-
     }
 
 }

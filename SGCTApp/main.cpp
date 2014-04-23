@@ -6,7 +6,7 @@
 #include "sgct/SGCTNetwork.h"
 #include <time.h> 
 #include <ctime>
-#include <chrono>
+//#include <chrono>
 
 // Create pointer to the sgct engine
 sgct::Engine * gEngine;
@@ -27,13 +27,14 @@ void endBenchmark();
 sgct::SharedDouble curr_time(0.0);
 sgct::SharedBool clockWise(false);
 bool QROn = false;
-std::string msg = "ping\r\n";
+const std::string PING_MESSAGE = "ping\r\n";
+std::vector<double> pingResponses;
 
 clock_t startClock;
 clock_t endClock;
 
 // a more precise timer from c++11. will keep code from ctime in case of incompatibility.
-std::chrono::time_point<std::chrono::system_clock> startSystemTime, endSystemTime;
+//std::chrono::time_point<std::chrono::system_clock> startSystemTime, endSystemTime;
 
 // Global vars
 GLuint vertexArray = GL_FALSE;
@@ -64,6 +65,8 @@ int main( int argc, char* argv[] ) {
         delete gEngine;
         return EXIT_FAILURE;
     }
+
+    pingResponses = std::vector<double>();
 
     // Main loop
     gEngine->render();
@@ -211,9 +214,10 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
 */
 void startBenchmark() {
 
-    gEngine->sendMessageToExternalControl( msg );
+    pingResponses.clear();
+    gEngine->sendMessageToExternalControl( PING_MESSAGE );
 
-    startSystemTime = std::chrono::system_clock::now();
+    //startSystemTime = std::chrono::system_clock::now();
     startClock = clock();
 
 }
@@ -224,32 +228,35 @@ void startBenchmark() {
 void stopBenchmark() {
     
     endClock = clock();
-    endSystemTime = std::chrono::system_clock::now();
+    //endSystemTime = std::chrono::system_clock::now();
 
-    double secondsElapsedClock = endClock - startClock;
-    std::chrono::duration<double> secondsElapsedSystemTime = endSystemTime-startSystemTime;
+    double secondsElapsedClock = (endClock - startClock) / (double)(CLOCKS_PER_SEC);
+    //std::chrono::duration<double> secondsElapsedSystemTime = endSystemTime-startSystemTime;
+    std::cout << "Ping roundtrip with clock:  " << 1000*secondsElapsedClock  << " ms" << std::endl;
+    //std::cout << "Ping roundtrip with chrono: " << secondsElapsedSystemTime.count() << "s" << std::endl;
+    //pingResponses.push_back()
 
-    std::cout << "Ping roundtrip with clock:  " << secondsElapsedClock / (double)(CLOCKS_PER_SEC) << " s" << std::endl;
-    std::cout << "Ping roundtrip with chrono: " << secondsElapsedSystemTime.count() << "s" << std::endl;
 }
 
 
 void keyCallBack(int key, int action) {
     // Check if SGCT is master
-    if(gEngine->isMaster()) {
+    if(gEngine->isMaster() && action == GLFW_PRESS) {
         switch(key) {
         //case GLFW_KEY_Q:
-            case 'Q':
-            
-            // toggle the QRCode on button press
-            if(QROn) {
+            case 'P':
                 std::cout << "Jag vill ta tid" << std::endl;
                 startBenchmark();
-                QROn = false;
-            } else {
-                QROn = true;
-            }
-        break;
+                break;
+
+            case 'Q':
+                // toggle the QRCode on button press
+                if(QROn) {
+                    QROn = false;
+                } else {
+                    QROn = true;
+                }
+                break;
         }
     }
 }
