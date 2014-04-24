@@ -16,10 +16,11 @@ body > div > div {
 body > div > div > div {
 	width: 33.3%;
 	height: 100%;
+	min-height: 33.3%;
 	float: left;
 	background-image: url('http://i.imgur.com/NA5fWjA.png');
 	background-size: 100% 100%;
-	display: block; 
+	display: block;
 }
 
 img {
@@ -101,3 +102,4 @@ hr {
 height:100%;
 width:100%;
 }
+*/
