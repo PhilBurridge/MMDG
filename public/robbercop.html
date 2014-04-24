@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Massive Multiplayer Dome Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css">
+<link rel="stylesheet" media="screen" href="css/styleMMDG.css">
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/script.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+</head>
+
+<body>
+<script>
+
+function buttons(name, icon){
+	document.write("<input id='button' type='image' alt='");
+	document.write(name);
+	document.write("' src='")
+	document.write(icon)
+	document.write("' onclick='wsButton(");
+	document.write(name);
+	document.write(");'/>");
+}
+
+/*
+var z = xmlDoc.getElementsByTagName("BACKGROUND"); //TABLE
+var color = z[0].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue; //table color
+
+document.write("<table  style=background-color:");
+document.write(color);
+document.write(";'>");
+*/
+
+document.write("<div>");
+	
+document.write("<div>");	
+
+//skall skicka med upleft som sedan testas i funktionen
+buttons("btn1","http://www.crabapples.net/artwork/gramps.png");
+buttons("btn2","http://www.crabapples.net/artwork/gramps.png");
+buttons("btn3","http://www.crabapples.net/artwork/gramps.png");
+
+document.write("</div>");	
+	
+
+document.write("<div>");
+
+buttons("btn4","http://www.crabapples.net/artwork/gramps.png");
+document.write("<div>&nbsp;</div>");
+//buttons("btn5","http://www.crabapples.net/artwork/gramps.png");
+buttons("btn6","http://www.crabapples.net/artwork/gramps.png");
+
+document.write("</div>");	
+
+
+document.write("<div>");	
+
+buttons("btn7","http://www.crabapples.net/artwork/gramps.png");
+buttons("btn8","http://www.crabapples.net/artwork/gramps.png");
+buttons("btn9","http://www.crabapples.net/artwork/gramps.png");
+
+document.write("</div>");	
+
+document.write("</div>");	
+
+</script>
+</body>
+</html>
