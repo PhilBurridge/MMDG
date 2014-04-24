@@ -38,6 +38,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * to connect yet
      */
     private Boolean appConnected = null;
+    
+    private String COMMAND_DELIMITER = "";
 
     /**
      * Creates the socket and the outputStream. Exceptions are handled if
@@ -60,9 +62,17 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * 
      * @return A vector of messages from the application
      */
-    public Vector<String> getMessagesFromApp() {
+    public Vector<String> getMessageStack() {
         return messagesFromApp;
 
+    }
+    
+    /**
+     * The TCPHandler class stores incoming messages from the Application in a
+     * Vector. The vector is cleared when this function is called
+     */
+    public void clearMessageStack(){
+        messagesFromApp.clear();
     }
 
     /**
@@ -108,7 +118,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         // Currently we are using ";" as delimiter.
         String messages = "";
         for (int i = 0; i < commandStack.size(); ++i) {
-            messages += commandStack.elementAt(i) + "";
+            messages += commandStack.elementAt(i) + COMMAND_DELIMITER;
         }
         sendToApplication(messages);
     }
@@ -144,6 +154,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
                     // If we want to be able to send messages from app to
                     // clients
                     if (message.startsWith("id=")) {
+                        messagesFromApp.add(message);
+                    }else if (message.startsWith("ping")) {
                         messagesFromApp.add(message);
                     }
 
@@ -232,3 +244,4 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         appConnected = newStatus;
     }
 }
+

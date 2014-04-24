@@ -33,7 +33,7 @@ public class MMDGServer extends ConsolePrinter{
      * Defines how many times per second the MMDG Server should unload the stack
      * of client  s to the application
      */
-    private double unloadsPerSecond = 10;
+    private double unloadsPerSecond = 10000;
 
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */
@@ -47,7 +47,7 @@ public class MMDGServer extends ConsolePrinter{
 
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
-        tcpHandler = new TCPHandler(LOCALHOST, TCP_PORT);
+        tcpHandler = new TCPHandler(serverIP, TCP_PORT);
 
 
         // Manage print outs
@@ -93,13 +93,23 @@ public class MMDGServer extends ConsolePrinter{
         //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         Vector<String> commandStack;
+        Vector<String> appMessageStack;
         while (true) {
 
             
             // To send a message from console in eclipse
             //print("Write something to TCP!");
             //tcpHandler.sendMessage(br.readLine());
-
+        	appMessageStack = tcpHandler.getMessageStack();
+        	if(appMessageStack.size()!=0){
+        	    print("Sending message: " + appMessageStack.firstElement());
+        	    //Only one message from App will be send per each unload, 
+        		webSocketServer.sendMessageToAllClients(appMessageStack.firstElement());
+        	}
+        	tcpHandler.clearMessageStack();
+        	
+       
+        	
             // Send messages from web site to connected application 
             commandStack = webSocketServer.getCommandStack();
             tcpHandler.sendToApplication(commandStack);

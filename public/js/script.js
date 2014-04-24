@@ -31,6 +31,10 @@ function init(ws) {
     ws.onmessage = function (msg) {
 	    var data = msg.data;
 	    console.log("Message from server: %s",data);
+	    if(data.localeCompare("ping")==0){
+	    	console.log("Message from server: %s",data);
+	    	ws.send("pingback");
+	    }
 	    document.getElementById('content').innerHTML += '<br>Message received from server: ' + data;
 
 	    //$('#content').html(+= '<br>Message received from server!')
