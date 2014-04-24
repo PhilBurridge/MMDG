@@ -50,10 +50,12 @@ public class WebSocketServer extends ConsolePrinter{
     }
 
     public synchronized Vector<String> getCommandStack() {
-        return commandStack;
+        Vector<String> commandStackCopy = new Vector<String>(commandStack);
+        clearCommandStack();
+        return commandStackCopy;
     }
 
-    public synchronized void clearCommandStack() {
+    public void clearCommandStack() {
         commandStack.clear();
     }
 
