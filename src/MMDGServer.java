@@ -107,8 +107,6 @@ public class MMDGServer extends ConsolePrinter{
         Vector<String> commandStack;
         Vector<String> appMessageStack;
         String outputString = "";
-        String receiver = "";
-        int delimiter_pos = -1;
         while (true) {
 
             // To send a message from console in eclipse
@@ -126,7 +124,7 @@ public class MMDGServer extends ConsolePrinter{
             // Send messages from web site to connected application
             commandStack = webSocketServer.getCommandStack();
             tcpHandler.sendToApplication(commandStack);
-            webSocketServer.clearCommandStack();
+            // webSocketServer.clearCommandStack();
             // print("Sent message to TCP handler");
 
             // sleep for 1/unloadPerSeconds seconds
