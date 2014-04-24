@@ -85,7 +85,7 @@ int main( int argc, char* argv[] ) {
     }
 
     core = new Core(gEngine);
-    //testCoreInputHandling();
+    testCoreInputHandling();
 
     // Main loop
     gEngine->render();

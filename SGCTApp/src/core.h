@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-
+#include <ctime>
 #include "sgct.h"
 
 #ifndef CORE_H
