@@ -288,7 +288,7 @@ public class WebSocketServer extends ConsolePrinter{
          * @return The received message from client
          * @throws IOException
          */
-        public String reiceveMessage() throws IOException {
+        private String reiceveMessage() throws IOException {
             byte[] buf = readBytes(2);
             // print("Headers:");
             // convertAndPrint(buf);
@@ -316,15 +316,17 @@ public class WebSocketServer extends ConsolePrinter{
         /**
          * Creates a thread for listening for client messages.
          */
-        public void listenToClient() {
+        private void listenToClient() {
             listenerTread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         while (alive) {
                             String msg = reiceveMessage();
-                            print("Recieved from client " + id + ": " + msg + "\". Adding as command.");
-                            addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
+                            print("Recieved from client " + id + ": " + msg + "\"");
+                            if(validateMessage(msg)){
+                                addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
+                            }   
                         }
                         print("The listening thread of clientHandler " + id
                                         + " is done");
@@ -335,6 +337,10 @@ public class WebSocketServer extends ConsolePrinter{
             });
             listenerTread.start();
             print("Started thread used to listen to client messages...");
+        }
+        
+        private boolean validateMessage(String msg){
+            return msg.indexOf(MMDGServer.CMD_DELIMITER) == -1;
         }
 
         public void sendMessage(byte[] msg) throws IOException {
