@@ -1,6 +1,6 @@
 import java.net.*;
 import java.io.*;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 public class MMDGServer extends ConsolePrinter{
@@ -92,8 +92,8 @@ public class MMDGServer extends ConsolePrinter{
         // Read from console in Eclipse
         //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        Vector<String> commandStack;
-        Vector<String> appMessageStack;
+        ArrayList<String> commandStack;
+        ArrayList<String> appMessageStack;
         while (true) {
 
             
@@ -102,9 +102,9 @@ public class MMDGServer extends ConsolePrinter{
             //tcpHandler.sendMessage(br.readLine());
         	appMessageStack = tcpHandler.getMessageStack();
         	if(appMessageStack.size()!=0){
-        	    print("Sending message: " + appMessageStack.firstElement());
+        	    print("Sending message: " + appMessageStack.get(0));
         	    //Only one message from App will be send per each unload, 
-        		webSocketServer.sendMessageToAllClients(appMessageStack.firstElement());
+        		webSocketServer.sendMessageToAllClients(appMessageStack.get(0));
         	}
         	tcpHandler.clearMessageStack();
         	

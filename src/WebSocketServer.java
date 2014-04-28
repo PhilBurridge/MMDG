@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Vector;
+import java.util.ArrayList;
 import org.apache.commons.codec.binary.Base64;
 
 
@@ -35,13 +35,13 @@ public class WebSocketServer extends ConsolePrinter{
      * a buffer of messages that will fill upp until MMDGServer forwards it to
      * the TCPHandler
      */
-    private Vector<String> commandStack;
+    private ArrayList<String> commandStack;
 
     /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
         serverSocket = new ServerSocket(websocketPort);
         clientHandlers = new HashMap<Integer, ClientHandler>();
-        commandStack = new Vector<String>();
+        commandStack = new ArrayList<String>();
     }
 
     public synchronized void addCommand(String command) {
@@ -49,7 +49,7 @@ public class WebSocketServer extends ConsolePrinter{
         print("Added \"" + command + "\" to command stack");
     }
 
-    public synchronized Vector<String> getCommandStack() {
+    public synchronized ArrayList<String> getCommandStack() {
         return commandStack;
     }
 
