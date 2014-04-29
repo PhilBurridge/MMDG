@@ -17,7 +17,10 @@ public class ConsolePrinter{
         print("Constructing");
     }
     
-    
+    /**
+     * Setter for allowPrints
+     * @param allowPrints specifies specifies the new value of allowPrints
+     */
     public void setAllowPrints(boolean allowPrints){
         this.allowPrints = allowPrints;
     }
