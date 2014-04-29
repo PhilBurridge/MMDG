@@ -51,7 +51,6 @@ public class MMDGServer extends ConsolePrinter{
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() throws IOException {
-        allowPrints = true;
 
         serverIP = getMyIP();
         if (createConfigFile()) {
@@ -62,11 +61,7 @@ public class MMDGServer extends ConsolePrinter{
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(serverIP, TCP_PORT);
 
-        // Manage print outs
-        httpServer.allowPrints = true;
-        webSocketServer.allowPrints = true;
-
-        System.out.println(getLinkToQRCode(600, "000000", "FFFFFF"));
+        print(getLinkToQRCode(600, "000000", "FFFFFF"));
         print("MMDGServer constructor done!\n");
     }
 
@@ -91,7 +86,7 @@ public class MMDGServer extends ConsolePrinter{
      */
     public void run() throws IOException {
 
-        print("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
+        System.out.println("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
                         + "/mmdg.html>");
 
         httpServer.listenForNewConnections();
@@ -162,7 +157,7 @@ public class MMDGServer extends ConsolePrinter{
     public String getLinkToQRCode(int size, String color, String bgColor) {
 
         if (!(isValidColorString(color) && isValidColorString(bgColor))) {
-            System.out.println("Using default colors for QR code");
+            print("Using default colors for QR code");
             color = "000000";
             bgColor = "FFFFFF";
         }
@@ -218,14 +213,14 @@ public class MMDGServer extends ConsolePrinter{
      */
     private boolean isValidColorString(String s) {
         if (s.length() != 6) {
-            System.out.println("Error! Color string length = " + s.length());
+            print("Error! Color string length = " + s.length());
             return false;
         }
         char c;
         for (int i = 0; i < 6; ++i) {
             c = s.charAt(i);
             if (!(('0' <= c && c <= '9') || ('A' <= c && c <= 'F'))) {
-                System.out.println("Error: Color string cannot contain " + c);
+                print("Error: Color string cannot contain " + c);
             }
         }
         return true;

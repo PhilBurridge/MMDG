@@ -249,7 +249,6 @@ public class WebSocketServer extends ConsolePrinter{
             this.clientSocket = clientSocket;
             this.id = id;
             alive = true;
-            allowPrints = true;
         }
 
         /**
@@ -324,7 +323,7 @@ public class WebSocketServer extends ConsolePrinter{
                     try {
                         while (alive) {
                             String msg = reiceveMessage();
-                            print("Recieved from client " + id + ": " + msg + "\". Adding as command.");
+                            print("Recieved from client " + id + ": \"" + msg + "\"");
                             addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
                         }
                         print("The listening thread of clientHandler " + id
