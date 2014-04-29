@@ -45,15 +45,18 @@ public class WebSocketServer extends ConsolePrinter{
     }
 
     public synchronized void addCommand(String command) {
-        commandStack.add(command);
+        commandStack.add(command + MMDGServer.CMD_DELIMITER);
         print("Added \"" + command + "\" to command stack");
     }
 
+
     public synchronized ArrayList<String> getCommandStack() {
-        return commandStack;
+        ArrayList<String> commandStackCopy = new ArrayList<String>(commandStack);
+        commandStack.clear();
+        return commandStackCopy;
     }
 
-    public synchronized void clearCommandStack() {
+    public void clearCommandStack() {
         commandStack.clear();
     }
 
@@ -322,7 +325,7 @@ public class WebSocketServer extends ConsolePrinter{
                         while (alive) {
                             String msg = reiceveMessage();
                             print("Recieved from client " + id + ": " + msg + "\". Adding as command.");
-                            addCommand(msg);
+                            addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
                         }
                         print("The listening thread of clientHandler " + id
                                         + " is done");
