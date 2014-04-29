@@ -8,6 +8,7 @@ public class ConsolePrinter{
     /** Decides if prints are allowed. This is public for easy access. */
     protected boolean allowPrints = true;
 
+    
     /**
      * Constructor. All classes that extends this class will get a console
      * message printed out when constructing
@@ -15,6 +16,12 @@ public class ConsolePrinter{
     protected ConsolePrinter() {
         print("Constructing");
     }
+    
+    
+    public void setAllowPrints(boolean allowPrints){
+        this.allowPrints = allowPrints;
+    }
+    
 
     /** This methods prints "[Class name] : */
     protected void print() {
