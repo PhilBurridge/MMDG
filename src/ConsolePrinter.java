@@ -6,67 +6,67 @@
 public class ConsolePrinter{
 
     /** Decides if prints are allowed. This is public for easy access. */
-    public boolean allowPrints = true;
+    protected boolean allowPrints = true;
 
     /**
      * Constructor. All classes that extends this class will get a console
      * message printed out when constructing
      */
-    public ConsolePrinter() {
+    protected ConsolePrinter() {
         print("Constructing");
     }
 
     /** This methods prints "[Class name] : */
-    public void print() {
+    protected void print() {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": ");
         }
     }
 
     /** This methods prints "[Class name] : [data] */
-    public void print(boolean data) {
+    protected void print(boolean data) {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": " + data);
         }
     }
 
     /** This methods prints "[Class name] : [data] */
-    public void print(char data) {
+    protected void print(char data) {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": " + data);
         }
     }
 
     /** This methods prints "[Class name] : [data] */
-    public void print(int data) {
+    protected void print(int data) {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": " + data);
         }
     }
 
     /** This methods prints "[Class name] : [data] */
-    public void print(long data) {
+    protected void print(long data) {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": " + data);
         }
     }
 
     /** This methods prints "[Class name] : [data] */
-    public void print(float data) {
+    protected void print(float data) {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": " + data);
         }
     }
 
     /** This methods prints "[Class name] : [data] */
-    public void print(double data) {
+    protected void print(double data) {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": " + data);
         }
     }
 
     /** This methods prints "[Class name] : [data] */
-    public void print(char[] data) {
+    protected void print(char[] data) {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": "
                             + data.toString());
@@ -74,14 +74,14 @@ public class ConsolePrinter{
     }
 
     /** This methods prints "[Class name] : [data] */
-    public void print(String data) {
+    protected void print(String data) {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": " + data);
         }
     }
 
     /** This methods prints "[Class name] : [data] */
-    public void print(Object data) {
+    protected void print(Object data) {
         if (allowPrints) {
             System.out.println(this.getClass().getSimpleName() + ": " + data);
         }
