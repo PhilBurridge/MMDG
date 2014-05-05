@@ -2,7 +2,6 @@
 
 Core::Core(sgct::Engine * gEngine):
 gEngine(gEngine){
-
     //The code below definds that commands must have this exact format:
     // "id=<id> var=<var> val=<val>;"
     cmd_args.push_back("id=");
@@ -25,7 +24,6 @@ void Core::handleExternalInput(const char * recievedChars, int size, int clientI
 
         //Pass pointer to variables. This method will update the variables values.
         if(analyzeCommand(command_vec[i], &id, &variable, &value)){
-
             //Now do something with the extracted information
             process(id,variable,value);
         }    

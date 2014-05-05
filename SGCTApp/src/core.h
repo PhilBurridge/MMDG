@@ -7,17 +7,18 @@
 #include <vector>
 #include <ctime>
 #include "sgct.h"
+//#include "robberCop.h"
 
 #ifndef CORE_H
 #define CORE_H
 
-class Core {
+class Core{
 public:
 	Core(sgct::Engine * gEngine);
 
 	//Handles communication from clients
 	void handleExternalInput(const char * recievedChars, int size, int clientId);
-	void process(int id, std::string variable, std::string value);
+	virtual void process(int id, std::string variable, std::string value);
 
 	//Handles communication to clients
 	void sendToAll(std::string msg);
@@ -54,8 +55,10 @@ private:
 
 	// for converting numbers to strings
 	//std::ostringstream convert;
-
-	//extracts commands delimited by CMD_DELIMITER from a string
+    
+    //virtual void handleMessage(int id, std::string action, std::string value);
+	
+    //extracts commands delimited by CMD_DELIMITER from a string
     std::vector<std::string> extractCommands(std::string externalInputString);
 
     //Analyzes commands for "arguments" separated by ARG_DELIMITER
@@ -63,7 +66,6 @@ private:
 
     //A pointer to the SGCT engine
     sgct::Engine * gEngine;
-
 
     /* BENCHMARKING VARIABLES */
 	clock_t startClock;
