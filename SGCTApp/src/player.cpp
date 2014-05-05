@@ -1,5 +1,5 @@
 #include "player.h"
-#include "debug.h"
+
 
 Player::Player(glm::vec2 pos, bool state):
     position(pos),

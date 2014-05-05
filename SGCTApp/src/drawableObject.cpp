@@ -1,5 +1,5 @@
 #include "drawableObject.h"
-#include "debug.h"
+
 
 /*DrawableObject::DrawableObject(std::string t):
     texture(t) { 

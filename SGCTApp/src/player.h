@@ -2,12 +2,15 @@
 #define PLAYER_H
 
 
-#include "sgct.h"
-#include "scene.h"
-#include "drawableObject.h"
 //#include <vector>
 //#include <iostream>
 //#include <glm/glm.hpp>
+
+#include "sgct.h"
+#include "scene.h"
+#include "drawableObject.h"
+#include "debug.h"
+
 
 //class Scene;
 // ADD THSI: public DrawableObject

@@ -4,7 +4,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+#include "debug.h"
 #include "sgct.h"
+
 
 class DrawableObject {
 public:
