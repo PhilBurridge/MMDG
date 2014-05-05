@@ -14,13 +14,16 @@ public:
     DrawableObject() {};
     //DrawableObject(std::string t);
 
-    void draw(/*glm::mat4 MVP,*/ glm::vec2 position) const;
+    void draw(/*glm::mat4 MVP,*/ glm::vec2 position = glm::vec2(0.0f, 0.0f)) const;
     void init();
     void setSize(float s);
     float getSize() const;
 
-private:
+    //Have this public in order for OpenGL to change it
     size_t textureHandle;
+
+private:
+    
     float size;
     std::string texture;
 };

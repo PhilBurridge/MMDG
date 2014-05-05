@@ -23,6 +23,7 @@ public:
     virtual void process(int id, std::string action, std::string value);
     
     void draw() const;
+    void init();
 
     Scene *scene;
 };

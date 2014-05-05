@@ -9,6 +9,13 @@ Scene::Scene(){
     background = new DrawableObject();
 }
 
+void Scene::init() {
+    // Load the texture to the texturehandle
+    sgct::TextureManager::instance()->loadTexure(
+        background->textureHandle, "Tex", "./textures/box.png", true);
+}
+
+
 void Scene::update() {
     updatePositions();
     checkCollisions();
@@ -45,6 +52,11 @@ void Scene::addPlayer(Player *p) {
 }
 
 void Scene::draw() {
+    //Draw Background image
+    background->draw();
+
+
+
     //if(player_vec.size() > 0) {
         //debug
     //std::cout << "player_vec.size(): " << player_vec.size() << std::endl;
@@ -56,9 +68,4 @@ void Scene::draw() {
     //}
 }
 
-void Scene::init() {
-    // Load the texture to the texturehandle
-    sgct::TextureManager::instance()->loadTexure(
-        backgroundhandle, "Tex", "./textures/box.png", true);
-}
 

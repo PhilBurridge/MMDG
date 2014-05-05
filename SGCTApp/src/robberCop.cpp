@@ -7,6 +7,10 @@ Core(gEngine) {
     std::cout << "constructing RobberCop" << std::endl;
 };
 
+void RobberCop::init(){
+    scene->init();
+}
+
 // Overiding method from core
 void RobberCop::process(int id, std::string var, std::string val) {
     std::cout << "overriding Core process ..." << std::endl;

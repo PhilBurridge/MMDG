@@ -74,6 +74,10 @@ int main( int argc, char* argv[] ) {
 }
 
 void init() {
+
+    std::cout << "  ** MAIN INIT **  " << std::endl;
+    robberCop->init();
+
     // Set the filter size of texture (just makes it look better)
     sgct::TextureManager::instance()->setAnisotropicFilterSize(8.0f);
     // Set the compression to be used on the texture
@@ -89,6 +93,8 @@ void init() {
     glCullFace(GL_BACK);
     // The polygon winding is counter clockwise (CCW)
     glFrontFace(GL_CCW);
+
+    std::cout << "  ** MAIN INIT DONE **  " << std::endl;
 }
 
 void draw() {

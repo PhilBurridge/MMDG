@@ -49,6 +49,7 @@ void DrawableObject::init() {
     glEnable(GL_CULL_FACE);
     // Set the filter size of texture (just makes it look better)
     sgct::TextureManager::instance()->setAnisotropicFilterSize(8.0f);
+    
     // Set the compression to be used on the texture
     sgct::TextureManager::instance()->setCompression(sgct::TextureManager::S3TC_DXT);
 
