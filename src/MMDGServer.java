@@ -1,6 +1,6 @@
 import java.net.*;
 import java.io.*;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 public class MMDGServer extends ConsolePrinter{
@@ -31,10 +31,23 @@ public class MMDGServer extends ConsolePrinter{
 
     /**
      * Defines how many times per second the MMDG Server should unload the stack
-     * of client  s to the application
+     * of client s to the application
      */
     private double unloadsPerSecond = 10000;
 
+    /**
+     * A string used for marking the end of a client's "command" sent to the
+     * application
+     */
+    public static final String CMD_DELIMITER = ";";
+
+    /**
+     * A string marking the end of each argument in a client's command sent to
+     * the application
+     */
+    public static final String ARG_DELIMITER = " ";
+
+    
     // CONSTRUCTORS
     /** Creates httpServer, webSocketServer and tcpHandler */
     public MMDGServer() throws IOException {
@@ -48,7 +61,6 @@ public class MMDGServer extends ConsolePrinter{
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(serverIP, TCP_PORT);
-
 
         // Manage print outs
         httpServer.allowPrints = true;
@@ -78,47 +90,48 @@ public class MMDGServer extends ConsolePrinter{
      * @throws IOException
      */
     public void run() throws IOException {
-        
+
         print("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
                         + "/mmdg.html>");
-        
+
         httpServer.listenForNewConnections();
-        
-        //will start the listener thread for the tcpHandler.
+
+        // will start the listener thread for the tcpHandler.
         tcpHandler.listener.start();
         webSocketServer.connect();
 
-
         // Read from console in Eclipse
-        //BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        // BufferedReader br = new BufferedReader(new
+        // InputStreamReader(System.in));
 
-        Vector<String> commandStack;
-        Vector<String> appMessageStack;
+        ArrayList<String> commandStack;
+        ArrayList<String> appMessageStack;
+
+        String outputString = "";
+
         while (true) {
 
-            
             // To send a message from console in eclipse
-            //print("Write something to TCP!");
-            //tcpHandler.sendMessage(br.readLine());
-        	appMessageStack = tcpHandler.getMessageStack();
-        	if(appMessageStack.size()!=0){
-        	    print("Sending message: " + appMessageStack.firstElement());
-        	    //Only one message from App will be send per each unload, 
-        		webSocketServer.sendMessageToAllClients(appMessageStack.firstElement());
-        	}
-        	tcpHandler.clearMessageStack();
-        	
-       
-        	
-            // Send messages from web site to connected application 
+
+            // print("Write something to TCP!");
+            // tcpHandler.sendMessage(br.readLine());
+            appMessageStack = tcpHandler.getMessageStack();
+            if (appMessageStack.size() != 0) {
+                
+                outputString = appMessageStack.get(0);
+                forwardMessageFromApp(outputString);
+
+            }
+            tcpHandler.clearMessageStack();
+
+            // Send messages from web site to connected application
+
             commandStack = webSocketServer.getCommandStack();
             tcpHandler.sendToApplication(commandStack);
-            webSocketServer.clearCommandStack();
-            //print("Sent message to TCP handler");
-
+            // webSocketServer.clearCommandStack();
+            // print("Sent message to TCP handler");
 
             // sleep for 1/unloadPerSeconds seconds
-
             try {
                 // How often stacks get sent to application
                 Thread.sleep((int) (1000 / unloadsPerSecond));
@@ -129,7 +142,7 @@ public class MMDGServer extends ConsolePrinter{
         }
         print("Server stopped");
     }
-
+    
     public void sendTestMessageViaTCP(String msg) {
         tcpHandler.sendToApplication(msg);
     }
@@ -146,8 +159,7 @@ public class MMDGServer extends ConsolePrinter{
      * @return a link to an image generated on the web, containing the QR code
      * @example getLinkToQRCode(400, "000000", "FFFFFF");
      */
-    public String getLinkToQRCode(int size, String color,
-                    String bgColor) {
+    public String getLinkToQRCode(int size, String color, String bgColor) {
 
         if (!(isValidColorString(color) && isValidColorString(bgColor))) {
             System.out.println("Using default colors for QR code");
@@ -164,7 +176,38 @@ public class MMDGServer extends ConsolePrinter{
         link += "size=" + size + "x" + size + "&ecc=L";
         return link;
     }
-
+    
+    private boolean forwardMessageFromApp(String outputString){
+        if(outputString.startsWith("id=")){
+            int delimiter_pos = outputString.indexOf(ARG_DELIMITER);
+            String receiver = outputString.substring(3, delimiter_pos);
+            String toSend = outputString.substring(delimiter_pos+1);
+            
+            if (receiver.equalsIgnoreCase("all")) {
+                print("Sending \"" + toSend + "\" to all clients");
+                webSocketServer.sendMessageToAllClients(toSend);
+            }
+            else {
+                try{
+                    int id = Integer.parseInt(receiver);
+                    print("Sending " + toSend + " to clients with id " + id);
+                    webSocketServer.sendMessageToClient(id, toSend);
+                }catch(Exception e){
+                    e.printStackTrace();
+                    print("Error: Receiver index is not an integer!");
+                    return false;
+                }
+            }
+            return true;
+        }
+        else{
+            print("Error: Message from appilcation has no reciever!");
+            print("Message from appilcation should start with: id=<int> or \"all\"");
+            return false;
+        }
+        
+    }
+    
     /**
      * Checks whether or not a string is a valid color string in hexadecimal
      * format. Example of a correct string: "0359AF".
@@ -188,7 +231,7 @@ public class MMDGServer extends ConsolePrinter{
         return true;
     }
 
-     /**
+    /**
      * Tries to get local host address via Java InetAdress. If that doesn't
      * work, it tries to get the IP address from http://checkip.amazonaws.com/.
      * 
@@ -230,6 +273,8 @@ public class MMDGServer extends ConsolePrinter{
             writer.println("(function (exports) {");
             writer.println("    exports.serverIP = \"" + serverIP + "\";");
             writer.println("    exports.serverWsPort= " + WEB_SOCKET_PORT + ";");
+            writer.println("    exports.arg_delimiter= \"" + ARG_DELIMITER
+                            + "\";");
             writer.println("})(typeof exports === 'undefined' ? this['config']={} : exports);");
 
             writer.close();
