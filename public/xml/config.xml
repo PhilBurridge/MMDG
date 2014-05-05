@@ -17,10 +17,6 @@ SLIDER:
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
-<!--
-	<BACKGROUND>
-		<COLOR>#000000</COLOR>
-	</BACKGROUND> -->
 	<BUTTON>
 		<ICON>arrows/upleft.png</ICON>
 		<NAME>btn1</NAME>
@@ -74,12 +70,5 @@ SLIDER:
 		<NAME>btn5</NAME>
 		<POS>upright</POS>
 		<EMPTY>no</EMPTY>
-	</BUTTON>
-	<!-- <SLIDER>
-		<NAME>Fin slider:</NAME>
-		<ENDVALUE>80</ENDVALUE>
-		<STARTVALUE>60</STARTVALUE>
-		<POS>downcenter</POS>
-	</SLIDER> -->
-	
+	</BUTTON>	
 </CATALOG>

@@ -27,8 +27,9 @@ else{// code for IE6, IE5
 xmlhttp.open("GET","xml/config.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML;
-try{
+
 var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
+//var x = xmlDoc.getElementById("CATALOG").getElementById("BUTTON"); //Buttons
 
 function buttons(ori){
 	for (i=0;i<x.length;i++){   //x.lenght() is the amount of buttons
@@ -56,9 +57,8 @@ function buttons(ori){
 		}
 	}
 }
-}
-catch(x)
-{}
+
+//first column
 
 document.write("<div>");
 	
@@ -69,17 +69,18 @@ buttons("centerleft");
 buttons("downleft");
 
 document.write("</div>");	
-	
+
+//second column	
 
 document.write("<div>");
 
-//document.write("<div>&nbsp;</div>");
 buttons("upcenter");
 buttons("centercenter");
 buttons("downcenter");
 
 document.write("</div>");	
 
+//third column
 
 document.write("<div>");	
 
