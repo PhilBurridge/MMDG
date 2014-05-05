@@ -22,7 +22,6 @@ function buttonUp(btnIndex){
 	ws.send("var=btn" + btnIndex + config.arg_delimiter + "val=0");
 }
 
-
 function init(ws) {
     ws.onmessage = function (msg) {
 	    var data = msg.data;

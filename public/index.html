@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Massive Multiplayer Dome Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css">
+<link rel="stylesheet" media="screen" href="css/styleMMDG.css">
+<script src="js/config.js" type="text/javascript"></script>
+<script src="js/script.js" type="text/javascript"></script>
+<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
+</head>
+
+<body>
+<script>
+if (window.XMLHttpRequest){  // code for IE7+, Firefox, Chrome, Opera, Safari
+	xmlhttp=new XMLHttpRequest();
+}
+else{  // code for IE6, IE5
+	xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+xmlhttp.open("GET","xml/config.xml",false);
+xmlhttp.send();
+xmlDoc=xmlhttp.responseXML;
+
+var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
+
+function buttons(ori){
+	for (i=0;i<x.length;i++){   //x.lenght() is the amount of buttons
+		var pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+		var name = x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
+		var icon = x[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
+		
+		if(pos == ori){
+			document.write("<input id='button' type='image' alt='");
+			document.write(name);
+			document.write("' src='")
+			document.write(icon)
+			document.write("' onclick='wsButton(");
+			document.write(name);
+			document.write(");'/>");
+		}
+	}
+}
+
+
+var y = xmlDoc.getElementsByTagName("SLIDER"); //Sliders
+
+function sliders(ori){
+	for (i=0;i<y.length;i++){
+		var Pos = y[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+		//var Posx = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue;
+		
+		if(Pos == ori){
+			var name = y[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
+			var endvalue = parseInt(y[i].getElementsByTagName("ENDVALUE")[0].childNodes[0].nodeValue);
+			var startvalue = parseInt(y[i].getElementsByTagName("STARTVALUE")[0].childNodes[0].nodeValue);
+			
+			document.write("<input id='slider' data-role='main' class='ui-content'><form method='post' action='demoform.asp'><label for='points'>");
+			document.write(name);
+			document.write("</label><input type='range' name='points' id='points' value='"); 
+			document.write(startvalue);
+			document.write("' min='0' max=");
+			document.write(endvalue);
+			document.write("></form>");
+		}
+		}
+		
+
+	}
+
+
+
+var z = xmlDoc.getElementsByTagName("BACKGROUND"); //TABLE
+var color = z[0].getElementsByTagName("COLOR")[0].childNodes[0].nodeValue; //table color
+/*
+document.write("<table  style=background-color:");
+document.write(color);
+document.write(";'>");
+*/
+
+document.write("<div>");
+	
+document.write("<div>");	
+document.write("<div>");
+sliders("upleft"); //skall skicka med upleft som sedan testas i funktionen
+buttons("upleft");
+document.write("</div>");
+document.write("<div>");
+sliders("centerleft");
+buttons("centerleft");
+document.write("</div>");
+document.write("<div>");
+sliders("downleft");
+buttons("downleft");
+document.write("</div>");
+document.write("</div>");	
+	
+
+document.write("<div>");
+
+document.write("<div>");
+sliders("upcenter");
+buttons("upcenter");
+document.write("</div>");
+document.write("<div>");
+sliders("centercenter");
+buttons("centercenter");
+document.write("</div>");
+document.write("<div>");
+sliders("downcenter");
+buttons("downcenter");
+document.write("</div>");
+document.write("</div>");	
+
+
+document.write("<div>");	
+document.write("<div>");
+sliders("upright");
+buttons("upright");
+document.write("</div>");
+document.write("<div>");
+sliders("centerright");
+buttons("centerright");
+document.write("</div>");
+document.write("<div>");
+sliders("downright");
+buttons("downright");
+document.write("</div>");
+document.write("</div>");	
+
+document.write("</div>");	
+
+</script>
+</body>
+</html>

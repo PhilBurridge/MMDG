@@ -1,0 +1,104 @@
+html, body, body > div {    
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	display: block; 
+}
+
+body > div > div {
+	height: 33.3%;
+	width: 100%;
+	display: block; 
+}
+
+body > div > div > div {
+	width: 33.3%;
+	height: 100%;
+	min-height: 33.3%;
+	float: left;
+	background-image: url('http://i.imgur.com/NA5fWjA.png');
+	background-size: 100% 100%;
+	display: block;
+}
+
+img {
+	height: 100%;
+	width: 100%;
+}
+
+#slider {
+  height: 85%;
+}/*
+div.ui-slider {
+  height: 100%;
+}
+form{
+height:100%;
+}*/
+
+input{
+   position:relative;
+   width:100%;
+   height:100%;
+   float:left;
+   image-size:100% 100%;
+   slider-size: 100% 100%;
+}
+/*
+table{
+	border:0px solid black;
+	/* background-color:#00008B; *//*
+	width:100%;
+	height:100%;	
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right:0;
+}/*
+tr {
+	border:0px solid black;
+	position:relative;
+	width:33%;
+	height:33%;
+}
+button {
+	width:90%;
+	height:90%;
+}
+div { /*fråga mig inte varför detta står med, men det funkar nu! kanske en inbyggd div-tagg i ett table?*/    
+/*	width:60%;
+	height:70%;
+}
+div {
+	color:white;   /*blir inte vit*//*
+}
+p {
+	font-family: verdana;
+	vertical-align: middle;
+	text-align: center;
+	font-size: 13px;
+}
+h1 {
+	margin-top: 40px;
+	font-family: verdana;
+	font-size: 26px;
+	text-align: center;
+	padding: 0px;
+}
+
+h2 {
+	font-family: verdana;
+	font-size: 17px;
+	text-align: center;
+}
+hr {
+	border: 1px dotted black;
+}
+
+#container{
+height:100%;
+width:100%;
+}
+*/
