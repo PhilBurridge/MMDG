@@ -21,8 +21,9 @@ public:
     void switchToRobber();
     bool isCop();
     void setMoveDirection(int button, bool pressed);
-    void movePlayer();
-    void update();
+    void movePlayer(float dt);
+    void update(float dt);
+    
     glm::vec2 getPosition() const;
     void setPosition(glm::vec2 p);
 

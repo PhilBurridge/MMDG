@@ -2,13 +2,15 @@
 
 
 Player::Player(glm::vec2 pos, bool state):
-    DrawableObject("box.png"),
-    position(pos),
-    cop(state),
-    speed(0.1f)
-{
+DrawableObject("box.png", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
     debug
-};
+    display();
+    //sgct::TextureManager::instance()->loadTexure(
+    //    textureHandle, "player", "./textures/" + texture, true);
+    debug
+    //init();
+    display();
+}
 
 void Player::switchToCop()
 {
@@ -29,8 +31,6 @@ void Player::setMoveDirection(int button, bool pressed) {
     if(button == 1) {
         //north
         direction = glm::vec2(0.0f,1.0f);
-        //direction.x = 0.0f;
-        //direction.y = 1.0f;
     }
     if(button == 2) {
         //north east
@@ -66,11 +66,11 @@ void Player::setMoveDirection(int button, bool pressed) {
     }
 }
 
-void Player::movePlayer() {
-    position += speed*direction;
+void Player::movePlayer(float dt) {
+    position += dt*speed*direction;
 }
 
-void Player::update() {
+void Player::update(float dt) {
    
 }
 
@@ -83,6 +83,7 @@ void Player::setPosition(glm::vec2 p) {
 }
 
 void Player::display() const{
+    DrawableObject::display();
     std::cout << "pos: x=" << position.x << " y=" << position.y << std::endl;
     std::cout << "direction: x=" << direction.x << " y=" << direction.y << std::endl;
     std::cout << "isCop = " << cop << std::endl;

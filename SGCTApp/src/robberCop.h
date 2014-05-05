@@ -3,7 +3,6 @@
 #include "sgct.h"
 #include "scene.h"
 #include "debug.h"
-//#include "player.h"
 #include "core.h"
 
 #ifndef ROBBERCOP_H
@@ -16,12 +15,11 @@ private:
     
 
 public:
-    RobberCop();
     RobberCop(sgct::Engine * gEngine); 
-
 
     virtual void process(int id, std::string action, std::string value);
     
+    void update(float dt);
     void draw() const;
     void init();
 

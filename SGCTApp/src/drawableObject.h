@@ -11,23 +11,28 @@
 class DrawableObject {
 public:
 
-    DrawableObject(const std::string& texture, float w = 1.0f, float h = 1.0f);
+    DrawableObject(const std::string& texture, float w, float h);
+    DrawableObject(const std::string& texture, float s);
     //DrawableObject(std::string t);
 
     void draw(/*glm::mat4 MVP,*/ float x=0.0f, float y=0.0f) const;
     void init();
     void setSize(float s);
     float getSize() const;
+    void display() const;
 
     //Have this public in order for OpenGL to change it
     size_t textureHandle;
+    const std::string texture;    
 
 private:
-    
+
     float size;
     float width;
     float height;
-    const std::string texture;
+
+    static int objCounter;
+    
 };
 
 #endif // DRAWABLEOBJECT_H

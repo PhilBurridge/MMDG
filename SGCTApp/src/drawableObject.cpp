@@ -1,8 +1,19 @@
 #include "drawableObject.h"
 
+int DrawableObject::objCounter = 0;
 
 DrawableObject::DrawableObject(const std::string& t, float w, float h):
-texture(t), width(w), height(h) { }
+texture(t), width(w), height(h) {
+    size = fmax(w,h);
+    objCounter++;
+}
+
+DrawableObject::DrawableObject(const std::string& t, float s):
+texture(t), size(s) {
+    width = s;
+    height = s;
+    objCounter--;
+}
 
 
 // Inits the drawing of a player
@@ -58,4 +69,12 @@ void DrawableObject::setSize(float s) {
 // Gets the size of a player
 float DrawableObject::getSize() const {
     return size;
+}
+
+void DrawableObject::display() const{
+    std::cout << "size = " << size << std::endl;
+    std::cout << "width = " << width << std::endl;
+    std::cout << "height = " << height << std::endl;
+    std::cout << "texture = " << texture << std::endl;
+    std::cout << "textureHandle = " << textureHandle << std::endl;
 }

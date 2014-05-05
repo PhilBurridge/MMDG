@@ -20,11 +20,7 @@ void preSync();
 void encode();
 void decode();
 void cleanUp();
-void externalControlCallback(
-    const char * recievedChars, 
-    int size, 
-    int clientId
-    );
+void externalControlCallback(const char * recievedChars, int size, int clientId);
 
 /*** Shared variables ***/
 // The current time on master
@@ -56,6 +52,9 @@ int main( int argc, char* argv[] ) {
 
     // Send a message to the connected clients
     //gEngine->sendMessageToExternalControl(core->getMessage());
+
+    //test
+    //robberCop->process(1,"connected","1");
 
     // Main loop
     gEngine->render();
@@ -105,33 +104,7 @@ void init() {
 
 
 void draw() {
-    //debug
     robberCop->draw();
-
-    //TESTING
-    /*
-    glTranslatef(0.0f, 0.0f, 3.0f);
-
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByHandle(textureHandleQRBox));
-
-    // Draw the triangle
-    glBegin(GL_QUADS);
-        glNormal3f(0.0, 0.0, 1.0);
-
-        glTexCoord2d(1, 0);
-        glVertex3f(1.0f, -1.0f, 0.0f);
-
-        glTexCoord2d(1, 1);
-        glVertex3f(1.0f, 1.0f, 0.0f);
-
-        glTexCoord2d(0, 1);
-        glVertex3f(-1.0f, 1.0f, 0.0f);
-
-        glTexCoord2d(0, 0);
-        glVertex3f(-1.0f, -1.0f, 0.0f);
-    glEnd();
-    */
 }
 
 void preSync() {
@@ -139,6 +112,9 @@ void preSync() {
     if( gEngine->isMaster() ) {
         // Get the time in seconds
         curr_time.setVal(sgct::Engine::getTime());
+
+        //OBS! This should be the delta time, 
+        robberCop->update(1.0f / 60.0f);
     }
 }
 
