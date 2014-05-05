@@ -25,7 +25,7 @@ else{  // code for IE6, IE5
 xmlhttp.open("GET","xml/config.xml",false);
 xmlhttp.send();
 xmlDoc=xmlhttp.responseXML;
-try{
+
 var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
 
 function buttons(ori){
@@ -45,9 +45,8 @@ function buttons(ori){
 		}
 	}
 }
-}
-catch(x)
-{}
+
+
 var y = xmlDoc.getElementsByTagName("SLIDER"); //Sliders
 
 function sliders(ori){
@@ -60,13 +59,13 @@ function sliders(ori){
 			var endvalue = parseInt(y[i].getElementsByTagName("ENDVALUE")[0].childNodes[0].nodeValue);
 			var startvalue = parseInt(y[i].getElementsByTagName("STARTVALUE")[0].childNodes[0].nodeValue);
 			
-			document.write("<div id='slider' data-role='main' class='ui-content'><form method='post' action='demoform.asp'><label for='points'>");
+			document.write("<input id='slider' data-role='main' class='ui-content'><form method='post' action='demoform.asp'><label for='points'>");
 			document.write(name);
 			document.write("</label><input type='range' name='points' id='points' value='"); 
 			document.write(startvalue);
 			document.write("' min='0' max=");
 			document.write(endvalue);
-			document.write("></form></div>");
+			document.write("></form>");
 		}
 		}
 		
@@ -86,39 +85,51 @@ document.write(";'>");
 document.write("<div>");
 	
 document.write("<div>");	
-
+document.write("<div>");
 sliders("upleft"); //skall skicka med upleft som sedan testas i funktionen
 buttons("upleft");
+document.write("</div>");
+document.write("<div>");
 sliders("centerleft");
 buttons("centerleft");
+document.write("</div>");
+document.write("<div>");
 sliders("downleft");
 buttons("downleft");
-
+document.write("</div>");
 document.write("</div>");	
 	
 
 document.write("<div>");
 
-document.write("<div>&nbsp;</div>");
+document.write("<div>");
 sliders("upcenter");
 buttons("upcenter");
+document.write("</div>");
+document.write("<div>");
 sliders("centercenter");
 buttons("centercenter");
+document.write("</div>");
+document.write("<div>");
 sliders("downcenter");
 buttons("downcenter");
-
+document.write("</div>");
 document.write("</div>");	
 
 
 document.write("<div>");	
-
+document.write("<div>");
 sliders("upright");
 buttons("upright");
+document.write("</div>");
+document.write("<div>");
 sliders("centerright");
 buttons("centerright");
+document.write("</div>");
+document.write("<div>");
 sliders("downright");
 buttons("downright");
-
+document.write("</div>");
 document.write("</div>");	
 
 document.write("</div>");	
