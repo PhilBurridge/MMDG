@@ -81,11 +81,9 @@ void init() {
     // Set the compression to be used on the texture
     sgct::TextureManager::instance()->setCompression(sgct::TextureManager::S3TC_DXT);
 
-    // TEST
     // Load the texture to the texturehandle
     sgct::TextureManager::instance()->loadTexure(
         textureHandleQRBox, "QRBox", "./textures/box.png", true);
-    // /TEST
 
 
     // Enable some openGL stuff
@@ -112,7 +110,7 @@ void draw() {
 
     //TESTING
 
-    glTranslatef(0.0f, 0.0f, -3.0f);
+    glTranslatef(0.0f, 0.0f, 3.0f);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByHandle(textureHandleQRBox));
@@ -120,14 +118,18 @@ void draw() {
     // Draw the triangle
     glBegin(GL_QUADS);
         glNormal3f(0.0, 0.0, 1.0);
-        glTexCoord2d(0, 0);
-        glVertex3f(-1.0f, -1.0f, 0.0f);
-        glTexCoord2d(0, 1);
-        glVertex3f(-1.0f, 1.0f, 0.0f);
-        glTexCoord2d(1, 1);
-        glVertex3f(1.0f, 1.0f, 0.0f);
+
         glTexCoord2d(1, 0);
         glVertex3f(1.0f, -1.0f, 0.0f);
+
+        glTexCoord2d(1, 1);
+        glVertex3f(1.0f, 1.0f, 0.0f);
+
+        glTexCoord2d(0, 1);
+        glVertex3f(-1.0f, 1.0f, 0.0f);
+
+        glTexCoord2d(0, 0);
+        glVertex3f(-1.0f, -1.0f, 0.0f);
     glEnd();
 }
 
