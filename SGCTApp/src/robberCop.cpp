@@ -12,6 +12,7 @@ void RobberCop::process(int id, std::string var, std::string val) {
     std::cout << "overriding Core process ..." << std::endl;
     Core::process(id,var,val);
     std::cout << "with ..." << std::endl;
+    int action;
 
     if(strcmp(var.c_str(), "btn")){
         int action = atoi(var.substr(3,1).c_str());
@@ -28,14 +29,15 @@ void RobberCop::process(int id, std::string var, std::string val) {
         debug
         value = false;
     }
-/*
-    if(id == 0 || id > scene->player_vec->size()) {
+
+    if(id == 0 || id > scene->player_vec.size()) {
         debug
-        scene->addPlayer();
+        scene->addPlayer(new Player(glm::vec2(0.0f, 0.0f), false));
         debug
-    }   
-    scene->player_vec->operator[](id)->setMoveDirection(action, value);
-    */
+    }
+    debug
+    scene->player_vec.at(id)->setMoveDirection(action, value);
+    debug
 }
 
 // id=0 var=btn1 val=pressed;
