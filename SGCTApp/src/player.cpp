@@ -7,8 +7,6 @@ Player::Player(glm::vec2 pos, bool state):
     speed(0.1f)
 {
     debug
-    drawableObject = new DrawableObject();
-    debug
 };
 
 void Player::switchToCop()
@@ -75,7 +73,7 @@ void Player::update() {
    
 }
 
-glm::vec2 Player::getPosition() {
+glm::vec2 Player::getPosition() const{
     return position;
 }
 
@@ -91,9 +89,8 @@ void Player::display() const{
 
 }
 
-/*void Player::draw()
-{
-
-}*/
+void Player::draw() const {
+    DrawableObject::draw(position);
+}
 
 

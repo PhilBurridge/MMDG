@@ -11,7 +11,7 @@
 #include "sgct.h"
 #include "robberCop.h"
 #include "player.h"
-//#include "drawableObject.h"
+#include "drawableObject.h"
 
 class Player;
 //class DrawableObject;

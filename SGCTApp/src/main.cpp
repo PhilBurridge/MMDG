@@ -17,7 +17,6 @@
 // Create pointer to the sgct engine, scene and core
 sgct::Engine * gEngine;
 RobberCop *robberCop;
-//Scene *scene;
 
 void init();
 void draw();
@@ -40,7 +39,6 @@ int main( int argc, char* argv[] ) {
     // Allocate
     gEngine = new sgct::Engine( argc, argv );
     robberCop = new RobberCop(gEngine);
-    //scene = new Scene();
 
     // Bind functions
     gEngine->setInitOGLFunction(init);
@@ -95,8 +93,7 @@ void init() {
 
 void draw() {
     //debug
-    //scene->update();
-    robberCop->draw(texturehandle);
+    robberCop->draw();
 }
 
 void preSync() {

@@ -50,7 +50,7 @@ void Scene::draw() {
     //std::cout << "player_vec.size(): " << player_vec.size() << std::endl;
         for (std::vector<Player *>::iterator it = player_vec.begin() ; it != player_vec.end(); ++it) {
             //debug
-            (*it)->draw((*it)->getPosition());
+            (*it)->draw();
             //std::cout << "drawloop" << std::endl;
         }
     //}

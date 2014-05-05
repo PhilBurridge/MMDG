@@ -5,7 +5,6 @@ RobberCop::RobberCop(sgct::Engine * gEngine):
 Core(gEngine) {
     scene = new Scene();
     std::cout << "constructing RobberCop" << std::endl;
-
 };
 
 // Overiding method from core
@@ -42,9 +41,9 @@ void RobberCop::process(int id, std::string var, std::string val) {
     debug
 }
 
-void RobberCop::draw(size_t texturehandle) {
+void RobberCop::draw() const {
     scene->update();
-    scene->draw(texturehandle);
+    scene->draw();
 }
 
 

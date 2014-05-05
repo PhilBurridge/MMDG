@@ -10,7 +10,7 @@
 };*/
 
 // Draws a player with a set position and MVP matrix
-void DrawableObject::draw(/*mat4::MVP,*/ glm::vec2 position) {
+void DrawableObject::draw(/*mat4::MVP,*/ glm::vec2 position) const {
     // Load the texture to the texturehandle
     /*sgct::TextureManager::instance()->loadTexure(
         textureHandle, "Tex", "./textures/box.png", true);*/
@@ -18,7 +18,7 @@ void DrawableObject::draw(/*mat4::MVP,*/ glm::vec2 position) {
     glActiveTexture(GL_TEXTURE0);
 
     // Bind the texture by its set handle
-    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByHandle(texturehandle));
+    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByHandle(textureHandle));
     glTranslatef(0.0f, 0.0f, -3.0f);
     // Draw the player polygon
     glBegin(GL_QUADS);
@@ -74,6 +74,6 @@ void DrawableObject::setSize(float s) {
 }
 
 // Gets the size of a player
-float DrawableObject::getSize() {
+float DrawableObject::getSize() const {
     return size;
 }

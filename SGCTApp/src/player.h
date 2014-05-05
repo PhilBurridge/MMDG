@@ -31,12 +31,11 @@ public:
     void setMoveDirection(int button, bool pressed);
     void movePlayer();
     void update();
-    glm::vec2 getPosition();
+    glm::vec2 getPosition() const;
     void setPosition(glm::vec2 p);
-    DrawableObject *drawableObject;
 
     void display() const;
     
-   // void draw();
+    void draw() const;
 };
 #endif // PLAYER_H
