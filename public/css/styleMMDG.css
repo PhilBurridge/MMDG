@@ -11,7 +11,7 @@ body > div > div {
 	height: 33.3%;
 	width: 100%;
 	display: block;
-overflow: auto	
+	
 
 }
 
@@ -23,7 +23,6 @@ body > div > div > div {
 	background-image: url('http://i.imgur.com/NA5fWjA.png');
 	background-size: 100% 100%;
 	display: block; 
-	overflow: auto;
 }
 
 img {
