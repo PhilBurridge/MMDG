@@ -11,20 +11,12 @@
 #include "drawableObject.h"
 #include "debug.h"
 
-
-//class Scene;
-// ADD THSI: public DrawableObject
 class Player: public DrawableObject {
 
-private:
-
-    float speed;
-    bool cop;
-    glm::vec2 position;
-    glm::vec2 direction;
 public:
     Player();
     Player(glm::vec2 pos, bool state);
+
 	void switchToCop();
     void switchToRobber();
     bool isCop();
@@ -37,5 +29,14 @@ public:
     void display() const;
     
     void draw() const;
+
+
+private:
+
+    float speed;
+    bool cop;
+    glm::vec2 position;
+    glm::vec2 direction;
+    
 };
 #endif // PLAYER_H

@@ -2,6 +2,7 @@
 
 
 Player::Player(glm::vec2 pos, bool state):
+    DrawableObject("box.png"),
     position(pos),
     cop(state),
     speed(0.1f)
@@ -90,7 +91,7 @@ void Player::display() const{
 }
 
 void Player::draw() const {
-    DrawableObject::draw(position);
+    DrawableObject::draw(position.x, position.y);
 }
 
 

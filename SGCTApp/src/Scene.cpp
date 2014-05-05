@@ -1,18 +1,12 @@
 #include "Scene.h"
 
 
-
-/*Scene::Scene(sgct::Engine * gEngine):
-RobberCop(gEngine) {};*/
-
 Scene::Scene(){
-    background = new DrawableObject();
+    background = new DrawableObject("mmdg.png", 2.0f, 1.0f);
 }
 
 void Scene::init() {
-    // Load the texture to the texturehandle
-    sgct::TextureManager::instance()->loadTexure(
-        background->textureHandle, "Tex", "./textures/box.png", true);
+    background->init();
 }
 
 
@@ -53,19 +47,11 @@ void Scene::addPlayer(Player *p) {
 
 void Scene::draw() {
     //Draw Background image
-    background->draw();
+    background->draw(0.0f, 0.0f);
 
-
-
-    //if(player_vec.size() > 0) {
-        //debug
-    //std::cout << "player_vec.size(): " << player_vec.size() << std::endl;
-        for (std::vector<Player *>::iterator it = player_vec.begin() ; it != player_vec.end(); ++it) {
-            //debug
-            (*it)->draw();
-            //std::cout << "drawloop" << std::endl;
-        }
-    //}
+    for (std::vector<Player *>::iterator it = player_vec.begin() ; it != player_vec.end(); ++it) {
+        (*it)->draw();
+    }
 }
 
 

@@ -11,10 +11,10 @@
 class DrawableObject {
 public:
 
-    DrawableObject() {};
+    DrawableObject(const std::string& texture, float w = 1.0f, float h = 1.0f);
     //DrawableObject(std::string t);
 
-    void draw(/*glm::mat4 MVP,*/ glm::vec2 position = glm::vec2(0.0f, 0.0f)) const;
+    void draw(/*glm::mat4 MVP,*/ float x=0.0f, float y=0.0f) const;
     void init();
     void setSize(float s);
     float getSize() const;
@@ -25,7 +25,9 @@ public:
 private:
     
     float size;
-    std::string texture;
+    float width;
+    float height;
+    const std::string texture;
 };
 
 #endif // DRAWABLEOBJECT_H

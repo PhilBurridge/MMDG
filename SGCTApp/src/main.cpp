@@ -109,7 +109,7 @@ void draw() {
     robberCop->draw();
 
     //TESTING
-
+    /*
     glTranslatef(0.0f, 0.0f, 3.0f);
 
     glActiveTexture(GL_TEXTURE0);
@@ -131,6 +131,7 @@ void draw() {
         glTexCoord2d(0, 0);
         glVertex3f(-1.0f, -1.0f, 0.0f);
     glEnd();
+    */
 }
 
 void preSync() {
