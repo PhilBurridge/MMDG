@@ -2,13 +2,13 @@
 <!-- 
 Example on what is available to modify in this xml file.
 
-Background: 
--COLOR: CSS color, for example #00008B = deep blue, #40B3DF = light blue, #B4009E = purple... Goolge: css colors! 
+All positions of the 3x3 grid Must be filled to ensure a correct alignment!
 
-Button: 
+Button:
 -ICON: URL or path in folder. 
 -NAME: any name, not too long. This name is sent to the application. 
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright. 
+-EMPTRY: yes/no for space without button.
 
 SLIDER: 
 -NAME: any name, not too long. This name is sent to the application with the value. 
@@ -17,52 +17,69 @@ SLIDER:
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
+<!--
 	<BACKGROUND>
 		<COLOR>#000000</COLOR>
-	</BACKGROUND>
+	</BACKGROUND> -->
 	<BUTTON>
-<!-- 	<COLOR>red</COLOR>
-		<HEIGHT>100</HEIGHT>
-		<WIDTH>100</WIDTH> -->
-		<ICON>gramps.png</ICON>
+		<ICON>arrows/upleft.png</ICON>
 		<NAME>btn1</NAME>
 		<POS>upleft</POS>
+		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
+		<ICON>arrows/right.png</ICON> 
 		<NAME>btn2</NAME>
 		<POS>centerright</POS>
+		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
+		<ICON>arrows/up.png</ICON>
+		<NAME>btn5</NAME>
+		<POS>upcenter</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>arrows/down.png</ICON>
+		<NAME>btn3</NAME>
+		<POS>downcenter</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>http://www.bevezetem.hu/images/1310/angoranyul4.jpg</ICON> <!--arrows/empty.png-->
 		<NAME>btn3</NAME>
 		<POS>centercenter</POS>
+		<EMPTY>yes</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
+		<ICON>arrows/left.png</ICON>
 		<NAME>btn4</NAME>
 		<POS>centerleft</POS>
+		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
+		<ICON>arrows/downright.png</ICON>
 		<NAME>btn5</NAME>
 		<POS>downright</POS>
+		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
+		<ICON>arrows/downleft.png</ICON>
 		<NAME>btn5</NAME>
 		<POS>downleft</POS>
+		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>http://www.crabapples.net/artwork/gramps.png</ICON>
+		<ICON>arrows/upright.png</ICON>
 		<NAME>btn5</NAME>
 		<POS>upright</POS>
+		<EMPTY>no</EMPTY>
 	</BUTTON>
-	<SLIDER>
+	<!-- <SLIDER>
 		<NAME>Fin slider:</NAME>
 		<ENDVALUE>80</ENDVALUE>
 		<STARTVALUE>60</STARTVALUE>
 		<POS>downcenter</POS>
-	</SLIDER>
+	</SLIDER> -->
 	
 </CATALOG>
