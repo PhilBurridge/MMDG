@@ -3,12 +3,8 @@
 #include <iostream>
 #include "debug.h"
 #include "sgct.h"
-//#include "core.h"
 #include "robberCop.h"
-//#include "Scene.h"
 
-//class Core;
-//class Scene;
 
 
 /* !!!! FIXA ROBERCOP I CORE BRANCHEN !!!! */
@@ -33,7 +29,7 @@ void externalControlCallback(
 /*** Shared variables ***/
 // The current time on master
 sgct::SharedDouble curr_time(0.0);
-
+size_t textureHandleQRBox;
 
 int main( int argc, char* argv[] ) {
     // Allocate
@@ -75,6 +71,8 @@ int main( int argc, char* argv[] ) {
 
 void init() {
 
+
+
     std::cout << "  ** MAIN INIT **  " << std::endl;
     robberCop->init();
 
@@ -82,6 +80,14 @@ void init() {
     sgct::TextureManager::instance()->setAnisotropicFilterSize(8.0f);
     // Set the compression to be used on the texture
     sgct::TextureManager::instance()->setCompression(sgct::TextureManager::S3TC_DXT);
+
+    // TEST
+    // Load the texture to the texturehandle
+    sgct::TextureManager::instance()->loadTexure(
+        textureHandleQRBox, "QRBox", "./textures/box.png", true);
+    // /TEST
+
+
     // Enable some openGL stuff
     glEnable(GL_DEPTH_TEST);
     glEnable( GL_COLOR_MATERIAL );
@@ -95,11 +101,34 @@ void init() {
     glFrontFace(GL_CCW);
 
     std::cout << "  ** MAIN INIT DONE **  " << std::endl;
+
 }
+
+
 
 void draw() {
     //debug
     robberCop->draw();
+
+    //TESTING
+
+    glTranslatef(0.0f, 0.0f, -3.0f);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByHandle(textureHandleQRBox));
+
+    // Draw the triangle
+    glBegin(GL_QUADS);
+        glNormal3f(0.0, 0.0, 1.0);
+        glTexCoord2d(0, 0);
+        glVertex3f(-1.0f, -1.0f, 0.0f);
+        glTexCoord2d(0, 1);
+        glVertex3f(-1.0f, 1.0f, 0.0f);
+        glTexCoord2d(1, 1);
+        glVertex3f(1.0f, 1.0f, 0.0f);
+        glTexCoord2d(1, 0);
+        glVertex3f(1.0f, -1.0f, 0.0f);
+    glEnd();
 }
 
 void preSync() {
