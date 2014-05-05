@@ -18,14 +18,15 @@ class Player;
 
 class Scene {
 private:
-    //DrawableObject *background;
+    DrawableObject *background;
     int width;
     int height;
     //Player *player;
     float dt; // Behövs ej?
+    size_t backgroundhandle;
 
 public:
-    Scene(){};
+    Scene();
     void update();
     void updatePositions();
     void checkCollisions();

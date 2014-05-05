@@ -3,6 +3,7 @@
 
 RobberCop::RobberCop(sgct::Engine * gEngine):
 Core(gEngine) {
+    scene = new Scene();
     std::cout << "constructing RobberCop" << std::endl;
 
 };
@@ -30,14 +31,21 @@ void RobberCop::process(int id, std::string var, std::string val) {
         value = false;
     }
 
-    if(id == 0 || id > scene->player_vec.size()) {
+    if(id == 0 || id >= scene->player_vec.size()) {
         debug
-        scene->addPlayer(new Player(glm::vec2(0.0f, 0.0f), false));
+        Player *p = new Player(glm::vec2(0.0f, 0.0f), false);
+        scene->addPlayer(p);
         debug
     }
     debug
     scene->player_vec.at(id)->setMoveDirection(action, value);
     debug
 }
+
+void RobberCop::draw(size_t texturehandle) {
+    scene->update();
+    scene->draw(texturehandle);
+}
+
 
 // id=0 var=btn1 val=pressed;

@@ -4,17 +4,10 @@
 
 /*Scene::Scene(sgct::Engine * gEngine):
 RobberCop(gEngine) {};*/
-/*
+
 Scene::Scene(){
-    //std::cout << "SIZE: " << player_vec->size() << std::endl;
-    //std::cout << "Adding test player: " << std::endl;
-    //player_vec = new std::vector<Player *>();
-    //player_vec->push_back(new Player(glm::vec2(0.0f, 0.0f), false));
-
-    //std::cout << "SIZE: " << player_vec->size() << std::endl;
-
-
-}*/
+    background = new DrawableObject();
+}
 
 void Scene::update() {
     updatePositions();
@@ -45,19 +38,27 @@ void Scene::checkCollisions() {
 void Scene::addPlayer(Player *p) {
     debug
     player_vec.push_back(p);
+    //player_vec.resize(player_vec.size()+1, p);
+    std::cout << "player_vec.size(): " << player_vec.size() << std::endl;
+    //player_vec.resize(player_vec.size()+1, p);
     debug
 }
 
 void Scene::draw() {
-    if(player_vec.size() > 0) {
+    //if(player_vec.size() > 0) {
+        //debug
+    //std::cout << "player_vec.size(): " << player_vec.size() << std::endl;
         for (std::vector<Player *>::iterator it = player_vec.begin() ; it != player_vec.end(); ++it) {
+            //debug
             (*it)->draw((*it)->getPosition());
             //std::cout << "drawloop" << std::endl;
         }
-    }
+    //}
 }
 
 void Scene::init() {
-    //drawableobject->init();    
+    // Load the texture to the texturehandle
+    sgct::TextureManager::instance()->loadTexure(
+        backgroundhandle, "Tex", "./textures/box.png", true);
 }
 

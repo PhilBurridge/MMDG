@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
-
+#include "debug.h"
 #include "sgct.h"
 //#include "core.h"
 #include "robberCop.h"
@@ -17,7 +17,7 @@
 // Create pointer to the sgct engine, scene and core
 sgct::Engine * gEngine;
 RobberCop *robberCop;
-Scene *scene;
+//Scene *scene;
 
 void init();
 void draw();
@@ -35,11 +35,12 @@ void externalControlCallback(
 // The current time on master
 sgct::SharedDouble curr_time(0.0);
 
+
 int main( int argc, char* argv[] ) {
     // Allocate
     gEngine = new sgct::Engine( argc, argv );
     robberCop = new RobberCop(gEngine);
-    scene = new Scene();
+    //scene = new Scene();
 
     // Bind functions
     gEngine->setInitOGLFunction(init);
@@ -67,7 +68,7 @@ int main( int argc, char* argv[] ) {
 
     // Clean up (de-allocate)
     delete robberCop;
-    delete scene;
+    //delete scene;
     delete gEngine;
 
     // Exit program
@@ -75,32 +76,27 @@ int main( int argc, char* argv[] ) {
 }
 
 void init() {
-    
     // Set the filter size of texture (just makes it look better)
     sgct::TextureManager::instance()->setAnisotropicFilterSize(8.0f);
     // Set the compression to be used on the texture
     sgct::TextureManager::instance()->setCompression(sgct::TextureManager::S3TC_DXT);
-
-    // Load the texture to the texturehandle
-    //sgct::TextureManager::instance()->loadTexure(
-        //textureHandle, "Tex", "./textures/box.png", true);
-
     // Enable some openGL stuff
-    glEnable( GL_DEPTH_TEST );
+    glEnable(GL_DEPTH_TEST);
     glEnable( GL_COLOR_MATERIAL );
     glDisable( GL_LIGHTING );
+    glEnable(GL_CULL_FACE);
     glEnable( GL_TEXTURE_2D );
 
     // Set up backface culling
     glCullFace(GL_BACK);
     // The polygon winding is counter clockwise (CCW)
     glFrontFace(GL_CCW);
-
 }
 
 void draw() {
-    scene->update();
-    scene->draw();
+    //debug
+    //scene->update();
+    robberCop->draw(texturehandle);
 }
 
 void preSync() {

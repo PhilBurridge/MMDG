@@ -20,6 +20,7 @@ public:
     RobberCop(sgct::Engine * gEngine); 
     virtual void process(int id, std::string action, std::string value);
     Scene *scene;
+    void draw(size_t texturehandle);
 };
 
 #endif // ROBBERCOP_H

@@ -12,12 +12,13 @@
 // Draws a player with a set position and MVP matrix
 void DrawableObject::draw(/*mat4::MVP,*/ glm::vec2 position) {
     // Load the texture to the texturehandle
-    sgct::TextureManager::instance()->loadTexure(
-        textureHandle, "Tex", "./textures/box.png", true);
+    /*sgct::TextureManager::instance()->loadTexure(
+        textureHandle, "Tex", "./textures/box.png", true);*/
     // Set the active texture unit
     glActiveTexture(GL_TEXTURE0);
+
     // Bind the texture by its set handle
-    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByHandle(textureHandle));
+    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByHandle(texturehandle));
     glTranslatef(0.0f, 0.0f, -3.0f);
     // Draw the player polygon
     glBegin(GL_QUADS);
@@ -29,13 +30,13 @@ void DrawableObject::draw(/*mat4::MVP,*/ glm::vec2 position) {
         // while the texture is drawn from the polygons coordinates 
         // (we draw from the bottom-left corner of the polygon)
         glTexCoord2d(0, 0);
-        glVertex3f(position.x - (size / 2), position.y - (size / 2), 0.0f);
+        glVertex3f(position.x - (getSize() / 2), position.y - (getSize() / 2), 0.0f);
         glTexCoord2d(0, 1);
-        glVertex3f(position.x - (size / 2), position.y + (size / 2), 0.0f);
+        glVertex3f(position.x - (getSize() / 2), position.y + (getSize() / 2), 0.0f);
         glTexCoord2d(1, 1);
-        glVertex3f(position.x + (size / 2), position.y + (size / 2), 0.0f);
+        glVertex3f(position.x + (getSize() / 2), position.y + (getSize() / 2), 0.0f);
         glTexCoord2d(1, 0);
-        glVertex3f(position.x + (size / 2), position.y - (size / 2), 0.0f);
+        glVertex3f(position.x + (getSize() / 2), position.y - (getSize() / 2), 0.0f);
     glEnd();
 
 
@@ -44,17 +45,19 @@ void DrawableObject::draw(/*mat4::MVP,*/ glm::vec2 position) {
 // Inits the drawing of a player
 void DrawableObject::init() {
 
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
     // Set the filter size of texture (just makes it look better)
     sgct::TextureManager::instance()->setAnisotropicFilterSize(8.0f);
     // Set the compression to be used on the texture
     sgct::TextureManager::instance()->setCompression(sgct::TextureManager::S3TC_DXT);
 
     // Load the texture to the texturehandle
-    //sgct::TextureManager::instance()->loadTexure(
-    //    textureHandle, "Tex", "./textures/box.png", true);
+    sgct::TextureManager::instance()->loadTexure(
+        textureHandle, "Tex", "./textures/box.png", true);
 
     // Enable some openGL stuff
-    glEnable( GL_DEPTH_TEST );
+    //glEnable( GL_DEPTH_TEST );
     glEnable( GL_COLOR_MATERIAL );
     glDisable( GL_LIGHTING );
     glEnable( GL_TEXTURE_2D );
