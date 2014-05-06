@@ -1,5 +1,6 @@
 #include "player.h"
 
+// Define the speed and directions for a players movement
 const glm::vec2 Player::DIRECTIONS[] = {
     glm::vec2(0.0f, 1.0f),
     glm::vec2(0.707106f, 0.707106f),
@@ -11,26 +12,25 @@ const glm::vec2 Player::DIRECTIONS[] = {
     glm::vec2(-0.707106f, 0.707106f)
 };
 
-
+// Player constructor
 Player::Player(glm::vec2 pos, bool state):
-DrawableObject("cop", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
+DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
     std::cout << "Player constructor" << std::endl;
 
     display();
 }
 
-void Player::switchToCop()
-{
+void Player::switchToCop() {
     cop = true;
+    textureName = "cop";
 }
 
-void Player::switchToRobber()
-{
+void Player::switchToRobber() {
     cop = false;
+    textureName = "rob";
 }
 
-bool Player::isCop()
-{
+bool Player::isCop() {
     return cop;
 }
 
@@ -104,7 +104,6 @@ void Player::display() const{
     std::cout << "direction: x=" << direction.x << " y=" << direction.y << std::endl;
     std::cout << "isCop = " << cop << std::endl;
     std::cout << "speed = " << speed << std::endl;
-
 }
 
 void Player::draw() const {

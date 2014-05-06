@@ -16,19 +16,21 @@ void RobberCop::init(){
     // Set the compression to be used on the texture
     sgct::TextureManager::instance()->setCompression(sgct::TextureManager::S3TC_DXT);
 
-    // Load the texture to the texturehandle
+    // Load the textures to the texturehandle
     size_t trash = -1;
     sgct::TextureManager::instance()->loadTexure(trash, "mmdg",  "./textures/mmdg.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "box", "./textures/box.png", true);
-    sgct::TextureManager::instance()->loadTexure(trash, "cop", "./textures/box.png", true);
-    sgct::TextureManager::instance()->loadTexure(trash, "rob", "./textures/box.png", true);
+    sgct::TextureManager::instance()->loadTexure(trash, "cop", "./textures/cop.png", true);
+    sgct::TextureManager::instance()->loadTexure(trash, "rob", "./textures/robber.png", true);
 
 
 
     // Enable some openGL stuff
     glEnable(GL_DEPTH_TEST);
     glEnable( GL_COLOR_MATERIAL );
-    glDisable( GL_LIGHTING );
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    //glDisable( GL_LIGHTING );
     glEnable(GL_CULL_FACE);
     glEnable( GL_TEXTURE_2D );
 
@@ -49,11 +51,31 @@ void RobberCop::process(int id, std::string var, std::string val) {
 
     if(var == "connected"){
         std::cout << "adding new player" << std::endl;
-        Player *p = new Player(glm::vec2(1.0f, 0.0f), false);
+        //Player *p = new Player(glm::vec2(1.0f, 0.0f), false);
+
+        bool state;
+        // Maybe change the ratio between robbers and cops, now it's 50/50
+        if((id % 2) == 0) {
+            state = false;
+            std::cout << "Player " << id << " is a robber" << std::endl;
+        } else {
+            state = true;
+            std::cout << "Player " << id << " is a cop" << std::endl;
+        } 
+
+        // Randomize spawn position, took this from stackoverflow.
+        // Might not be the best rng ever.
+        //srand (static_cast <unsigned> (time(0)));
+        float rand_x = ((1.57 - (-1.57)) * ((float) rand() / RAND_MAX)) + (-1.57);
+        float rand_y = ((0.78 - (-0.78)) * ((float) rand() / RAND_MAX)) + (-0.78);
+
+        Player *p = new Player(glm::vec2(rand_x, rand_y), state);
+
         scene->addPlayer(id, p);
         return;
     }
 
+    // If a player disconnects, remove that bitch
     if(var == "disconnected"){
         std::cout << "Player disconnected" << std::endl;
         scene->removePlayer(id);

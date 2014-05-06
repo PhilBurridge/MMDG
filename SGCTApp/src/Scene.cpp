@@ -59,6 +59,7 @@ void Scene::checkCollisions() {
 
             //Om vi har kommit hit så vet vi att p1 är en polis och p2 är en Robber
             //Nu kollar vi om de kolliderar med varandra. De är sfärer
+
             if(glm::length(p1->getPosition() - p2->getPosition()) > (p1->getSize() + p2->getSize())) { // oskäer på length
                 // Do somthing when collision happens. KILL THA ROBBBA
                 std::cout << "collision between player " << std::endl;
@@ -104,6 +105,12 @@ void Scene::draw() {
     }*/
     for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
         std::pair<int, Player *> pair = *it;
+        
+        // If the player is a cop, swap the texture (rob texture is standard)
+        if(pair.second->isCop()) {
+            pair.second->switchToCop();
+        }
+
         pair.second->draw();
     }
 }

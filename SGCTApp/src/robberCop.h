@@ -1,5 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <cstdlib>
+#include <ctime>
 #include "sgct.h"
 #include "scene.h"
 #include "debug.h"
