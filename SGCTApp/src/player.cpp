@@ -1,9 +1,21 @@
 #include "player.h"
 
+const glm::vec2 Player::DIRECTIONS[] = {
+    glm::vec2(0.0f, 1.0f),
+    glm::vec2(0.707106f, 0.707106f),
+    glm::vec2(1.0f, 0.0f),
+    glm::vec2(0.707106f, -0.707106f),
+    glm::vec2(0.0f, -1.0f),
+    glm::vec2(-0.707106f, -0.707106f),
+    glm::vec2(-1.0f, 0.0f),
+    glm::vec2(-0.707106f, 0.707106f)
+};
+
 
 Player::Player(glm::vec2 pos, bool state):
 DrawableObject("cop", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
     std::cout << "Player constructor" << std::endl;
+
     display();
 }
 
@@ -22,7 +34,16 @@ bool Player::isCop()
     return cop;
 }
 
-void Player::setMoveDirection(int button, bool pressed) {
+void Player::setMoveDirection(int d){
+    assert(0 <= d && d < 9);
+    direction = DIRECTIONS[d];
+}
+
+void Player::stop(){
+    direction = glm::vec2(0.0f, 0.0f);
+}
+
+/*void Player::setMoveDirection(int button, bool pressed) {
     if(button == 1) {
         //north
         direction = glm::vec2(0.0f,1.0f);
@@ -59,7 +80,7 @@ void Player::setMoveDirection(int button, bool pressed) {
         //stop
         direction = glm::vec2(0.0f,0.0f);
     }
-}
+}*/
 
 void Player::movePlayer(float dt) {
     position += dt*speed*direction;

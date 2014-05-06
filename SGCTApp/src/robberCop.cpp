@@ -1,9 +1,5 @@
 #include "robberCop.h"
 
-size_t RobberCop::box_texture_id = -1;
-size_t RobberCop::rob_texture_id = -1;
-size_t RobberCop::cop_texture_id = -1;
-
 RobberCop::RobberCop(sgct::Engine * gEngine):
 Core(gEngine) {
     scene = new Scene();
@@ -19,8 +15,6 @@ void RobberCop::init(){
     sgct::TextureManager::instance()->setAnisotropicFilterSize(8.0f);
     // Set the compression to be used on the texture
     sgct::TextureManager::instance()->setCompression(sgct::TextureManager::S3TC_DXT);
-
-    // TODO: Ladda först in texturer, låt sedan drawableObject referera till texture_id
 
     // Load the texture to the texturehandle
     size_t trash = -1;
@@ -55,15 +49,8 @@ void RobberCop::process(int id, std::string var, std::string val) {
 
     if(var == "connected"){
         std::cout << "adding new player" << std::endl;
-        debug
         Player *p = new Player(glm::vec2(1.0f, 0.0f), false);
-        debug
-        //sgct::TextureManager::instance()->loadTexure(
-        //    p->textureHandle, "player0", "./textures/" + p->texture, true);
-
-        debug
         scene->addPlayer(id, p);
-
         return;
     }
 
@@ -77,7 +64,27 @@ void RobberCop::process(int id, std::string var, std::string val) {
         bool pressed = (val == "1");
         std::cout << "btn number: " << btnNumber << std::endl;
         std::cout << "btn is pressed: " << pressed << std::endl;
-        scene->getPlayer(id)->setMoveDirection(btnNumber, pressed);
+        
+        
+        if(pressed){
+            int direction;
+            switch(btnNumber){
+                case 0: direction = Player::NORTH; break;
+                case 1: direction = Player::NORTH_EAST; break;
+                case 2: direction = Player::EAST; break;
+                case 3: direction = Player::SOUTH_EAST; break;
+                case 4: direction = Player::SOUTH; break;
+                case 5: direction = Player::SOUTH_WEST; break;
+                case 6: direction = Player::WEST; break;
+                case 7: direction = Player::NORTH_WEST; break;
+                default: std::cout << "ERROR! BAD BUTTON NUMBER" << std::endl;
+            }
+            scene->getPlayer(id)->setMoveDirection(direction);
+        }
+        else {
+            scene->getPlayer(id)->stop();
+        }
+
     }
 }
 
