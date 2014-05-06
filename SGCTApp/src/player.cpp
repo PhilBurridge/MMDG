@@ -1,13 +1,23 @@
 #include "player.h"
 
+const glm::vec2 Player::DIRECTIONS[] = {
+    glm::vec2(0.0f, 1.0f),
+    glm::vec2(0.707106f, 0.707106f),
+    glm::vec2(1.0f, 0.0f),
+    glm::vec2(0.707106f, -0.707106f),
+    glm::vec2(0.0f, -1.0f),
+    glm::vec2(-0.707106f, -0.707106f),
+    glm::vec2(-1.0f, 0.0f),
+    glm::vec2(-0.707106f, 0.707106f)
+};
+
 
 Player::Player(glm::vec2 pos, bool state):
-    position(pos),
-    cop(state),
-    speed(0.1f)
-{
-    debug
-};
+DrawableObject("cop", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
+    std::cout << "Player constructor" << std::endl;
+
+    display();
+}
 
 void Player::switchToCop()
 {
@@ -24,12 +34,20 @@ bool Player::isCop()
     return cop;
 }
 
-void Player::setMoveDirection(int button, bool pressed) {
+void Player::setMoveDirection(int d){
+    assert(0 <= d && d < 9);
+    direction = DIRECTIONS[d];
+}
+
+void Player::stop(){
+    direction = glm::vec2(0.0f, 0.0f);
+}
+
+/*void Player::setMoveDirection(int button, bool pressed) {
     if(button == 1) {
         //north
         direction = glm::vec2(0.0f,1.0f);
-        //direction.x = 0.0f;
-        //direction.y = 1.0f;
+>>>>>>> AllFiles
     }
     if(button == 2) {
         //north east
@@ -63,6 +81,7 @@ void Player::setMoveDirection(int button, bool pressed) {
         //stop
         direction = glm::vec2(0.0f,0.0f);
     }
+<<<<<<< HEAD
 }
 
 void Player::movePlayer() {
@@ -70,6 +89,14 @@ void Player::movePlayer() {
 }
 
 void Player::update() {
+=======
+}*/
+
+void Player::movePlayer(float dt) {
+    position += dt*speed*direction;
+}
+
+void Player::update(float dt) {
    
 }
 
@@ -82,6 +109,7 @@ void Player::setPosition(glm::vec2 p) {
 }
 
 void Player::display() const{
+    DrawableObject::display();
     std::cout << "pos: x=" << position.x << " y=" << position.y << std::endl;
     std::cout << "direction: x=" << direction.x << " y=" << direction.y << std::endl;
     std::cout << "isCop = " << cop << std::endl;
@@ -90,8 +118,9 @@ void Player::display() const{
 }
 
 void Player::draw() const {
-    std::cout << "pos: x=" << position.x << " y=" << position.y << std::endl;
-    DrawableObject::draw(position);
+
+    DrawableObject::draw(position.x, position.y);
+
 }
 
 

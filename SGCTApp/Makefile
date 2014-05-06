@@ -3,8 +3,7 @@ CC = g++
 
 # Flags:
 # -Wall -pedantic
-# CFLAGS = -O3
-CFLAGS = -std=c++11
+ CFLAGS = -std=c++11
 
 # More flags:
 ifeq ($(OS), Windows_NT)

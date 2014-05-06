@@ -12,9 +12,44 @@
 #include "debug.h"
 
 
-//class Scene;
-// ADD THSI: public DrawableObject
 class Player: public DrawableObject {
+
+public:
+    Player();
+    Player(glm::vec2 pos, 
+        bool state);
+
+	void switchToCop();
+    void switchToRobber();
+    bool isCop();
+    //void setMoveDirection(int button, bool pressed);
+    void setMoveDirection(int d);
+    void stop();
+
+
+    void movePlayer(float dt);
+    void update(float dt);
+
+    glm::vec2 getPosition() const;
+    void setPosition(glm::vec2 p);
+
+    void display() const;
+
+    void draw() const;
+    
+    
+    enum DirectionEnum{
+        NORTH = 0, 
+        NORTH_EAST, 
+        EAST, 
+        SOUTH_EAST, 
+        SOUTH, 
+        SOUTH_WEST, 
+        WEST, 
+        NORTH_WEST
+    } DIRECTION;
+
+
 
 private:
 
@@ -22,20 +57,8 @@ private:
     bool cop;
     glm::vec2 position;
     glm::vec2 direction;
-public:
-    Player();
-    Player(glm::vec2 pos, bool state);
-	void switchToCop();
-    void switchToRobber();
-    bool isCop();
-    void setMoveDirection(int button, bool pressed);
-    void movePlayer();
-    void update();
-    glm::vec2 getPosition() const;
-    void setPosition(glm::vec2 p);
-
-    void display() const;
     
-    void draw() const;
+    static const glm::vec2 DIRECTIONS[];
 };
+
 #endif // PLAYER_H
