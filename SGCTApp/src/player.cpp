@@ -2,14 +2,8 @@
 
 
 Player::Player(glm::vec2 pos, bool state):
-DrawableObject("box.png", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
-    debug
-    display();
-    //sgct::TextureManager::instance()->loadTexure(
-    //    textureHandle, "player", "./textures/" + texture, true);
-    debug
-    init();
-    debug
+DrawableObject("cop", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
+    std::cout << "Player constructor" << std::endl;
     display();
 }
 

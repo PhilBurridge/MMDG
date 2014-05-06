@@ -1,35 +1,26 @@
 #include "drawableObject.h"
 
-int DrawableObject::objCounter = 0;
-
 DrawableObject::DrawableObject(const std::string& t, float w, float h):
-texture(t), width(w), height(h) {
+textureName(t), width(w), height(h) {
+    std::cout << "DrawableObject constructor" << std::endl;
     size = fmax(w,h);
-    objCounter++;
 }
 
 DrawableObject::DrawableObject(const std::string& t, float s):
-texture(t), size(s) {
+textureName(t), size(s) {
+    std::cout << "DrawableObject constructor" << std::endl;
     width = s;
     height = s;
-    objCounter--;
 }
 
-
-// Inits the drawing of a player
-void DrawableObject::init() {    
-    // Load the texture to the texturehandle
-    sgct::TextureManager::instance()->loadTexure(
-        textureHandle, "Tex", "./textures/" + texture, true);
-}
 
 // Draws a player with a set position and MVP matrix
-void DrawableObject::draw(/*mat4::MVP,*/ float x, float y) const {
+void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
     // Set the active texture unit
     glActiveTexture(GL_TEXTURE0);
 
     // Bind the texture by its set handle
-    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByHandle(textureHandle));
+    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByName(textureName));
 
     float s = getSize()/2;
 
@@ -46,16 +37,16 @@ void DrawableObject::draw(/*mat4::MVP,*/ float x, float y) const {
 
         // Define polygon vertices in counter clock wise order
         glTexCoord2d(1, 0);
-        glVertex3f(x+width, y-height, 0.0f);
+        glVertex3f(x+width, y-height, z);
 
         glTexCoord2d(1, 1);
-        glVertex3f(x+width, y+height, 0.0f);
+        glVertex3f(x+width, y+height, z);
 
         glTexCoord2d(0, 1);
-        glVertex3f(x-width, y+height, 0.0f);
+        glVertex3f(x-width, y+height, z);
 
         glTexCoord2d(0, 0);
-        glVertex3f(x-width, y-height, 0.0f);
+        glVertex3f(x-width, y-height, z);
 
     glEnd();
 
@@ -75,6 +66,5 @@ void DrawableObject::display() const{
     std::cout << "size = " << size << std::endl;
     std::cout << "width = " << width << std::endl;
     std::cout << "height = " << height << std::endl;
-    std::cout << "texture = " << texture << std::endl;
-    std::cout << "textureHandle = " << textureHandle << std::endl;
+    std::cout << "textureName = " << textureName << std::endl;
 }

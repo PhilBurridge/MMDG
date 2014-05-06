@@ -23,12 +23,12 @@ void RobberCop::init(){
     // TODO: Ladda först in texturer, låt sedan drawableObject referera till texture_id
 
     // Load the texture to the texturehandle
-    sgct::TextureManager::instance()->loadTexure(
-        RobberCop::box_texture_id, "QRBox", "./textures/box.png", true);
-    sgct::TextureManager::instance()->loadTexure(
-        RobberCop::cop_texture_id, "cop", "./textures/box.png", true);
-    sgct::TextureManager::instance()->loadTexure(
-        RobberCop::rob_texture_id, "cop", "./textures/box.png", true);
+    size_t trash = -1;
+    sgct::TextureManager::instance()->loadTexure(trash, "mmdg",  "./textures/mmdg.png", true);
+    sgct::TextureManager::instance()->loadTexure(trash, "box", "./textures/box.png", true);
+    sgct::TextureManager::instance()->loadTexure(trash, "cop", "./textures/box.png", true);
+    sgct::TextureManager::instance()->loadTexure(trash, "rob", "./textures/box.png", true);
+
 
 
     // Enable some openGL stuff

@@ -2,11 +2,11 @@
 
 
 Scene::Scene(){
-    background = new DrawableObject("mmdg.png", 2.0f, 1.0f);
+    background = new DrawableObject("mmdg", 2.0f, 1.0f);
 }
 
 void Scene::init() {
-    background->init();
+    
 }
 
 
@@ -87,7 +87,7 @@ Player * Scene::getPlayer(int id){
 
 void Scene::draw() {
     //Draw Background image
-    background->draw(0.0f, 0.0f);
+    background->draw(0.0f, 0.0f, -0.01f);
 
     /*for (std::vector<Player *>::iterator it = player_vec.begin() ; it != player_vec.end(); ++it) {
         (*it)->draw();
