@@ -79,6 +79,16 @@ void Scene::addPlayer(int id, Player *p) {
     players.insert(std::pair<int, Player *>(id, p));
 }
 
+bool Scene::removePlayer(int id){
+    std::map<int, Player *>::iterator it = players.find(id);
+    
+    if(it == players.end())
+        return false;
+
+    players.erase(it);
+    return true;
+}
+
 Player * Scene::getPlayer(int id){
 
     //With std::map

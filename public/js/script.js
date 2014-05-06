@@ -11,7 +11,6 @@ ws.onopen = function() {
     init(ws);
 };
 
-
 function buttonDown(btnIndex) {
     document.getElementById('content').innerHTML += '<br>Button pressed!';
     ws.send("var=btn" + btnIndex + config.arg_delimiter + "val=1");

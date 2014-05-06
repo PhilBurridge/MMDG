@@ -26,6 +26,7 @@ public:
     void updatePositions(float dt);
     void checkCollisions();
     void addPlayer(int id, Player *);
+    bool removePlayer(int id);
     Player * getPlayer(int id);
 
     void draw();

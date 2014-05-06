@@ -54,6 +54,12 @@ void RobberCop::process(int id, std::string var, std::string val) {
         return;
     }
 
+    if(var == "disconnected"){
+        std::cout << "Player disconnected" << std::endl;
+        scene->removePlayer(id);
+        return;
+    }
+
     if(scene->getPlayer(id) == NULL){
         std::cout << "WARNING! TRYING TO ACCESS NULL POINTER" << std::endl;
         return;

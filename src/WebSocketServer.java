@@ -301,7 +301,7 @@ public class WebSocketServer extends ConsolePrinter{
                 final int payloadSize = getSizeOfPayload(buf[1]);
                 if (payloadSize == -128) {
                     stop();
-                    return "disconnected";
+                    return "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=1";
                 }
                 buf = readBytes(MASK_SIZE + payloadSize);
                 // print("Payload:");
