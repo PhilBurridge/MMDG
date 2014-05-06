@@ -29,7 +29,6 @@ xmlhttp.send();
 xmlDoc=xmlhttp.responseXML;
 
 var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
-//var x = xmlDoc.getElementById("CATALOG").getElementById("BUTTON"); //Buttons
 
 function buttons(ori){
 	for (i=0;i<x.length;i++){   //x.lenght() is the amount of buttons
@@ -46,13 +45,17 @@ function buttons(ori){
 				document.write("'/>");
 			}
 			else{
-				document.write("<input id='button' type='image' alt='");
-				document.write(name);
-				document.write("' src='");
+				document.write("<a href='#' type='image' src='");
 				document.write(icon);
-				document.write("' onclick='wsButton(");
+				document.write("' onmousedown='buttonDown(");
 				document.write(name);
-				document.write(");'/>");
+				document.write(")' onmouseup='buttonUp(");
+				document.write(name);
+				document.write(")'>");
+				document.write("<img src='");
+				document.write(icon);
+				document.write("' alt='btn'>");
+				document.write("</a>");
 			}
 		}
 	}

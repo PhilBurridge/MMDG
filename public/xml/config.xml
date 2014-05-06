@@ -19,55 +19,55 @@ SLIDER:
 <CATALOG>
 	<BUTTON>
 		<ICON>arrows/upleft.png</ICON>
-		<NAME>btn1</NAME>
+		<NAME>1</NAME>
 		<POS>upleft</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>arrows/right.png</ICON> 
-		<NAME>btn2</NAME>
+		<NAME>6</NAME>
 		<POS>centerright</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>arrows/up.png</ICON>
-		<NAME>btn5</NAME>
+		<NAME>2</NAME>
 		<POS>upcenter</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>arrows/down.png</ICON>
-		<NAME>btn3</NAME>
+		<NAME>8</NAME>
 		<POS>downcenter</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>http://www.bevezetem.hu/images/1310/angoranyul4.jpg</ICON> <!--arrows/empty.png-->
-		<NAME>btn3</NAME>
+		<NAME>5</NAME>
 		<POS>centercenter</POS>
 		<EMPTY>yes</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>arrows/left.png</ICON>
-		<NAME>btn4</NAME>
+		<NAME>4</NAME>
 		<POS>centerleft</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>arrows/downright.png</ICON>
-		<NAME>btn5</NAME>
+		<NAME>9</NAME>
 		<POS>downright</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>arrows/downleft.png</ICON>
-		<NAME>btn5</NAME>
+		<NAME>7</NAME>
 		<POS>downleft</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>arrows/upright.png</ICON>
-		<NAME>btn5</NAME>
+		<NAME>3</NAME>
 		<POS>upright</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>	
