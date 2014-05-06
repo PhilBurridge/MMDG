@@ -8,7 +8,8 @@ DrawableObject("box.png", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
     //sgct::TextureManager::instance()->loadTexure(
     //    textureHandle, "player", "./textures/" + texture, true);
     debug
-    //init();
+    init();
+    debug
     display();
 }
 

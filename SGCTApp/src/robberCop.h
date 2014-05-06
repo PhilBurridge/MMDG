@@ -24,6 +24,10 @@ public:
     void init();
 
     Scene *scene;
+
+    static size_t cop_texture_id;
+    static size_t rob_texture_id;
+    static size_t box_texture_id;
 };
 
 #endif // ROBBERCOP_H

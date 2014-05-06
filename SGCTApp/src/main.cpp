@@ -25,7 +25,7 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
 /*** Shared variables ***/
 // The current time on master
 sgct::SharedDouble curr_time(0.0);
-size_t textureHandleQRBox;
+
 
 int main( int argc, char* argv[] ) {
     // Allocate
@@ -69,36 +69,9 @@ int main( int argc, char* argv[] ) {
 }
 
 void init() {
-
-
-
     std::cout << "  ** MAIN INIT **  " << std::endl;
     robberCop->init();
-
-    // Set the filter size of texture (just makes it look better)
-    sgct::TextureManager::instance()->setAnisotropicFilterSize(8.0f);
-    // Set the compression to be used on the texture
-    sgct::TextureManager::instance()->setCompression(sgct::TextureManager::S3TC_DXT);
-
-    // Load the texture to the texturehandle
-    sgct::TextureManager::instance()->loadTexure(
-        textureHandleQRBox, "QRBox", "./textures/box.png", true);
-
-
-    // Enable some openGL stuff
-    glEnable(GL_DEPTH_TEST);
-    glEnable( GL_COLOR_MATERIAL );
-    glDisable( GL_LIGHTING );
-    glEnable(GL_CULL_FACE);
-    glEnable( GL_TEXTURE_2D );
-
-    // Set up backface culling
-    glCullFace(GL_BACK);
-    // The polygon winding is counter clockwise (CCW)
-    glFrontFace(GL_CCW);
-
     std::cout << "  ** MAIN INIT DONE **  " << std::endl;
-
 }
 
 
@@ -113,8 +86,7 @@ void preSync() {
         // Get the time in seconds
         curr_time.setVal(sgct::Engine::getTime());
 
-        //OBS! This should be the delta time, 
-        robberCop->update(1.0f / 60.0f);
+        robberCop->update(gEngine->getDt());
     }
 }
 

@@ -87,7 +87,7 @@ Player * Scene::getPlayer(int id){
 
 void Scene::draw() {
     //Draw Background image
-    //background->draw(0.0f, 0.0f);
+    background->draw(0.0f, 0.0f);
 
     /*for (std::vector<Player *>::iterator it = player_vec.begin() ; it != player_vec.end(); ++it) {
         (*it)->draw();
