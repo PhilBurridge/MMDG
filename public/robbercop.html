@@ -45,17 +45,13 @@ function buttons(ori){
 				document.write("'/>");
 			}
 			else{
-				document.write("<a href='#' type='image' src='");
+				document.write("<input type='image' alt='' style='background-image:url(");
 				document.write(icon);
-				document.write("' onmousedown='buttonDown(");
+				document.write(");' onmousedown='buttonDown(");
 				document.write(name);
 				document.write(")' onmouseup='buttonUp(");
 				document.write(name);
-				document.write(")'>");
-				document.write("<img src='");
-				document.write(icon);
-				document.write("' alt='btn'>");
-				document.write("</a>");
+				document.write(")'/>");
 			}
 		}
 	}

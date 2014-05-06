@@ -18,8 +18,9 @@ body > div > div > div {
 	min-height: 33.3%;
 	float: left;
 	background-image: url('http://i.imgur.com/NA5fWjA.png');
-	background-size: 100% 100%;
+	background-size: 100%;
 	display: block;
+
 }
 
 img {
@@ -33,8 +34,6 @@ input,a{
    height:100%;
    float:left;
    image-size:100% 100%;
+   background-size: 100% 100%;
 }
-.hide-popover>*
-{
-	-webkit-touch-callout:none;
 }
