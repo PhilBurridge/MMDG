@@ -38,8 +38,6 @@ void RobberCop::init(){
     glCullFace(GL_BACK);
     // The polygon winding is counter clockwise (CCW)
     glFrontFace(GL_CCW);
-
-    scene->init();
 }
 
 // Overiding method from core
