@@ -16,7 +16,6 @@ SLIDER:
 -ENDVALUE: any value. 
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
-<CATALOG>
 
 	<!-- 
 
@@ -29,6 +28,8 @@ SLIDER:
 	 5 | 4 | 3
 
 	-->
+	
+<CATALOG>
 	<BUTTON>
 		<ICON>arrows/up.png</ICON>
 		<NAME>0</NAME>
