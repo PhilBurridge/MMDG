@@ -5,72 +5,22 @@
         <meta name="viewport" content="width=device-width, user-scalable=no">
         <link rel="stylesheet" media="screen" href="css/style.css">
         <script src="js/config.js" type="text/javascript"></script>
-        <script src="js/script.js" type="text/javascript"></script>
+        <script src="js/Gui.js" type="text/javascript"></script>
+        <script src="js/Button.js" type="text/javascript"></script>
+        <script src="js/Display.js" type="text/javascript"></script>
+        
     </head>
     <body>
-
+        <div id="wrapper">
         <!-- MAGIC -->
         <script>
-            var xmlhttp;
-            if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-              xmlhttp=new XMLHttpRequest();
-            }
-            else{// code for IE6, IE5
-              xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-            }
-
-            xmlhttp.open("GET","xml/config.xml",false);
-            xmlhttp.send();
-            xmlDoc=xmlhttp.responseXML;
-
-            var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
-
-            function buttons(ori){
-                for (i=0;i<x.length;i++){   //x.lenght() is the amount of buttons
-                    var pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
-                    var name = x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
-                    var icon = x[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
-                    var empty = x[i].getElementsByTagName("EMPTY")[0].childNodes[0].nodeValue;
-                    
-                    if(pos == ori){
-                    
-                        if(empty == "yes"){
-                            document.write("<div class='button' style='background-image:url(");
-                            document.write(icon);
-                            document.write("'></div>");
-                        }
-                        else{
-                            document.write("<div class='button' style='background-image:url(");
-                            document.write(icon);
-                            document.write(");' onmousedown='buttonDown(");
-                            document.write(name);
-                            document.write(");' onmouseup='buttonUp(");
-                            document.write(name);
-                            document.write(");' ontouchstart='buttonDown(");
-                            document.write(name);
-                            document.write(")' ontouchend='buttonUp(");
-                            document.write(name);
-                            document.write(");'></div>");
-                        }
-                    }
-                }
-            }
-
-            document.write("<div class='wrapper'>");
-
-                buttons("upleft");
-                buttons("upcenter");
-                buttons("upright");
-                buttons("centerleft");
-                buttons("centercenter");
-                buttons("centerright");
-                buttons("downleft");
-                buttons("downcenter");
-                buttons("downright");
-
-            document.write("</div>");
+                var gui = new Gui();
+                gui.loadElements();
+                gui.drawGui();
+                
         </script>
-
-
+    <script src="js/script.js" type="text/javascript"></script>
+        </div>
     </body>
+
 </html>
