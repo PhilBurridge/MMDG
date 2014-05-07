@@ -61,7 +61,7 @@ public class WebSocketServer extends ConsolePrinter{
     }
 
     /**
-     * will listen for client connections in a seperate thread, create a new
+     * will listen for client connections in a separate thread, create a new
      * socket and add it to a socket array/vector. so far it is not in a
      * seperate thread, and it only has 1 socket, only 1 person can connect at a
      * time.
@@ -72,10 +72,10 @@ public class WebSocketServer extends ConsolePrinter{
             public void run() {
                 try {
                     while (true) {
-                        print("Waiting for connections ...");
+                        //print("Waiting for connections ...");
                         Socket socket = serverSocket.accept();
                         System.out.println();
-                        print("Connecting!");
+                        //print("Connecting!");
 
                         removeDeadClientHandlers();
                         if (handshake(socket)) {
@@ -124,7 +124,7 @@ public class WebSocketServer extends ConsolePrinter{
         String str;
 
         // Reading client handshake
-        print("Reading client handshake");
+        //print("Reading client handshake");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
             // print(str);
@@ -152,7 +152,7 @@ public class WebSocketServer extends ConsolePrinter{
         String response = "HTTP/1.1 101 Switching Protocols\r\n"
                         + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n"
                         + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
-        print("Writing response");
+        //print("Writing response");
         // print(response);
         out.write(response);
         out.flush();
@@ -166,7 +166,7 @@ public class WebSocketServer extends ConsolePrinter{
         clientHandlers.put(ch.id, ch);
         ch.listenToClient();
 
-        print("Clients connected: " + clientHandlers.size());
+        print("Number of clients: " + clientHandlers.size());
         print("Added client with ID " + ch.id);
     }
 
@@ -265,6 +265,7 @@ public class WebSocketServer extends ConsolePrinter{
             byte[] b = new byte[numOfBytes];
             clientSocket.getInputStream().read(b);
             if (b.length < 0) {
+                print("Negative byte size..");
                 stop();
                 return null;
             }
@@ -295,12 +296,13 @@ public class WebSocketServer extends ConsolePrinter{
             // convertAndPrint(buf);
             int opcode = buf[0] & 0x0F;
             if (opcode == 8) {
-                // Client want to close connection!
+                print("Client want to close connection");
                 stop();
                 return null;
             } else {
                 final int payloadSize = getSizeOfPayload(buf[1]);
                 if (payloadSize == -128) {
+                    print("playloadSize is -128");
                     stop();
                     return "disconnected";
                 }
@@ -337,7 +339,7 @@ public class WebSocketServer extends ConsolePrinter{
                 }
             });
             listenerTread.start();
-            print("Started thread used to listen to client messages...");
+            //print("Started thread used to listen to client messages...");
         }
         
         private boolean validateMessage(String msg){

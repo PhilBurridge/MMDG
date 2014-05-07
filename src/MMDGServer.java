@@ -128,6 +128,7 @@ public class MMDGServer extends ConsolePrinter{
 
             commandStack = webSocketServer.getCommandStack();
             tcpHandler.sendToApplication(commandStack);
+
             // webSocketServer.clearCommandStack();
             // print("Sent message to TCP handler");
 

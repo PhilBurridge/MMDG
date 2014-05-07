@@ -6,7 +6,6 @@ console.log("Server ws port is: %s", config.serverWsPort);
 console.log("Argument delimiter is: \"%s\"", config.arg_delimiter);
 
 ws.onopen = function() {
-    //alert("Opened!");
     ws.send("var=connected" + config.arg_delimiter + "val=1");
     init(ws);
 };
@@ -16,6 +15,8 @@ function buttonDown(btnIndex) {
     document.getElementById('content').innerHTML += '<br>Button pressed!';
     ws.send("var=btn" + btnIndex + config.arg_delimiter + "val=1");
 }
+
+
 
 function buttonUp(btnIndex){
 	document.getElementById('content').innerHTML += '<br>Button released!';
