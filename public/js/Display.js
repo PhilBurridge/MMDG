@@ -8,7 +8,7 @@ function Display(n,p,i)
 Display.prototype = {
 
 	printDisplay: function(){
-        document.write("<div class='display' style='background-image:url(");
+        document.write("<div id='display' style='background-image:url(");
         document.write(this.icon);
         document.write(");'></div>");
     }

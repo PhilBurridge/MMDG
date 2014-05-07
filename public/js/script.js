@@ -11,12 +11,14 @@ ws.onopen = function() {
 };
 
 function buttonDown(btnId) {
+	document.getElementById('display').innerHTML += '<br>pushed! ';
     ws.send("var=btn" + btnId + config.arg_delimiter + "val=1");
-}
+};
 
 function buttonUp(btnId){
+	document.getElementById('display').innerHTML += '<br>released! ';
 	ws.send("var=btn" + btnId + config.arg_delimiter + "val=0");
-}
+};
 
 function init(ws) {
     ws.onmessage = function (msg) {
@@ -29,4 +31,4 @@ function init(ws) {
 	    }
 	    document.getElementById('content').innerHTML += '<br>Message received from server: ' + data;
 	}
-}
+};

@@ -22,7 +22,7 @@ body, html {
     -o-transition-duration: 0.2s;
     -o-transform: scale(0.95);
 }
-.wrapper {
+#wrapper {
 	width:100%; 
 	height:100%; 
 	background-color:Lime;
@@ -36,11 +36,13 @@ body, html {
 	height:33.3%;
 	width:33.3%;
 }
-.display {
+#display {
 	background-color: #000;
 	background-size: 100% 100%;
 	position: relative;
 	float: left;
 	height:33.3%;
 	width:33.3%;
+	color:#fff;
+	overflow:auto;
 }
