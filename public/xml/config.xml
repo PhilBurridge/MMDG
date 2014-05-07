@@ -66,6 +66,8 @@ SLIDER:
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<DISPLAY>
+		<ICON>arrows/display.png</ICON>
+		<NAME>0</NAME>
 		<POS>centercenter</POS>
 	</DISPLAY>
 </CATALOG>
