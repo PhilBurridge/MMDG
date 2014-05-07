@@ -1,99 +1,76 @@
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Massive Multiplayer Dome Game</title>
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+        <link rel="stylesheet" media="screen" href="css/style.css">
+        <script src="js/config.js" type="text/javascript"></script>
+        <script src="js/script.js" type="text/javascript"></script>
+    </head>
+    <body>
 
-<head>
+        <!-- MAGIC -->
+        <script>
+            var xmlhttp;
+            if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
+              xmlhttp=new XMLHttpRequest();
+            }
+            else{// code for IE6, IE5
+              xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+            }
 
-<title>Massive Multiplayer Dome Game</title>
-<!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
-<meta name="viewport" content="width=device-width, user-scalable=no">
-<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.css">
-<link rel="stylesheet" media="screen" href="css/styleMMDG.css">
-<script src="js/config.js" type="text/javascript"></script>
-<script src="js/script.js" type="text/javascript"></script>
-<script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
-<script src="http://code.jquery.com/mobile/1.4.1/jquery.mobile-1.4.1.min.js"></script>
-</head>
+            xmlhttp.open("GET","xml/config.xml",false);
+            xmlhttp.send();
+            xmlDoc=xmlhttp.responseXML;
 
-<body>
+            var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
 
-<script>
-var xmlhttp;
-if (window.XMLHttpRequest){// code for IE7+, Firefox, Chrome, Opera, Safari
-  xmlhttp=new XMLHttpRequest();
-}
-else{// code for IE6, IE5
-  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
-}
+            function buttons(ori){
+                for (i=0;i<x.length;i++){   //x.lenght() is the amount of buttons
+                    var pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
+                    var name = x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
+                    var icon = x[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
+                    var empty = x[i].getElementsByTagName("EMPTY")[0].childNodes[0].nodeValue;
+                    
+                    if(pos == ori){
+                    
+                        if(empty == "yes"){
+                            document.write("<div class='button' src='");
+                            document.write(icon);
+                            document.write("'></div>");
+                        }
+                        else{
+                            document.write("<div class='button' style='background-image:url(");
+                            document.write(icon);
+                            document.write(");' onmousedown='buttonDown(");
+                            document.write(name);
+                            document.write(");' onmouseup='buttonUp(");
+                            document.write(name);
+                            document.write(");' ontouchstart='buttonDown(");
+                            document.write(name);
+                            document.write(")' ontouchend='buttonUp(");
+                            document.write(name);
+                            document.write(");'></div>");
+                        }
+                    }
+                }
+            }
 
-xmlhttp.open("GET","xml/config.xml",false);
-xmlhttp.send();
-xmlDoc=xmlhttp.responseXML;
+            document.write("<div class='wrapper'>");
 
-var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
+                buttons("upleft");
+                buttons("upcenter");
+                buttons("upright");
+                buttons("centerleft");
+                buttons("centercenter");
+                buttons("centerright");
+                buttons("downleft");
+                buttons("downcenter");
+                buttons("downright");
 
-function buttons(ori){
-	for (i=0;i<x.length;i++){   //x.lenght() is the amount of buttons
-		var pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
-		var name = x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
-		var icon = x[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
-		var empty = x[i].getElementsByTagName("EMPTY")[0].childNodes[0].nodeValue;
-		
-		if(pos == ori){
-		
-			if(empty == "yes"){
-				document.write("<input id='empty' type='image' src='");
-				document.write(icon);
-				document.write("'/>");
-			}
-			else{
-				document.write("<input type='image' alt='' style='background-image:url(");
-				document.write(icon);
-				document.write(");' onmousedown='buttonDown(");
-				document.write(name);
-				document.write(")' onmouseup='buttonUp(");
-				document.write(name);
-				document.write(")'/>");
-			}
-		}
-	}
-}
+            document.write("</div>");
+        </script>
 
 
-
-document.write("<div>");
-	
-//first column
-	
-document.write("<div>");	
-
-buttons("upleft");
-buttons("centerleft");
-buttons("downleft");
-
-document.write("</div>");	
-
-//second column	
-
-document.write("<div>");
-
-buttons("upcenter");
-buttons("centercenter");
-buttons("downcenter");
-
-document.write("</div>");	
-
-//third column
-
-document.write("<div>");	
-
-buttons("upright");
-buttons("centerright");
-buttons("downright");
-
-document.write("</div>");	
-
-document.write("</div>");	
-
-</script>
-</body>
+    </body>
 </html>
