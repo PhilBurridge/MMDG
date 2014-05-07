@@ -1,6 +1,6 @@
 #include "Scene.h"
 
-
+// Scene constructor
 Scene::Scene(){
     background = new DrawableObject("mmdg", 2.0f, 1.0f);
 }
@@ -9,12 +9,13 @@ void Scene::init() {
     
 }
 
-
+// Updates all the required stuff for players before drawing
 void Scene::update(float dt) {
     updatePositions(dt);
     checkCollisions();
 }
 
+// Updates the positions of all players with a specific step
 void Scene::updatePositions(float dt) {
     //for(std::vector<Player *>::iterator it = player_vec.begin(); it != player_vec.end(); it++) {
     //    (*it)->movePlayer();
@@ -26,44 +27,46 @@ void Scene::updatePositions(float dt) {
 }
 
 void Scene::checkCollisions() {
-    //With std::vector
-    /*
-    for(std::vector<Player *>::iterator itCop = player_vec.begin(); itCop != player_vec.end(); itCop++) { // jag hade ingen bättre fantasi än 
-        if((*itCop)->isCop()) {
-            for(std::vector<Player *>::iterator itRob = player_vec.begin(); itRob != player_vec.end(); itRob++) {
-                if(!(*itRob)->isCop() && 
-                    glm::length((*itCop)->getPosition() - (*itRob)->getPosition()) > ((*itCop)->getSize() + (*itRob)->getSize())) { // oskäer på length
-                    // Do somthing when collision happens. KILL THA ROBBBA
-                    std::cout << "collision between player " << std::endl;
-                }
-            }
-        }
-    }
-    */
-
+  
     //With std::map
     Player * p1;
-    Player * p2; 
-    for(std::map<int, Player *>::iterator itCop = players.begin(); itCop != players.end(); itCop++) {
+    Player * p2;
 
+    for(std::map<int, Player *>::iterator itCop = players.begin(); itCop != players.end(); itCop++) {
         p1 = (*itCop).second;
         if(!p1->isCop()) 
             continue; //om p1 inte är polis, fuck it. leta vidare
-
+            
         //Om vi har kommit hit så vet vi att p1 är en polis
         for(std::map<int, Player *>::iterator itRob = itCop; itRob != players.end(); itRob++) {
+        //for(std::map<int, Player *>::iterator itRob = players.begin(); itRob != players.end(); itRob++) {
 
             p2 = (*itRob).second;
+
+            if((*itRob).first == (*itCop).first)
+                continue;
+
             if(p2->isCop())
                 continue; //om p2 var polis, fuck it. leta vidare. 
+            
+            //test för att se längden emellan dem.
+            //double foo = glm::length(p1->getPosition() - p2->getPosition()) > (p1->getSize() + p2->getSize());
+            //std::cout << "Längden mellan objekten " << foo << std::endl;
+
+            double xd = p2->getPosition().x - p1->getPosition().x;
+            double yd = p2->getPosition().y - p1->getPosition().y;
+            double distance = sqrt(xd * xd + yd * yd);
 
             //Om vi har kommit hit så vet vi att p1 är en polis och p2 är en Robber
             //Nu kollar vi om de kolliderar med varandra. De är sfärer
-
-            // FIX THIS COLLISION SHIZZLE
-            if(pow(p2->getPosition().x - p1->getPosition().x, 2) + pow(p1->getPosition().y - p2->getPosition().y, 2) <= pow((p1->getSize() / 2) + (p2->getSize() / 2) , 2)) { // oskäer på length
+            //if(glm::length(p1->getPosition() - p2->getPosition()) > (p1->getSize() + p2->getSize())) { // oskäer på length
+            if(distance > (p1->getSize() + p2->getSize())) { // oskäer på length
                 // Do somthing when collision happens. KILL THA ROBBBA
+                debug
+                std::cout << "*****" << std::endl;
                 std::cout << "collision between player " << std::endl;
+                std::cout << "distans " << distance << std::endl;
+                std::cout << "*****" << std::endl;
             }
         }
     }
@@ -111,7 +114,8 @@ void Scene::draw() {
         if(pair.second->isCop()) {
             pair.second->switchToCop();
         }
-
+        // Disable depth test for the alpha blending to draw correct when players collide
+        glDisable(GL_DEPTH_TEST);
         pair.second->draw();
     }
 }
