@@ -6,7 +6,11 @@ console.log("Server ws port is: %s", config.serverWsPort);
 console.log("Argument delimiter is: \"%s\"", config.arg_delimiter);
 
 ws.onopen = function() {
-    ws.send("var=connected" + config.arg_delimiter + "val=1");
+	var device = "computer";
+	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+ 		device = "mobile";
+	}
+    ws.send("var=connected" + config.arg_delimiter + "val=" + device);
     init(ws);
 };
 

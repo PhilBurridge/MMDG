@@ -298,13 +298,13 @@ public class WebSocketServer extends ConsolePrinter{
             if (opcode == 8) {
                 print("Client want to close connection");
                 stop();
-                return null;
+                return "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=by_requested";
             } else {
                 final int payloadSize = getSizeOfPayload(buf[1]);
                 if (payloadSize == -128) {
                     print("playloadSize is -128");
                     stop();
-                    return "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=1";
+                    return "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=by_closing";
                 }
                 buf = readBytes(MASK_SIZE + payloadSize);
                 // print("Payload:");
