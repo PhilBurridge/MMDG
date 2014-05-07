@@ -15,7 +15,7 @@ function buttonDown(btnId) {
 }
 
 function buttonUp(btnId){
-	ws.send("var=btn" + btnIndex + config.arg_delimiter + "val=0");
+	ws.send("var=btn" + btnId + config.arg_delimiter + "val=0");
 }
 
 function init(ws) {
