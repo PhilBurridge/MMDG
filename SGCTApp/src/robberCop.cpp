@@ -60,7 +60,9 @@ void RobberCop::process(int id, std::string var, std::string val) {
         return;
     }
 
-    if(scene->getPlayer(id) == NULL){
+    Player * p = scene->getPlayer(id);
+
+    if(p == NULL){
         std::cout << "WARNING! TRYING TO ACCESS NULL POINTER" << std::endl;
         return;
     }
@@ -70,25 +72,30 @@ void RobberCop::process(int id, std::string var, std::string val) {
         bool pressed = (val == "1");
         std::cout << "btn number: " << btnNumber << std::endl;
         std::cout << "btn is pressed: " << pressed << std::endl;
+            
         
+        int direction;
+        switch(btnNumber){
+            case 0: direction = Player::NORTH; break;
+            case 1: direction = Player::NORTH_EAST; break;
+            case 2: direction = Player::EAST; break;
+            case 3: direction = Player::SOUTH_EAST; break;
+            case 4: direction = Player::SOUTH; break;
+            case 5: direction = Player::SOUTH_WEST; break;
+            case 6: direction = Player::WEST; break;
+            case 7: direction = Player::NORTH_WEST; break;
+            default: std::cout << "ERROR! BAD BUTTON NUMBER" << std::endl;
+        }
         
         if(pressed){
-            int direction;
-            switch(btnNumber){
-                case 0: direction = Player::NORTH; break;
-                case 1: direction = Player::NORTH_EAST; break;
-                case 2: direction = Player::EAST; break;
-                case 3: direction = Player::SOUTH_EAST; break;
-                case 4: direction = Player::SOUTH; break;
-                case 5: direction = Player::SOUTH_WEST; break;
-                case 6: direction = Player::WEST; break;
-                case 7: direction = Player::NORTH_WEST; break;
-                default: std::cout << "ERROR! BAD BUTTON NUMBER" << std::endl;
-            }
-            scene->getPlayer(id)->setMoveDirection(direction);
+            p->setMoveDirection(direction);
         }
-        else {
-            scene->getPlayer(id)->stop();
+        else { //If button is released
+
+            //Stop player if the button released is the same as the last one pressed
+            if (p->getMoveDirection() == direction){
+                p->stop();
+            }
         }
 
     }
