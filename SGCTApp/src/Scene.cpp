@@ -60,7 +60,8 @@ void Scene::checkCollisions() {
             //Om vi har kommit hit så vet vi att p1 är en polis och p2 är en Robber
             //Nu kollar vi om de kolliderar med varandra. De är sfärer
 
-            if(glm::length(p1->getPosition() - p2->getPosition()) > (p1->getSize() + p2->getSize())) { // oskäer på length
+            // FIX THIS COLLISION SHIZZLE
+            if(pow(p2->getPosition().x - p1->getPosition().x, 2) + pow(p1->getPosition().y - p2->getPosition().y, 2) <= pow((p1->getSize() / 2) + (p2->getSize() / 2) , 2)) { // oskäer på length
                 // Do somthing when collision happens. KILL THA ROBBBA
                 std::cout << "collision between player " << std::endl;
             }
