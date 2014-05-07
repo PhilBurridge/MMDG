@@ -2,6 +2,7 @@
 
 // Define the speed and directions for a players movement
 const glm::vec2 Player::DIRECTIONS[] = {
+    glm::vec2(0.0f, 0.0f),
     glm::vec2(0.0f, 1.0f),
     glm::vec2(0.707106f, 0.707106f),
     glm::vec2(1.0f, 0.0f),
@@ -14,9 +15,8 @@ const glm::vec2 Player::DIRECTIONS[] = {
 
 // Player constructor
 Player::Player(glm::vec2 pos, bool state):
-DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
+DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f), directionIndex(0){
     std::cout << "Player constructor" << std::endl;
-
     display();
 }
 
@@ -36,7 +36,12 @@ bool Player::isCop() {
 
 void Player::setMoveDirection(int d){
     assert(0 <= d && d < 9);
+    directionIndex = d;
     direction = DIRECTIONS[d];
+}
+
+int Player::getMoveDirection() const{
+    return directionIndex;
 }
 
 void Player::stop(){

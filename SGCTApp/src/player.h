@@ -22,8 +22,9 @@ public:
 	void switchToCop();
     void switchToRobber();
     bool isCop();
-    //void setMoveDirection(int button, bool pressed);
+
     void setMoveDirection(int d);
+    int getMoveDirection() const;
     void stop();
 
 
@@ -38,7 +39,8 @@ public:
     
     
     enum DirectionEnum{
-        NORTH = 0, 
+        STOP = 0,
+        NORTH, 
         NORTH_EAST, 
         EAST, 
         SOUTH_EAST, 
@@ -54,6 +56,7 @@ private:
 
     float speed;
     bool cop;
+    int directionIndex;
     glm::vec2 position;
     glm::vec2 direction;
     
