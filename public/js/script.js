@@ -12,7 +12,6 @@ ws.onopen = function() {
 
 function buttonDown(btnId) {
     ws.send("var=btn" + btnId + config.arg_delimiter + "val=1");
-
 }
 
 function buttonUp(btnId){

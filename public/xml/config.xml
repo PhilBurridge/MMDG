@@ -17,8 +17,6 @@ SLIDER:
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
-
-
 	<BUTTON>
 		<ICON>arrows/up.png</ICON>
 		<NAME>0</NAME>
@@ -73,5 +71,4 @@ SLIDER:
 		<POS>centercenter</POS>
 		<EMPTY>yes</EMPTY>
 	</BUTTON>
-	
 </CATALOG>
