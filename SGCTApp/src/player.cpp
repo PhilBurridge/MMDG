@@ -1,5 +1,6 @@
 #include "player.h"
 
+// Define the speed and directions for a players movement
 const glm::vec2 Player::DIRECTIONS[] = {
     glm::vec2(0.0f, 1.0f),
     glm::vec2(0.707106f, 0.707106f),
@@ -11,26 +12,25 @@ const glm::vec2 Player::DIRECTIONS[] = {
     glm::vec2(-0.707106f, 0.707106f)
 };
 
-
+// Player constructor
 Player::Player(glm::vec2 pos, bool state):
-DrawableObject("cop", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
+DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f){
     std::cout << "Player constructor" << std::endl;
 
     display();
 }
 
-void Player::switchToCop()
-{
+void Player::switchToCop() {
     cop = true;
+    textureName = "cop";
 }
 
-void Player::switchToRobber()
-{
+void Player::switchToRobber() {
     cop = false;
+    textureName = "rob";
 }
 
-bool Player::isCop()
-{
+bool Player::isCop() {
     return cop;
 }
 
@@ -43,61 +43,9 @@ void Player::stop(){
     direction = glm::vec2(0.0f, 0.0f);
 }
 
-/*void Player::setMoveDirection(int button, bool pressed) {
-    if(button == 1) {
-        //north
-        direction = glm::vec2(0.0f,1.0f);
->>>>>>> AllFiles
-    }
-    if(button == 2) {
-        //north east
-        direction = glm::vec2(1.0f,1.0f);
-    }
-    if(button == 3) {
-        //east
-        direction = glm::vec2(1.0f,0.0f);
-    }
-    if(button == 4) {
-        //south east
-        direction = glm::vec2(1.0f,-1.0f);
-    }
-    if(button == 5) {
-        //south
-        direction = glm::vec2(0.0f,-1.0f);
-    }
-    if(button == 6) {
-        //south west
-        direction = glm::vec2(-1.0f,-1.0f);
-    }
-    if(button == 7) {
-        //kanye west
-        direction = glm::vec2(-1.0f,0.0f);
-    }
-    if(button == 8) {
-        //north west
-        direction = glm::vec2(-1.0f,1.0f);
-    }
-    if(pressed == false) {
-        //stop
-        direction = glm::vec2(0.0f,0.0f);
-    }
-<<<<<<< HEAD
-}
-
-void Player::movePlayer() {
-    position += speed*direction;
-}
-
-void Player::update() {
-=======
-}*/
 
 void Player::movePlayer(float dt) {
     position += dt*speed*direction;
-}
-
-void Player::update(float dt) {
-   
 }
 
 glm::vec2 Player::getPosition() const{
@@ -114,13 +62,10 @@ void Player::display() const{
     std::cout << "direction: x=" << direction.x << " y=" << direction.y << std::endl;
     std::cout << "isCop = " << cop << std::endl;
     std::cout << "speed = " << speed << std::endl;
-
 }
 
 void Player::draw() const {
 
     DrawableObject::draw(position.x, position.y);
-
 }
-
 

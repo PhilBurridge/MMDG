@@ -20,7 +20,6 @@ class Scene {
 
 public:
     Scene();
-    void init();
     void update(float dt);
     void updatePositions(float dt);
     void checkCollisions();
