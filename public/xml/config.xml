@@ -16,20 +16,9 @@ SLIDER:
 -ENDVALUE: any value. 
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
-
-	<!-- 
-
-	Defining buttons in clock wise order, see below:
-
-	 7 | 0 | 1
-	---+---+---
-	 6 |(8)| 2
-	---+---+---
-	 5 | 4 | 3
-
-	-->
-	
 <CATALOG>
+
+
 	<BUTTON>
 		<ICON>arrows/up.png</ICON>
 		<NAME>0</NAME>
