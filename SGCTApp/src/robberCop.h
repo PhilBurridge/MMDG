@@ -18,7 +18,6 @@ public:
     RobberCop(sgct::Engine * gEngine); 
 
     virtual void process(int id, std::string action, std::string value);
-
     
     void update(float dt);
     void draw() const;

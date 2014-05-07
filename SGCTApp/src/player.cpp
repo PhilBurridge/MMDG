@@ -43,51 +43,8 @@ void Player::stop(){
     direction = glm::vec2(0.0f, 0.0f);
 }
 
-/*void Player::setMoveDirection(int button, bool pressed) {
-    if(button == 1) {
-        //north
-        direction = glm::vec2(0.0f,1.0f);
-    }
-    if(button == 2) {
-        //north east
-        direction = glm::vec2(1.0f,1.0f);
-    }
-    if(button == 3) {
-        //east
-        direction = glm::vec2(1.0f,0.0f);
-    }
-    if(button == 4) {
-        //south east
-        direction = glm::vec2(1.0f,-1.0f);
-    }
-    if(button == 5) {
-        //south
-        direction = glm::vec2(0.0f,-1.0f);
-    }
-    if(button == 6) {
-        //south west
-        direction = glm::vec2(-1.0f,-1.0f);
-    }
-    if(button == 7) {
-        //kanye west
-        direction = glm::vec2(-1.0f,0.0f);
-    }
-    if(button == 8) {
-        //north west
-        direction = glm::vec2(-1.0f,1.0f);
-    }
-    if(pressed == false) {
-        //stop
-        direction = glm::vec2(0.0f,0.0f);
-    }
-}*/
-
 void Player::movePlayer(float dt) {
     position += dt*speed*direction;
-}
-
-void Player::update(float dt) {
-   
 }
 
 glm::vec2 Player::getPosition() const{
@@ -109,5 +66,3 @@ void Player::display() const{
 void Player::draw() const {
     DrawableObject::draw(position.x, position.y);
 }
-
-
