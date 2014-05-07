@@ -50,5 +50,6 @@ body, html {
 	height:33.3%;
 	width:33.3%;
 	color:#fff;
-	overflow:auto;
+	overflow:hidden;
+	text-align: center;
 }

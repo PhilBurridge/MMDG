@@ -11,12 +11,14 @@ ws.onopen = function() {
 };
 
 function buttonDown(btnId) {
-	document.getElementById('display').innerHTML += '<br>pushed! ';
+	//document.getElementById('display').innerHTML += '<br>pushed! ';
+	postOnDisplay("pushed!!");
     ws.send("var=btn" + btnId + config.arg_delimiter + "val=1");
 };
 
 function buttonUp(btnId){
-	document.getElementById('display').innerHTML += '<br>released! ';
+	//document.getElementById('display').innerHTML += '<br>released! ';
+	postOnDisplay("released!");
 	ws.send("var=btn" + btnId + config.arg_delimiter + "val=0");
 };
 
@@ -29,6 +31,16 @@ function init(ws) {
 	    	recieved_pings++;
 	    	ws.send("var=recieved_pings" + config.arg_delimiter + "val=" + recieved_pings);
 	    }
-	    document.getElementById('content').innerHTML += '<br>Message received from server: ' + data;
+	    postOnDisplay(data);
 	}
 };
+
+function postOnDisplay(message){
+
+	var d = document.getElementById('display');
+	d.innerHTML += "<br>" + message;
+
+	if(d.scrollHeight > d.clientHeight) {
+  		d.scrollTop = d.scrollHeight - d.clientHeight;
+	}
+}
