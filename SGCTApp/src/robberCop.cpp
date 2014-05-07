@@ -51,13 +51,13 @@ void RobberCop::process(int id, std::string var, std::string val) {
         std::cout << "adding new player" << std::endl;
         //Player *p = new Player(glm::vec2(1.0f, 0.0f), false);
 
-        bool state;
+        bool isCop;
         // Maybe change the ratio between robbers and cops, now it's 50/50
         if((id % 2) == 0) {
-            state = false;
+            isCop = false;
             std::cout << "Player " << id << " is a robber" << std::endl;
         } else {
-            state = true;
+            isCop = true;
             std::cout << "Player " << id << " is a cop" << std::endl;
         } 
 
@@ -67,7 +67,7 @@ void RobberCop::process(int id, std::string var, std::string val) {
         float rand_x = ((1.57 - (-1.57)) * ((float) rand() / RAND_MAX)) + (-1.57);
         float rand_y = ((0.78 - (-0.78)) * ((float) rand() / RAND_MAX)) + (-0.78);
 
-        Player *p = new Player(glm::vec2(rand_x, rand_y), state);
+        Player *p = new Player(glm::vec2(rand_x, rand_y), isCop);
 
         scene->addPlayer(id, p);
         return;

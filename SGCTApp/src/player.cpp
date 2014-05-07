@@ -14,9 +14,10 @@ const glm::vec2 Player::DIRECTIONS[] = {
 };
 
 // Player constructor
-Player::Player(glm::vec2 pos, bool state):
-DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(state), speed(0.1f), directionIndex(0){
+Player::Player(glm::vec2 pos, bool isCop):
+DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0){
     std::cout << "Player constructor" << std::endl;
+    speed = isCop ? 0.1f : 0.2f;
     display();
 }
 
