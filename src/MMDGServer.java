@@ -33,7 +33,7 @@ public class MMDGServer extends ConsolePrinter{
      * Defines how many times per second the MMDG Server should unload the stack
      * of client s to the application
      */
-    private double unloadsPerSecond = 10000;
+    private double unloadsPerSecond = 1000;
 
     /**
      * A string used for marking the end of a client's "command" sent to the

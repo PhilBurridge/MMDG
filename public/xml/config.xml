@@ -17,58 +17,71 @@ SLIDER:
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
-	<BUTTON>
-		<ICON>arrows/upleft.png</ICON>
-		<NAME>1</NAME>
-		<POS>upleft</POS>
-		<EMPTY>no</EMPTY>
-	</BUTTON>
-	<BUTTON>
-		<ICON>arrows/right.png</ICON> 
-		<NAME>6</NAME>
-		<POS>centerright</POS>
-		<EMPTY>no</EMPTY>
-	</BUTTON>
+
+	<!-- 
+
+	Defining buttons in clock wise order, see below:
+
+	 7 | 0 | 1
+	---+---+---
+	 6 |(8)| 2
+	---+---+---
+	 5 | 4 | 3
+
+	-->
 	<BUTTON>
 		<ICON>arrows/up.png</ICON>
-		<NAME>2</NAME>
+		<NAME>0</NAME>
 		<POS>upcenter</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>arrows/down.png</ICON>
-		<NAME>8</NAME>
-		<POS>downcenter</POS>
+		<ICON>arrows/upright.png</ICON>
+		<NAME>1</NAME>
+		<POS>upright</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>http://www.bevezetem.hu/images/1310/angoranyul4.jpg</ICON> <!--arrows/empty.png-->
-		<NAME>5</NAME>
-		<POS>centercenter</POS>
-		<EMPTY>yes</EMPTY>
-	</BUTTON>
-	<BUTTON>
-		<ICON>arrows/left.png</ICON>
-		<NAME>4</NAME>
-		<POS>centerleft</POS>
+		<ICON>arrows/right.png</ICON> 
+		<NAME>2</NAME>
+		<POS>centerright</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>arrows/downright.png</ICON>
-		<NAME>9</NAME>
+		<NAME>3</NAME>
 		<POS>downright</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
+		<ICON>arrows/down.png</ICON>
+		<NAME>4</NAME>
+		<POS>downcenter</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
 		<ICON>arrows/downleft.png</ICON>
-		<NAME>7</NAME>
+		<NAME>5</NAME>
 		<POS>downleft</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>arrows/upright.png</ICON>
-		<NAME>3</NAME>
-		<POS>upright</POS>
+		<ICON>arrows/left.png</ICON>
+		<NAME>6</NAME>
+		<POS>centerleft</POS>
 		<EMPTY>no</EMPTY>
-	</BUTTON>	
+	</BUTTON>
+	<BUTTON>
+		<ICON>arrows/upleft.png</ICON>
+		<NAME>7</NAME>
+		<POS>upleft</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>http://www.bevezetem.hu/images/1310/angoranyul4.jpg</ICON> <!--arrows/empty.png-->
+		<NAME>8</NAME>
+		<POS>centercenter</POS>
+		<EMPTY>yes</EMPTY>
+	</BUTTON>
+	
 </CATALOG>
