@@ -51,13 +51,13 @@ void RobberCop::process(int id, std::string var, std::string val) {
         std::cout << "adding new player" << std::endl;
         //Player *p = new Player(glm::vec2(1.0f, 0.0f), false);
 
-        bool state;
+        bool isCop;
         // Maybe change the ratio between robbers and cops, now it's 50/50
         if((id % 2) == 0) {
-            state = false;
+            isCop = false;
             std::cout << "Player " << id << " is a robber" << std::endl;
         } else {
-            state = true;
+            isCop = true;
             std::cout << "Player " << id << " is a cop" << std::endl;
         } 
 
@@ -67,7 +67,7 @@ void RobberCop::process(int id, std::string var, std::string val) {
         float rand_x = ((1.57 - (-1.57)) * ((float) rand() / RAND_MAX)) + (-1.57);
         float rand_y = ((0.78 - (-0.78)) * ((float) rand() / RAND_MAX)) + (-0.78);
 
-        Player *p = new Player(glm::vec2(rand_x, rand_y), state);
+        Player *p = new Player(glm::vec2(rand_x, rand_y), isCop);
 
         scene->addPlayer(id, p);
         return;
@@ -80,7 +80,9 @@ void RobberCop::process(int id, std::string var, std::string val) {
         return;
     }
 
-    if(scene->getPlayer(id) == NULL){
+    Player * p = scene->getPlayer(id);
+
+    if(p == NULL){
         std::cout << "WARNING! TRYING TO ACCESS NULL POINTER" << std::endl;
         return;
     }
@@ -90,25 +92,30 @@ void RobberCop::process(int id, std::string var, std::string val) {
         bool pressed = (val == "1");
         std::cout << "btn number: " << btnNumber << std::endl;
         std::cout << "btn is pressed: " << pressed << std::endl;
+            
         
+        int direction;
+        switch(btnNumber){
+            case 0: direction = Player::NORTH; break;
+            case 1: direction = Player::NORTH_EAST; break;
+            case 2: direction = Player::EAST; break;
+            case 3: direction = Player::SOUTH_EAST; break;
+            case 4: direction = Player::SOUTH; break;
+            case 5: direction = Player::SOUTH_WEST; break;
+            case 6: direction = Player::WEST; break;
+            case 7: direction = Player::NORTH_WEST; break;
+            default: std::cout << "ERROR! BAD BUTTON NUMBER" << std::endl;
+        }
         
         if(pressed){
-            int direction;
-            switch(btnNumber){
-                case 0: direction = Player::NORTH; break;
-                case 1: direction = Player::NORTH_EAST; break;
-                case 2: direction = Player::EAST; break;
-                case 3: direction = Player::SOUTH_EAST; break;
-                case 4: direction = Player::SOUTH; break;
-                case 5: direction = Player::SOUTH_WEST; break;
-                case 6: direction = Player::WEST; break;
-                case 7: direction = Player::NORTH_WEST; break;
-                default: std::cout << "ERROR! BAD BUTTON NUMBER" << std::endl;
-            }
-            scene->getPlayer(id)->setMoveDirection(direction);
+            p->setMoveDirection(direction);
         }
-        else {
-            scene->getPlayer(id)->stop();
+        else { //If button is released
+
+            //Stop player if the button released is the same as the last one pressed
+            if (p->getMoveDirection() == direction){
+                p->stop();
+            }
         }
 
     }

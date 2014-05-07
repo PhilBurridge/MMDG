@@ -21,29 +21,32 @@ void Scene::updatePositions(float dt) {
 }
 
 void Scene::checkCollisions() {
-    //With std::map
     Player * p1;
     Player * p2;
 
     for(std::map<int, Player *>::iterator itCop = players.begin(); itCop != players.end(); ++itCop) {
         p1 = (*itCop).second;
-        if(!p1->isCop()) 
-            continue; //om p1 inte är polis, fuck it. leta vidare
-        //Om vi har kommit hit så vet vi att p1 är en polis
-        for(std::map<int, Player *>::iterator itRob = players.begin(); itRob != players.end(); ++itRob) {
-            if((*itRob).first == (*itCop).first)
-                continue;
 
+        //if p1 is no cop, fuck it. keep on looking
+        if(!p1->isCop()) 
+            continue;
+
+        //If we've gotten here, we know p1 is a cop
+        //lets see if we can collide with some robbers
+        for(std::map<int, Player *>::iterator itRob = players.begin(); itRob != players.end(); ++itRob) {
             p2 = (*itRob).second;
 
+            //if p2 is a cop, fuck it. leta vidare. We want robbers
             if(p2->isCop())
-                continue; //om p2 var polis, fuck it. leta vidare. 
+                continue;
 
-            //Om vi har kommit hit så vet vi att p1 är en polis och p2 är en Robber
-            //Nu kollar vi om de kolliderar med varandra. De är sfärer
-            if(glm::length(p1->getPosition() - p2->getPosition()) < (p1->getSize() + p2->getSize())) { // oskäer på length
+            //If we've gotten here, we know p1 is a cop and p2 is a robber
+            //Check if there is a collision
+            if(glm::length(p1->getPosition() - p2->getPosition()) < (p1->getSize() + p2->getSize())) { 
+
                 // Do somthing when collision happens. KILL THA ROBBBA
                 p2->switchToCop();
+
                 std::cout << "****************************************" << std::endl;
                 std::cout << "collision between player " << (*itRob).first << " and " << (*itCop).first << std::endl;
                 std::cout << "****************************************" << std::endl;

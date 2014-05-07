@@ -10,6 +10,12 @@ body, html {
 	float: left;
 	height:33.3%;
 	width:33.3%;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 .button:active {
     background-color: #f00;
