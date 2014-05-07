@@ -4,11 +4,11 @@ Example on what is available to modify in this xml file.
 
 All positions of the 3x3 grid Must be filled to ensure a correct alignment!
 
-Button:
+BUTTON:
 -ICON: URL or path in folder. 
 -NAME: any name, not too long. This name is sent to the application. 
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright. 
--EMPTRY: yes/no for space without button.
+-EMPTY: yes/no for space without button.
 
 SLIDER: 
 -NAME: any name, not too long. This name is sent to the application with the value. 
