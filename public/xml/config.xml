@@ -65,10 +65,7 @@ SLIDER:
 		<POS>upleft</POS>
 		<EMPTY>no</EMPTY>
 	</BUTTON>
-	<BUTTON>
-		<ICON>http://www.bevezetem.hu/images/1310/angoranyul4.jpg</ICON> <!--arrows/empty.png-->
-		<NAME>8</NAME>
+	<DISPLAY>
 		<POS>centercenter</POS>
-		<EMPTY>yes</EMPTY>
-	</BUTTON>
+	</DISPLAY>
 </CATALOG>

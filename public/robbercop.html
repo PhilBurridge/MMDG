@@ -26,7 +26,7 @@
             var x = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
 
             function buttons(ori){
-                for (i=0;i<x.length;i++){   //x.lenght() is the amount of buttons
+                for (i=0;i<x.length;i++){   //x.length() is the amount of buttons
                     var pos = x[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
                     var name = x[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
                     var icon = x[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
