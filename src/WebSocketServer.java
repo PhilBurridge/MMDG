@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Vector;
+import java.util.ArrayList;
 import org.apache.commons.codec.binary.Base64;
 
 
@@ -35,29 +35,33 @@ public class WebSocketServer extends ConsolePrinter{
      * a buffer of messages that will fill upp until MMDGServer forwards it to
      * the TCPHandler
      */
-    private Vector<String> commandStack;
+    private ArrayList<String> commandStack;
 
     /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
         serverSocket = new ServerSocket(websocketPort);
         clientHandlers = new HashMap<Integer, ClientHandler>();
-        commandStack = new Vector<String>();
+        commandStack = new ArrayList<String>();
     }
 
     public synchronized void addCommand(String command) {
-        commandStack.add(command);
+        commandStack.add(command + MMDGServer.CMD_DELIMITER);
+        print("Added \"" + command + "\" to command stack");
     }
 
-    public synchronized Vector<String> getCommandStack() {
-        return commandStack;
+
+    public synchronized ArrayList<String> getCommandStack() {
+        ArrayList<String> commandStackCopy = new ArrayList<String>(commandStack);
+        commandStack.clear();
+        return commandStackCopy;
     }
 
-    public synchronized void clearCommandStack() {
+    public void clearCommandStack() {
         commandStack.clear();
     }
 
     /**
-     * will listen for client connections in a seperate thread, create a new
+     * will listen for client connections in a separate thread, create a new
      * socket and add it to a socket array/vector. so far it is not in a
      * seperate thread, and it only has 1 socket, only 1 person can connect at a
      * time.
@@ -68,10 +72,10 @@ public class WebSocketServer extends ConsolePrinter{
             public void run() {
                 try {
                     while (true) {
-                        print("Waiting for connections ...");
+                        //print("Waiting for connections ...");
                         Socket socket = serverSocket.accept();
                         System.out.println();
-                        print("Connecting!");
+                        //print("Connecting!");
 
                         removeDeadClientHandlers();
                         if (handshake(socket)) {
@@ -103,7 +107,7 @@ public class WebSocketServer extends ConsolePrinter{
                 Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
                                 .next();
                 pairs.getValue().sendMessage(msg.getBytes());
-                it.remove(); // avoids a ConcurrentModificationException
+                //it.remove(); // avoids a ConcurrentModificationException
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -120,7 +124,7 @@ public class WebSocketServer extends ConsolePrinter{
         String str;
 
         // Reading client handshake
-        print("Reading client handshake");
+        //print("Reading client handshake");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
             // print(str);
@@ -148,7 +152,7 @@ public class WebSocketServer extends ConsolePrinter{
         String response = "HTTP/1.1 101 Switching Protocols\r\n"
                         + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n"
                         + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
-        print("Writing response");
+        //print("Writing response");
         // print(response);
         out.write(response);
         out.flush();
@@ -162,7 +166,7 @@ public class WebSocketServer extends ConsolePrinter{
         clientHandlers.put(ch.id, ch);
         ch.listenToClient();
 
-        print("Clients connected: " + clientHandlers.size());
+        print("Number of clients: " + clientHandlers.size());
         print("Added client with ID " + ch.id);
     }
 
@@ -261,6 +265,7 @@ public class WebSocketServer extends ConsolePrinter{
             byte[] b = new byte[numOfBytes];
             clientSocket.getInputStream().read(b);
             if (b.length < 0) {
+                print("Negative byte size..");
                 stop();
                 return null;
             }
@@ -285,20 +290,21 @@ public class WebSocketServer extends ConsolePrinter{
          * @return The received message from client
          * @throws IOException
          */
-        public String reiceveMessage() throws IOException {
+        private String reiceveMessage() throws IOException {
             byte[] buf = readBytes(2);
             // print("Headers:");
             // convertAndPrint(buf);
             int opcode = buf[0] & 0x0F;
             if (opcode == 8) {
-                // Client want to close connection!
+                print("Client want to close connection");
                 stop();
-                return null;
+                return "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=by_requested";
             } else {
                 final int payloadSize = getSizeOfPayload(buf[1]);
                 if (payloadSize == -128) {
+                    print("playloadSize is -128");
                     stop();
-                    return "disconnected";
+                    return "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=by_closing";
                 }
                 buf = readBytes(MASK_SIZE + payloadSize);
                 // print("Payload:");
@@ -313,15 +319,17 @@ public class WebSocketServer extends ConsolePrinter{
         /**
          * Creates a thread for listening for client messages.
          */
-        public void listenToClient() {
+        private void listenToClient() {
             listenerTread = new Thread(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         while (alive) {
                             String msg = reiceveMessage();
-                            print("Recieved from client " + id + ": " + msg);
-                            addCommand(msg);
+                            print("Recieved from client " + id + ": " + msg + "\"");
+                            if(validateMessage(msg)){
+                                addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
+                            }   
                         }
                         print("The listening thread of clientHandler " + id
                                         + " is done");
@@ -331,7 +339,11 @@ public class WebSocketServer extends ConsolePrinter{
                 }
             });
             listenerTread.start();
-            print("Started thread used to listen to client messages...");
+            //print("Started thread used to listen to client messages...");
+        }
+        
+        private boolean validateMessage(String msg){
+            return msg.indexOf(MMDGServer.CMD_DELIMITER) == -1;
         }
 
         public void sendMessage(byte[] msg) throws IOException {
@@ -348,7 +360,6 @@ public class WebSocketServer extends ConsolePrinter{
             os.write(baos.toByteArray(), 0, baos.size());
             os.flush();
         }
-
     }
 
 }

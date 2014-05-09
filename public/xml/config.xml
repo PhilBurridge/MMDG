@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+Example on what is available to modify in this xml file.
+
+All positions of the 3x3 grid Must be filled to ensure a correct alignment!
+
+BUTTON:
+-ICON: URL or path in folder. 
+-NAME: any name, not too long. This name is sent to the application. 
+-POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright. 
+-EMPTY: yes/no for space without button.
+
+SLIDER: 
+-NAME: any name, not too long. This name is sent to the application with the value. 
+-STARTVALUE: any value, not bigger than ENDVALUE. 
+-ENDVALUE: any value. 
+-POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
+-->
+<CATALOG>
+	<BUTTON>
+		<ICON>arrows/up.png</ICON>
+		<NAME>0</NAME>
+		<POS>upcenter</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>arrows/upright.png</ICON>
+		<NAME>1</NAME>
+		<POS>upright</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>arrows/right.png</ICON> 
+		<NAME>2</NAME>
+		<POS>centerright</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>arrows/downright.png</ICON>
+		<NAME>3</NAME>
+		<POS>downright</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>arrows/down.png</ICON>
+		<NAME>4</NAME>
+		<POS>downcenter</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>arrows/downleft.png</ICON>
+		<NAME>5</NAME>
+		<POS>downleft</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>arrows/left.png</ICON>
+		<NAME>6</NAME>
+		<POS>centerleft</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<BUTTON>
+		<ICON>arrows/upleft.png</ICON>
+		<NAME>7</NAME>
+		<POS>upleft</POS>
+		<EMPTY>no</EMPTY>
+	</BUTTON>
+	<DISPLAY>
+		<ICON>arrows/display.png</ICON>
+		<NAME>0</NAME>
+		<POS>centercenter</POS>
+	</DISPLAY>
+</CATALOG>

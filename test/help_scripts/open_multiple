@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# This script connects to a website using Google Chrome.
+#
+# Run from Terminal with the following arguments:
+# 	sh open_multiple <address> <numberOfConnections> <timeIntervall>
+# address: url starting with "http://"
+# numberOfConnections: an integer specifying how many connections to open (tabs in Chrome)
+# timeIntervall: an integer or double specifying a sleep time (seconds) between each connection 
+#
+# Example: 
+# sh open_multiple http://www.dn.se 3 0.5
+
+
+# Hard coded variables:
+RUN="/usr/bin/open -a"
+APP="/Applications/Google Chrome.app/"
+
+
+#The url is given by the first argument
+if [ -z "$1" ]; then
+    URL="http://www.google.se"
+else
+    URL=$1
+fi
+
+#Number of calls to do
+if [ $2 -gt 0 ]
+then
+	N_CALLS=$2
+else
+	N_CALLS=1
+fi
+
+#Time intervall
+echo $3
+if [ $3 -gt 0 ];
+then
+	TIME_INTERVALL=$3
+else
+	TIME_INTERVALL=0.0 #seconds
+fi
+
+
+
+
+
+#Print all variables for debugging
+echo "url =" $URL
+echo "number of calls =" $N_CALLS
+echo "caller =" $RUN
+echo "application =" $APP
+echo "calls to be done =" $CALL_COMMAND
+echo "time intervall =" $TIME_INTERVALL
+
+COUNTER=0
+while [ $COUNTER -lt $N_CALLS ]
+do
+	COUNTER=$((COUNTER + 1))
+	echo $COUNTER
+	$RUN "$APP" "$URL"
+	sleep $TIME_INTERVALL
+done

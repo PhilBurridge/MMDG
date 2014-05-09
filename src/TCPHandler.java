@@ -1,6 +1,6 @@
 import java.io.*;
 import java.net.*;
-import java.util.Vector;
+import java.util.ArrayList;
 
 
 /**
@@ -24,8 +24,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
     /** Address object that saves host and port of server */
     private InetSocketAddress socketAddress;
 
-    /** Vector of messages that the application wants to send to the clients. */
-    private Vector<String> messagesFromApp;
+    /** ArrayList of messages that the application wants to send to the clients. */
+    private ArrayList<String> messagesFromApp;
 
     /**
      * When not connected to an application, this specifies the number of
@@ -38,6 +38,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * to connect yet
      */
     private Boolean appConnected = null;
+    
+    private String COMMAND_DELIMITER = "";
 
     /**
      * Creates the socket and the outputStream. Exceptions are handled if
@@ -49,20 +51,28 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
     public TCPHandler(String host, int tcpPort) {
 
         socketAddress = new InetSocketAddress(host, tcpPort);
-        messagesFromApp = new Vector<String>();
+        messagesFromApp = new ArrayList<String>();
         appSocket = new Socket();
 
     }
 
     /**
-     * The TCPHandler class stores incoming messages from the Application in a
-     * Vector. The server gets the messages by calling this method.
+     * The TCPHandler class stores incoming messages from the Application in an
+     * ArrayList. The server gets the messages by calling this method.
      * 
-     * @return A vector of messages from the application
+     * @return An ArrayList of messages from the application
      */
-    public Vector<String> getMessagesFromApp() {
+    public ArrayList<String> getMessageStack() {
         return messagesFromApp;
 
+    }
+    
+    /**
+     * The TCPHandler class stores incoming messages from the Application in an
+     * ArrayList. The ArrayList is cleared when this function is called
+     */
+    public void clearMessageStack(){
+        messagesFromApp.clear();
     }
 
     /**
@@ -95,9 +105,9 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      * Sends a stack of messages to the connected TCP application.
      * 
      * @param commandStack
-     * The messages to be sent. (Vector of Strings)
+     * The messages to be sent. (ArrayList of Strings)
      */
-    public void sendToApplication(Vector<String> commandStack) {
+    public void sendToApplication(ArrayList<String> commandStack) {
 
         // If command stack is empty, don't send anything
         if (commandStack.size() == 0) {
@@ -108,7 +118,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         // Currently we are using ";" as delimiter.
         String messages = "";
         for (int i = 0; i < commandStack.size(); ++i) {
-            messages += commandStack.elementAt(i) + "";
+            messages += commandStack.get(i) + COMMAND_DELIMITER;
         }
         sendToApplication(messages);
     }
@@ -144,6 +154,8 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
                     // If we want to be able to send messages from app to
                     // clients
                     if (message.startsWith("id=")) {
+                        messagesFromApp.add(message);
+                    }else if (message.startsWith("ping")) {
                         messagesFromApp.add(message);
                     }
 
@@ -232,3 +244,4 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         appConnected = newStatus;
     }
 }
+
