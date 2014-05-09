@@ -59,6 +59,9 @@ private:
     int directionIndex;
     glm::vec2 position;
     glm::vec2 direction;
+
+    static const float COP_SPEED;
+    static const float ROB_SPEED;
     
     static const glm::vec2 DIRECTIONS[];
 };

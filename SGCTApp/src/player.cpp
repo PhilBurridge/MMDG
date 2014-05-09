@@ -13,21 +13,26 @@ const glm::vec2 Player::DIRECTIONS[] = {
     glm::vec2(-0.707106f, 0.707106f)
 };
 
+const float Player::COP_SPEED = 0.1f;
+const float Player::ROB_SPEED = 0.2f;
+
 // Player constructor
 Player::Player(glm::vec2 pos, bool isCop):
 DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0){
     std::cout << "Player constructor" << std::endl;
-    speed = isCop ? 0.1f : 0.2f;
+    speed = isCop ? COP_SPEED : ROB_SPEED;
     display();
 }
 
 void Player::switchToCop() {
     cop = true;
+    speed = COP_SPEED;
     textureName = "cop";
 }
 
 void Player::switchToRobber() {
     cop = false;
+    speed = ROB_SPEED;
     textureName = "rob";
 }
 
