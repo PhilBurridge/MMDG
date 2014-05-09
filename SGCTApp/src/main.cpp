@@ -21,6 +21,7 @@ void encode();
 void decode();
 void cleanUp();
 void externalControlCallback(const char * recievedChars, int size, int clientId);
+void keyCallBack(int key, int action);
 
 /*** Shared variables ***/
 // The current time on master
@@ -39,6 +40,7 @@ int main( int argc, char* argv[] ) {
     gEngine->setCleanUpFunction(cleanUp);
     //gEngine->setPostSyncPreDrawFunction(postSyncPreDraw);
     gEngine->setExternalControlCallback(externalControlCallback);
+    gEngine->setKeyboardCallbackFunction(keyCallBack);
 
     // Set the functions that handles the shared variables accros the cluster
     sgct::SharedData::instance()->setEncodeFunction(encode);
@@ -110,5 +112,20 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
     if(gEngine->isMaster()) {
         // Calls the message handler function from the core class which decodes the received messages
         robberCop->handleExternalInput(recievedChars, size, clientId);
+    }
+}
+
+void keyCallBack(int key, int action){
+    if(gEngine->isMaster() && action == GLFW_PRESS) {
+        switch(key) {
+            case 'T':
+                robberCop->printPingStats();
+            break;
+
+            case 'P':
+                std::cout << "Pinging clients " << std::endl;
+                robberCop->startBenchmark();
+            break;
+        }
     }
 }
