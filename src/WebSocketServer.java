@@ -249,7 +249,6 @@ public class WebSocketServer extends ConsolePrinter{
             this.clientSocket = clientSocket;
             this.id = id;
             alive = true;
-            allowPrints = true;
         }
 
         /**
