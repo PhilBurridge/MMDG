@@ -6,7 +6,7 @@
 public class ConsolePrinter{
 
     /** Decides if prints are allowed. This is public for easy access. */
-    protected boolean allowPrints = true;
+    protected boolean allowPrints = false;
 
     
     /**

@@ -9,6 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.codec.binary.Base64;
 
 
@@ -29,7 +30,7 @@ public class WebSocketServer extends ConsolePrinter{
     private ServerSocket serverSocket;
 
     /** Handles all the client sockets */
-    private HashMap<Integer, ClientHandler> clientHandlers;
+    private ConcurrentHashMap<Integer, ClientHandler> clientHandlers;
 
     /**
      * a buffer of messages that will fill upp until MMDGServer forwards it to
@@ -40,7 +41,7 @@ public class WebSocketServer extends ConsolePrinter{
     /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
         serverSocket = new ServerSocket(websocketPort);
-        clientHandlers = new HashMap<Integer, ClientHandler>();
+        clientHandlers = new ConcurrentHashMap<Integer, ClientHandler>();
         commandStack = new ArrayList<String>();
     }
 
@@ -74,13 +75,15 @@ public class WebSocketServer extends ConsolePrinter{
                     while (true) {
                         //print("Waiting for connections ...");
                         Socket socket = serverSocket.accept();
-                        System.out.println();
                         //print("Connecting!");
 
                         removeDeadClientHandlers();
+                        
                         if (handshake(socket)) {
                             addHandlerForClient(socket);
                         }
+                        
+                        display();
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -111,6 +114,18 @@ public class WebSocketServer extends ConsolePrinter{
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public void display(){
+        System.out.println();
+        
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                            .next();
+            System.out.println("id=" + pairs.getKey() + " alive=" + pairs.getValue().alive);
+            //it.remove(); // avoids a ConcurrentModificationException
         }
     }
 
@@ -170,7 +185,7 @@ public class WebSocketServer extends ConsolePrinter{
         print("Added client with ID " + ch.id);
     }
 
-    private void removeDeadClientHandlers() {
+    private synchronized void removeDeadClientHandlers() {
 
         Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet()
                         .iterator();
@@ -180,9 +195,9 @@ public class WebSocketServer extends ConsolePrinter{
 
             if (!pairs.getValue().alive) {
                 clientHandlers.remove(pairs.getKey());
+                
             }
-
-            // it.remove(); // avoids a ConcurrentModificationException
+            //it.remove(); // avoids a ConcurrentModificationException
         }
     }
 
