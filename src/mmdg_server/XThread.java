@@ -1,3 +1,4 @@
+package mmdg_server;
 /**
  * This Class provides a safe sleep function that can be used
  * in all the classes. Just call XThread.delay(milliseconds)

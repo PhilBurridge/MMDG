@@ -1,3 +1,4 @@
+package mmdg_server;
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -14,9 +15,6 @@ public class MMDGServer extends ConsolePrinter{
     /** This is the TCP handler class */
     private TCPHandler tcpHandler;
 
-    /** The local host IP */
-    private final String LOCALHOST = "127.0.0.1";
-
     /** The IP used by the HTTP server */
     private String serverIP = "undefined";
 
@@ -27,7 +25,7 @@ public class MMDGServer extends ConsolePrinter{
     private final int WEB_SOCKET_PORT = 1338;
 
     /** The port used by the TCP handler */
-    private final int TCP_PORT = 20501;
+    private final int APP_PORT = 20501;
 
     /**
      * Defines how many times per second the MMDG Server should unload the stack
@@ -59,7 +57,7 @@ public class MMDGServer extends ConsolePrinter{
 
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
-        tcpHandler = new TCPHandler(serverIP, TCP_PORT);
+        tcpHandler = new TCPHandler(serverIP, APP_PORT);
 
         //print(getLinkToQRCode(600, "000000", "FFFFFF"));
         print("MMDGServer constructor done!\n");
