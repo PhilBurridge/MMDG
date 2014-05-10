@@ -176,18 +176,23 @@ public class MMDGServer extends ConsolePrinter{
     private boolean forwardMessageFromApp(String outputString){
         if(outputString.startsWith("id=")){
             int delimiter_pos = outputString.indexOf(ARG_DELIMITER);
-            String receiver = outputString.substring(3, delimiter_pos);
-            String toSend = outputString.substring(delimiter_pos+1);
+            String receiverID = outputString.substring(3, delimiter_pos);
+            String msg = outputString.substring(delimiter_pos+1);
             
-            if (receiver.equalsIgnoreCase("all")) {
-                print("Sending \"" + toSend + "\" to all clients");
-                webSocketServer.sendMessageToAllClients(toSend);
+            if (receiverID.equalsIgnoreCase("all")) {
+                print("Sending \"" + msg + "\" to all clients");
+                webSocketServer.sendMessageToAllClients(msg);
+            }
+            else if(receiverID.equalsIgnoreCase("server")){
+                if (msg.equalsIgnoreCase("appConnected")){
+                    appConnected();
+                }
             }
             else {
                 try{
-                    int id = Integer.parseInt(receiver);
-                    print("Sending " + toSend + " to clients with id " + id);
-                    webSocketServer.sendMessageToClient(id, toSend);
+                    int id = Integer.parseInt(receiverID);
+                    print("Sending " + msg + " to clients with id " + id);
+                    webSocketServer.sendMessageToClient(id, msg);
                 }catch(Exception e){
                     e.printStackTrace();
                     print("Error: Receiver index is not an integer!");
@@ -202,6 +207,10 @@ public class MMDGServer extends ConsolePrinter{
             return false;
         }
         
+    }
+    
+    private void appConnected(){
+        webSocketServer.reconnectClientsToApplication();
     }
     
     /**

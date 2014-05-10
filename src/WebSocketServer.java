@@ -82,7 +82,7 @@ public class WebSocketServer extends ConsolePrinter{
                         if (handshake(socket)) {
                             addHandlerForClient(socket);
                         }
-
+                        
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -90,7 +90,21 @@ public class WebSocketServer extends ConsolePrinter{
             }
         });
         connectThread.start();
-
+    }
+    
+    public void reconnectClientsToApplication(){
+        String msgConnect =     "var=connected" + MMDGServer.ARG_DELIMITER + "val=re";
+        String msgDisconnect =  "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=re";
+        
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers
+                        .entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                            .next();
+            int id = pairs.getKey();
+            addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msgDisconnect);
+            addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msgConnect);
+        }
     }
 
     public void sendMessageToClient(int id, String msg) {
