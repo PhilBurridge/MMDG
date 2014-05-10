@@ -1,12 +1,17 @@
-cvs files have the following values defined (PRT = Ping Response Time)
-
-<number of clients>, <minimum PRT>, <average PRT>, <maximum PRT>
+test:
+	application tells server to ping all clients. A burst of client responses is sent back to the application. Application measure the time it take for each respons. 
 
 info: 
-	MMDGserver, application and clients from the same computer.
-	tabs in a Google Chrome browser defined the clients
+	server, application and clients are all on the same physical computer.
+	Google Chrome browser is used to simulate the clients
 
 computer: 
-	macbook pro
-	2 GHz Intel Core i7
-	8 GB
+	Macbook Pro 2 GHz Intel Core i7
+
+
+rest results are stored in benchmark_localhost1.cvs. The file have the following values defined. RT = Response Time in milliseconds.
+
+<number of clients>, <minimum RT>, <average RT>, <maximum RT>
+<number of clients>, <minimum RT>, <average RT>, <maximum RT>
+<number of clients>, <minimum RT>, <average RT>, <maximum RT>
+...
