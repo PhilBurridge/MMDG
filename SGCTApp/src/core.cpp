@@ -176,8 +176,14 @@ void Core::getPingStats(double &min, double &max, double &avg){
 void Core::printPingStats(){
     double min, max, avg;
     getPingStats(min,max,avg);
-    std::cout << "Number of ping responses: " << pingResponses.size() << std::endl;
-    std::cout << "min: " << min << " ms" << std::endl;
-    std::cout << "max: " << max << " ms" << std::endl;
-    std::cout << "avg: " << avg << " ms" << std::endl;
+
+    //Normal print
+    //std::cout << "Number of ping responses: " << pingResponses.size() << std::endl;
+    //std::cout << "min: " << min << " ms" << std::endl;
+    //std::cout << "avg: " << avg << " ms" << std::endl;
+    //std::cout << "max: " << max << " ms" << std::endl;
+
+    //Print csv
+    std::cout << "n responses, min, avg, max" << std::endl;
+    std::cout << pingResponses.size() << "," << min << "," << avg << "," << max <<std::endl;
 }
