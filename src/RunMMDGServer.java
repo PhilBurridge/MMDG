@@ -9,7 +9,14 @@ public class RunMMDGServer{
      * @param args
      */
     public static void main(String[] args) throws IOException, InterruptedException, NoSuchAlgorithmException {
-        MMDGServer mmdgServer = new MMDGServer();
+        
+        int httpPort = 1337;
+        int wsPort   = 1338;
+        int appPort  = 20501;
+        
+        MMDGServer mmdgServer = new MMDGServer(httpPort, wsPort, appPort);
+        mmdgServer.setUnloadsPerSecond(1000);
+        
         mmdgServer.run();
     }
 }

@@ -19,13 +19,13 @@ public class MMDGServer extends ConsolePrinter{
     private String serverIP = "undefined";
 
     /** The port used by HTTP server */
-    private final int HTTP_PORT = 1337;
+    private final int HTTP_PORT;
 
     /** The port used by Web Socket Server */
-    private final int WEB_SOCKET_PORT = 1338;
+    private final int WEB_SOCKET_PORT;
 
     /** The port used by the TCP handler */
-    private final int APP_PORT = 20501;
+    private final int APP_PORT;
 
     /**
      * Defines how many times per second the MMDG Server should unload the stack
@@ -46,21 +46,24 @@ public class MMDGServer extends ConsolePrinter{
     public static final String ARG_DELIMITER = " ";
 
     
-    // CONSTRUCTORS
-    /** Creates httpServer, webSocketServer and tcpHandler */
-    public MMDGServer() throws IOException {
-
+    // CONSTRUCTORS    
+    public MMDGServer(int httpPort, int wsPort, int appPort) throws IOException {
+        HTTP_PORT = httpPort;
+        WEB_SOCKET_PORT = wsPort;
+        APP_PORT = appPort;
+        init();
+        print("MMDGServer constructor done!\n");
+    }
+    
+    private void init() throws IOException{
         serverIP = getMyIP();
         if (createConfigFile()) {
             print("Created config.js");
         }
-
+        
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(serverIP, APP_PORT);
-
-        //print(getLinkToQRCode(600, "000000", "FFFFFF"));
-        print("MMDGServer constructor done!\n");
     }
 
     /**
