@@ -61,7 +61,7 @@ public class MMDGServer extends ConsolePrinter{
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(serverIP, TCP_PORT);
 
-        print(getLinkToQRCode(600, "000000", "FFFFFF"));
+        //print(getLinkToQRCode(600, "000000", "FFFFFF"));
         print("MMDGServer constructor done!\n");
     }
 
@@ -87,7 +87,7 @@ public class MMDGServer extends ConsolePrinter{
     public void run() throws IOException {
 
         System.out.println("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
-                        + "/mmdg.html>");
+                        + "/robbercop.html>");
 
         httpServer.listenForNewConnections();
 

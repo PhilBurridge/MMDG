@@ -82,8 +82,7 @@ public class WebSocketServer extends ConsolePrinter{
                         if (handshake(socket)) {
                             addHandlerForClient(socket);
                         }
-                        
-                        display();
+
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();

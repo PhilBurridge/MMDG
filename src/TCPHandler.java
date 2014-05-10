@@ -64,7 +64,6 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      */
     public ArrayList<String> getMessageStack() {
         return messagesFromApp;
-
     }
     
     /**
