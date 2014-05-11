@@ -18,7 +18,7 @@ import org.apache.commons.codec.binary.Base64;
 /**
  * Handles the websocket connections.
  */
-public class WebSocketServer extends ConsolePrinter{
+public class WebSocketServer extends ConsolePrinter implements Runnable{
 
     public static final int MASK_SIZE = 4;
     public static final int SINGLE_FRAME_UNMASKED = 0x81;
@@ -36,12 +36,20 @@ public class WebSocketServer extends ConsolePrinter{
      * the TCPHandler
      */
     private ArrayList<String> commandStack;
+    
+    /** 
+     * The thread that handles new websocket connections. Can be 
+     * started and stopped with the public functions startConnectionThread
+     * and stopConnectionThread 
+     */
+    private Thread connectThread;
 
     /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
         serverSocket = new ServerSocket(websocketPort);
         clientHandlers = new HashMap<Integer, ClientHandler>();
         commandStack = new ArrayList<String>();
+        connectThread = new Thread(this);
     }
 
     public synchronized void addCommand(String command) {
@@ -61,36 +69,47 @@ public class WebSocketServer extends ConsolePrinter{
     }
 
     /**
-     * will listen for client connections in a separate thread, create a new
-     * socket and add it to a socket array/vector. so far it is not in a
-     * seperate thread, and it only has 1 socket, only 1 person can connect at a
-     * time.
+     * will listen for client connections in a seperate thread, create a new
+     * socket and add it to a socket array/vector.
      */
-    public void connect() throws IOException {
-        Thread connectThread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    while (true) {
-                        //print("Waiting for connections ...");
-                        Socket socket = serverSocket.accept();
-                        System.out.println();
-                        //print("Connecting!");
+    @Override
+    public void run() {
+        try {
+            while (!Thread.interrupted()) {
+                print("Waiting for connections ...");
+                Socket socket = serverSocket.accept();
+                System.out.println();
+                print("Connecting!");
 
-                        removeDeadClientHandlers();
-                        if (handshake(socket)) {
-                            addHandlerForClient(socket);
-                        }
-                    }
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                removeDeadClientHandlers();
+                if (handshake(socket)) {
+                    addHandlerForClient(socket);
                 }
             }
-        });
-        connectThread.start();
-
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
-
+    
+    /**
+     * Will start the thread that accepts new websocket connections
+     * and creates a clientHandler for them
+     */
+    public void startConnectionThread(){
+        connectThread.start();
+    };
+    
+    /**
+     * Will stop the thread that accepts new websocket connections
+     */
+    public void stopConnectionThread(){
+        connectThread.interrupt();
+    };
+    
+    /** Send a message to a specific client.
+     * @param id - The id of the client
+     * @param msg - The message
+     */
     public void sendMessageToClient(int id, String msg) {
         try {
             clientHandlers.get(id).sendMessage(msg.getBytes());
@@ -114,7 +133,7 @@ public class WebSocketServer extends ConsolePrinter{
         }
     }
 
-    /** Server socket and client sockets does a firm and manly handshake. */
+    /** Server socket and client websockets does a firm and manly handshake. */
     private boolean handshake(Socket socket) throws IOException {
         PrintWriter out = new PrintWriter(socket.getOutputStream());
         BufferedReader in = new BufferedReader(new InputStreamReader(
@@ -164,7 +183,7 @@ public class WebSocketServer extends ConsolePrinter{
         ClientHandler ch = new ClientHandler(socket, get_next_client_id());
 
         clientHandlers.put(ch.id, ch);
-        ch.listenToClient();
+        ch.startListenerThread();
 
         print("Number of clients: " + clientHandlers.size());
         print("Added client with ID " + ch.id);
@@ -203,14 +222,6 @@ public class WebSocketServer extends ConsolePrinter{
         return data;
     }
 
-    // private void convertAndPrint(byte[] bytes) {
-    // StringBuilder sb = new StringBuilder();
-    // for (byte b : bytes) {
-    // sb.append(String.format("%02X ", b));
-    // }
-    // print(sb.toString());
-    // }
-
     /**
      * This class is for handling clients. One instance of this class takes care
      * of one client. It uses one separate thread for each client, which might
@@ -221,21 +232,21 @@ public class WebSocketServer extends ConsolePrinter{
      * @cons: Performance might decrease drastically when many clients connect
      * 
      */
-    private class ClientHandler extends ConsolePrinter{
+    private class ClientHandler extends ConsolePrinter implements Runnable{
         /**
          * An instance of the client socket. With this we can read and write to
          * the client
          */
         private Socket clientSocket;
 
-        /** The thread used to listen to this handlers particular client */
-        private Thread listenerTread;
-
         /** A clientHandler is alive as long as it has a connected client */
         private boolean alive;
 
         /** The ID of the client */
         private int id;
+        
+        /** The thread that will listen for messages from the client */
+        private Thread listenerThread;
 
         /**
          * Constructrs a handler for the current constructor, with a specified
@@ -249,6 +260,7 @@ public class WebSocketServer extends ConsolePrinter{
             this.clientSocket = clientSocket;
             this.id = id;
             alive = true;
+            listenerThread = new Thread(this);
         }
 
         /**
@@ -318,33 +330,47 @@ public class WebSocketServer extends ConsolePrinter{
         /**
          * Creates a thread for listening for client messages.
          */
-        private void listenToClient() {
-            listenerTread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        while (alive) {
-                            String msg = reiceveMessage();
-                            print("Recieved from client " + id + ": " + msg + "\"");
-                            if(validateMessage(msg)){
-                                addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
-                            }   
-                        }
-                        print("The listening thread of clientHandler " + id
-                                        + " is done");
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+        @Override
+        public void run() {
+            try {
+                while (!Thread.interrupted()) {
+                    String msg = reiceveMessage();
+                    print("Recieved from client " + id + ": " + msg + "\"");
+                    if(validateMessage(msg)){
+                        addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
+                    }   
                 }
-            });
-            listenerTread.start();
+                print("The listening thread of clientHandler " + id
+                                + " is done");
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
             //print("Started thread used to listen to client messages...");
         }
+        /**
+         * Starts thread that listens for new commands from client
+         */
+        public void startListenerThread(){
+            listenerThread.start();
+        }
         
+        /**
+         * Stops thread that listens for new commands from client
+         */
+        public void stopListenerThread(){
+            listenerThread.interrupt();
+        }
+        
+        /**
+         * Checks if the client has sent a false command (cheat)
+         */
         private boolean validateMessage(String msg){
             return msg.indexOf(MMDGServer.CMD_DELIMITER) == -1;
         }
-
+        
+        /**
+         * Sends a message @param msg to the client 
+         */
         public void sendMessage(byte[] msg) throws IOException {
             print("Sending to client");
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

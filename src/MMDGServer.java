@@ -87,13 +87,13 @@ public class MMDGServer extends ConsolePrinter{
     public void run() throws IOException {
 
         System.out.println("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
-                        + "/mmdg.html>");
+                        + "/robbercop.html>");
 
         httpServer.listenForNewConnections();
 
         // will start the listener thread for the tcpHandler.
-        tcpHandler.listener.start();
-        webSocketServer.connect();
+        tcpHandler.startListenerThread();
+        webSocketServer.startConnectionThread();
 
         // Read from console in Eclipse
         // BufferedReader br = new BufferedReader(new
@@ -128,13 +128,11 @@ public class MMDGServer extends ConsolePrinter{
             // print("Sent message to TCP handler");
 
             // sleep for 1/unloadPerSeconds seconds
-            try {
                 // How often stacks get sent to application
-                Thread.sleep((int) (1000 / unloadsPerSecond));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(XThread.delay((int) (1000 / unloadsPerSecond)))
                 break;
-            }
+ 
+
         }
         print("Server stopped");
     }

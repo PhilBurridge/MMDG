@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class TCPHandler extends ConsolePrinter implements Runnable{
 
-    public Thread listener = new Thread(this);
+    public Thread listener;
 
     /** The Socket to use for TCP communication with application */
     private Socket appSocket;
@@ -53,6 +53,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         socketAddress = new InetSocketAddress(host, tcpPort);
         messagesFromApp = new ArrayList<String>();
         appSocket = new Socket();
+        listener = new Thread(this);
 
     }
 
@@ -175,6 +176,14 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
             }
         }
     }
+    
+    public void startListenerThread(){
+        listener.start();
+    }
+    
+    public void stopListenerThread(){
+        listener.interrupt();
+        }
 
     /**
      * Will try to reconnect to the application. This function will block the
