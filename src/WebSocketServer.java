@@ -179,6 +179,10 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
         return true;
     }
 
+    /**
+     * Given a Socket, this function creates a ClientHandler
+     * and starts its command listener thread.
+     */
     private void addHandlerForClient(Socket socket) {
         ClientHandler ch = new ClientHandler(socket, get_next_client_id());
 
@@ -189,6 +193,9 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
         print("Added client with ID " + ch.id);
     }
 
+    /**
+     * Removes a client from the clienHandlers Hashmap if it has disconnected
+     */
     private void removeDeadClientHandlers() {
 
         Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet()
@@ -204,7 +211,10 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
             // it.remove(); // avoids a ConcurrentModificationException
         }
     }
-
+    
+    /**
+     * This function increments the static client id counter
+     */
     private static int get_next_client_id() {
         ++next_client_id;
         return next_client_id;
