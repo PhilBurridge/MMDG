@@ -1,4 +1,6 @@
+
 package mmdg_server;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -39,6 +41,8 @@ public class WebSocketServer extends ConsolePrinter{
      */
     private ArrayList<String> commandStack;
 
+    
+    
     /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
         serverSocket = new ServerSocket(websocketPort);
@@ -46,11 +50,12 @@ public class WebSocketServer extends ConsolePrinter{
         commandStack = new ArrayList<String>();
     }
 
+    
+    
     public synchronized void addCommand(String command) {
-        commandStack.add(command + MMDGServer.CMD_DELIMITER);
+        commandStack.add(command);
         print("Added \"" + command + "\" to command stack");
     }
-
 
     public synchronized ArrayList<String> getCommandStack() {
         ArrayList<String> commandStackCopy = new ArrayList<String>(commandStack);
@@ -74,16 +79,16 @@ public class WebSocketServer extends ConsolePrinter{
             public void run() {
                 try {
                     while (true) {
-                        //print("Waiting for connections ...");
+                        // print("Waiting for connections ...");
                         Socket socket = serverSocket.accept();
-                        //print("Connecting!");
+                        // print("Connecting!");
 
                         removeDeadClientHandlers();
-                        
+
                         if (handshake(socket)) {
                             addHandlerForClient(socket);
                         }
-                        
+
                     }
                 } catch (IOException ex) {
                     ex.printStackTrace();
@@ -92,19 +97,32 @@ public class WebSocketServer extends ConsolePrinter{
         });
         connectThread.start();
     }
-    
-    public void reconnectClientsToApplication(){
-        String msgConnect =     "var=connected" + MMDGServer.ARG_DELIMITER + "val=re";
-        String msgDisconnect =  "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=re";
-        
-        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers
-                        .entrySet().iterator();
+
+    public void reconnectClientsToApplication() {
+        String msgConnect = "var=connected" + MMDGServer.ARG_DELIMITER
+                        + "val=re";
+        String msgDisconnect = "var=disconnected" + MMDGServer.ARG_DELIMITER
+                        + "val=re";
+
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet()
+                        .iterator();
         while (it.hasNext()) {
             Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
                             .next();
             int id = pairs.getKey();
             addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msgDisconnect);
             addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msgConnect);
+        }
+    }
+
+    public void printClientHandlers() {
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet()
+                        .iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                            .next();
+            print(pairs.getValue().toString());
+            // it.remove(); // avoids a ConcurrentModificationException
         }
     }
 
@@ -124,22 +142,24 @@ public class WebSocketServer extends ConsolePrinter{
                 Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
                                 .next();
                 pairs.getValue().sendMessage(msg.getBytes());
-                //it.remove(); // avoids a ConcurrentModificationException
+                // it.remove(); // avoids a ConcurrentModificationException
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    
-    public void display(){
+
+    public void display() {
         System.out.println();
-        
-        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet().iterator();
+
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet()
+                        .iterator();
         while (it.hasNext()) {
             Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
                             .next();
-            System.out.println("id=" + pairs.getKey() + " alive=" + pairs.getValue().alive);
-            //it.remove(); // avoids a ConcurrentModificationException
+            System.out.println("id=" + pairs.getKey() + " alive="
+                            + pairs.getValue().alive);
+            // it.remove(); // avoids a ConcurrentModificationException
         }
     }
 
@@ -153,7 +173,7 @@ public class WebSocketServer extends ConsolePrinter{
         String str;
 
         // Reading client handshake
-        //print("Reading client handshake");
+        // print("Reading client handshake");
         while (!(str = in.readLine()).equals("")) {
             String[] s = str.split(": ");
             // print(str);
@@ -181,7 +201,7 @@ public class WebSocketServer extends ConsolePrinter{
         String response = "HTTP/1.1 101 Switching Protocols\r\n"
                         + "Upgrade: websocket\r\n" + "Connection: Upgrade\r\n"
                         + "Sec-WebSocket-Accept: " + hash + "\r\n" + "\r\n";
-        //print("Writing response");
+        // print("Writing response");
         // print(response);
         out.write(response);
         out.flush();
@@ -193,6 +213,7 @@ public class WebSocketServer extends ConsolePrinter{
         ClientHandler ch = new ClientHandler(socket, get_next_client_id());
 
         clientHandlers.put(ch.id, ch);
+        printClientHandlers();
         ch.listenToClient();
 
         print("Number of clients: " + clientHandlers.size());
@@ -209,9 +230,9 @@ public class WebSocketServer extends ConsolePrinter{
 
             if (!pairs.getValue().alive) {
                 clientHandlers.remove(pairs.getKey());
-                
+
             }
-            //it.remove(); // avoids a ConcurrentModificationException
+            // it.remove(); // avoids a ConcurrentModificationException
         }
     }
 
@@ -232,13 +253,13 @@ public class WebSocketServer extends ConsolePrinter{
         return data;
     }
 
-    // private void convertAndPrint(byte[] bytes) {
-    // StringBuilder sb = new StringBuilder();
-    // for (byte b : bytes) {
-    // sb.append(String.format("%02X ", b));
-    // }
-    // print(sb.toString());
-    // }
+    /*private String convertToString(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02X ", b));
+        }
+        return sb.toString();
+    }*/
 
     /**
      * This class is for handling clients. One instance of this class takes care
@@ -326,13 +347,15 @@ public class WebSocketServer extends ConsolePrinter{
             if (opcode == 8) {
                 print("Client want to close connection");
                 stop();
-                return "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=by_requested";
+                return "var=disconnected" + MMDGServer.ARG_DELIMITER
+                                + "val=by_requested";
             } else {
                 final int payloadSize = getSizeOfPayload(buf[1]);
                 if (payloadSize == -128) {
                     print("playloadSize is -128");
                     stop();
-                    return "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=by_closing";
+                    return "var=disconnected" + MMDGServer.ARG_DELIMITER
+                                    + "val=by_closing";
                 }
                 buf = readBytes(MASK_SIZE + payloadSize);
                 // print("Payload:");
@@ -354,10 +377,13 @@ public class WebSocketServer extends ConsolePrinter{
                     try {
                         while (alive) {
                             String msg = reiceveMessage();
-                            print("Recieved from client " + id + ": " + msg + "\"");
-                            if(validateMessage(msg)){
-                                addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msg);
-                            }   
+                            print("Recieved from client " + id + ": " + msg
+                                            + "\"");
+                            if (validateMessage(msg)) {
+                                addCommand("id=" + id
+                                                + MMDGServer.ARG_DELIMITER
+                                                + msg);
+                            }
                         }
                         print("The listening thread of clientHandler " + id
                                         + " is done");
@@ -367,15 +393,15 @@ public class WebSocketServer extends ConsolePrinter{
                 }
             });
             listenerTread.start();
-            //print("Started thread used to listen to client messages...");
+            // print("Started thread used to listen to client messages...");
         }
-        
-        private boolean validateMessage(String msg){
+
+        private boolean validateMessage(String msg) {
             return msg.indexOf(MMDGServer.CMD_DELIMITER) == -1;
         }
 
         public void sendMessage(byte[] msg) throws IOException {
-            print("Sending to client");
+            // print("Sending to client " + id + ": " + convertToString(msg));
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             BufferedOutputStream os = new BufferedOutputStream(
                             clientSocket.getOutputStream());
@@ -387,6 +413,10 @@ public class WebSocketServer extends ConsolePrinter{
             // convertAndPrint(baos.toByteArray());
             os.write(baos.toByteArray(), 0, baos.size());
             os.flush();
+        }
+
+        public String toString() {
+            return "id = " + id + ", alive = " + alive;
         }
     }
 

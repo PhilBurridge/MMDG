@@ -40,7 +40,6 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      */
     private Boolean appConnected = null;
     
-    private String COMMAND_DELIMITER = "";
 
     /**
      * Creates the socket and the outputStream. Exceptions are handled if
@@ -101,27 +100,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
         }
     }
 
-    /**
-     * Sends a stack of messages to the connected TCP application.
-     * 
-     * @param commandStack
-     * The messages to be sent. (ArrayList of Strings)
-     */
-    public void sendToApplication(ArrayList<String> commandStack) {
 
-        // If command stack is empty, don't send anything
-        if (commandStack.size() == 0) {
-            return;
-        }
-
-        // If commandstack is not empty, collect all commands in one string
-        // Currently we are using ";" as delimiter.
-        String messages = "";
-        for (int i = 0; i < commandStack.size(); ++i) {
-            messages += commandStack.get(i) + COMMAND_DELIMITER;
-        }
-        sendToApplication(messages);
-    }
 
     /**
      * Receive messages from the connected application using a thread

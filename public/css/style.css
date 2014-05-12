@@ -53,3 +53,31 @@ body, html {
 	overflow:hidden;
 	text-align: center;
 }
+
+html, body{
+	margin: 0px;
+	padding: 0px;
+}
+
+#btn{
+	position: absolute;
+	
+    top: 0px; /* Header Height */
+    bottom: 0px; /* Footer Height */
+	width: 100%;
+
+	display: inline-block; 
+	vertical-align: middle;
+}
+
+#text{
+	text-align: center;
+	font-size: 5em;
+	margin-left:auto;
+	margin-right:auto;
+	width:70%;
+}
+
+#vertcenter{
+	
+}
