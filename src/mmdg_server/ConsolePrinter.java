@@ -1,3 +1,4 @@
+package mmdg_server;
 /**
  * Extend this class to manage printouts of classes that needs to print stack
  * traces. Useful for debugging. Use the method "print()" instead of the

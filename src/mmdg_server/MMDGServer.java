@@ -1,3 +1,4 @@
+package mmdg_server;
 import java.net.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -14,20 +15,19 @@ public class MMDGServer extends ConsolePrinter{
     /** This is the TCP handler class */
     private TCPHandler tcpHandler;
 
-    /** The local host IP */
-    private final String LOCALHOST = "127.0.0.1";
-
     /** The IP used by the HTTP server */
     private String serverIP = "undefined";
+    
+    private String applicationIP = "130.236.67.201";
 
     /** The port used by HTTP server */
-    private final int HTTP_PORT = 1337;
+    private final int HTTP_PORT;
 
     /** The port used by Web Socket Server */
-    private final int WEB_SOCKET_PORT = 1338;
+    private final int WEB_SOCKET_PORT;
 
     /** The port used by the TCP handler */
-    private final int TCP_PORT = 20501;
+    private final int APP_PORT;
 
     /**
      * Defines how many times per second the MMDG Server should unload the stack
@@ -48,21 +48,25 @@ public class MMDGServer extends ConsolePrinter{
     public static final String ARG_DELIMITER = " ";
 
     
-    // CONSTRUCTORS
-    /** Creates httpServer, webSocketServer and tcpHandler */
-    public MMDGServer() throws IOException {
-
+    // CONSTRUCTORS    
+    public MMDGServer(int httpPort, int wsPort, int appPort) throws IOException {
+        HTTP_PORT = httpPort;
+        WEB_SOCKET_PORT = wsPort;
+        APP_PORT = appPort;
+        init();
+        print("MMDGServer constructor done!\n");
+    }
+    
+    private void init() throws IOException{
         serverIP = getMyIP();
         if (createConfigFile()) {
             print("Created config.js");
         }
-
+        
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
-        tcpHandler = new TCPHandler(serverIP, TCP_PORT);
-
-        print(getLinkToQRCode(600, "000000", "FFFFFF"));
-        print("MMDGServer constructor done!\n");
+        tcpHandler = new TCPHandler(applicationIP, APP_PORT);
+        
     }
 
     /**
@@ -174,18 +178,23 @@ public class MMDGServer extends ConsolePrinter{
     private boolean forwardMessageFromApp(String outputString){
         if(outputString.startsWith("id=")){
             int delimiter_pos = outputString.indexOf(ARG_DELIMITER);
-            String receiver = outputString.substring(3, delimiter_pos);
-            String toSend = outputString.substring(delimiter_pos+1);
+            String receiverID = outputString.substring(3, delimiter_pos);
+            String msg = outputString.substring(delimiter_pos+1);
             
-            if (receiver.equalsIgnoreCase("all")) {
-                print("Sending \"" + toSend + "\" to all clients");
-                webSocketServer.sendMessageToAllClients(toSend);
+            if (receiverID.equalsIgnoreCase("all")) {
+                print("Sending \"" + msg + "\" to all clients");
+                webSocketServer.sendMessageToAllClients(msg);
+            }
+            else if(receiverID.equalsIgnoreCase("server")){
+                if (msg.equalsIgnoreCase("appConnected")){
+                    appConnected();
+                }
             }
             else {
                 try{
-                    int id = Integer.parseInt(receiver);
-                    print("Sending " + toSend + " to clients with id " + id);
-                    webSocketServer.sendMessageToClient(id, toSend);
+                    int id = Integer.parseInt(receiverID);
+                    print("Sending " + msg + " to clients with id " + id);
+                    webSocketServer.sendMessageToClient(id, msg);
                 }catch(Exception e){
                     e.printStackTrace();
                     print("Error: Receiver index is not an integer!");
@@ -200,6 +209,10 @@ public class MMDGServer extends ConsolePrinter{
             return false;
         }
         
+    }
+    
+    private void appConnected(){
+        webSocketServer.reconnectClientsToApplication();
     }
     
     /**

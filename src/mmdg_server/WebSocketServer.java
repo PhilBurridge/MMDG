@@ -1,3 +1,4 @@
+package mmdg_server;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,6 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 import org.apache.commons.codec.binary.Base64;
 
 
@@ -29,7 +31,7 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
     private ServerSocket serverSocket;
 
     /** Handles all the client sockets */
-    private HashMap<Integer, ClientHandler> clientHandlers;
+    private ConcurrentHashMap<Integer, ClientHandler> clientHandlers;
 
     /**
      * a buffer of messages that will fill upp until MMDGServer forwards it to
@@ -47,7 +49,7 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
     /** initiate commandStack and server socket */
     public WebSocketServer(int websocketPort) throws IOException {
         serverSocket = new ServerSocket(websocketPort);
-        clientHandlers = new HashMap<Integer, ClientHandler>();
+        clientHandlers = new ConcurrentHashMap<Integer, ClientHandler>();
         commandStack = new ArrayList<String>();
         connectThread = new Thread(this);
     }
@@ -78,16 +80,30 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
             while (!Thread.interrupted()) {
                 print("Waiting for connections ...");
                 Socket socket = serverSocket.accept();
-                System.out.println();
-                print("Connecting!");
+                //print("Connecting!");
 
                 removeDeadClientHandlers();
                 if (handshake(socket)) {
                     addHandlerForClient(socket);
                 }
             }
-        } catch (IOException ex) {
+         }catch (IOException ex) {
             ex.printStackTrace();
+         }
+    }
+    
+    public void reconnectClientsToApplication(){
+        String msgConnect =     "var=connected" + MMDGServer.ARG_DELIMITER + "val=re";
+        String msgDisconnect =  "var=disconnected" + MMDGServer.ARG_DELIMITER + "val=re";
+        
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers
+                        .entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                            .next();
+            int id = pairs.getKey();
+            addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msgDisconnect);
+            addCommand("id=" + id + MMDGServer.ARG_DELIMITER + msgConnect);
         }
     }
     
@@ -130,6 +146,18 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
             }
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+    
+    public void display(){
+        System.out.println();
+        
+        Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                            .next();
+            System.out.println("id=" + pairs.getKey() + " alive=" + pairs.getValue().alive);
+            //it.remove(); // avoids a ConcurrentModificationException
         }
     }
 
@@ -193,10 +221,12 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
         print("Added client with ID " + ch.id);
     }
 
+
     /**
      * Removes a client from the clienHandlers Hashmap if it has disconnected
      */
-    private void removeDeadClientHandlers() {
+    private synchronized void removeDeadClientHandlers() {
+
 
         Iterator<Entry<Integer, ClientHandler>> it = clientHandlers.entrySet()
                         .iterator();
@@ -206,9 +236,9 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
 
             if (!pairs.getValue().alive) {
                 clientHandlers.remove(pairs.getKey());
+                
             }
-
-            // it.remove(); // avoids a ConcurrentModificationException
+            //it.remove(); // avoids a ConcurrentModificationException
         }
     }
     
