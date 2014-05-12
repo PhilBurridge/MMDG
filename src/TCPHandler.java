@@ -9,8 +9,9 @@ import java.util.ArrayList;
  * 
  */
 public class TCPHandler extends ConsolePrinter implements Runnable{
-
-    public Thread listener;
+    
+    /** The thread that will be used to listen for the applications messages */
+    private Thread listener;
 
     /** The Socket to use for TCP communication with application */
     private Socket appSocket;
