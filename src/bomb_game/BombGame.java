@@ -1,184 +1,204 @@
+
 package bomb_game;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TimerTask;
-import java.util.Vector;
 import java.util.Timer;
-
 import mmdg_server.MMDGServer;
 
 
 public class BombGame extends MMDGServer{
-    
+
     private boolean gameOn;
     private int maxNumberOfPlayers;
-    private Vector<Player> players;
+    private HashMap<Integer, Player> players;
     private Timer timer;
     private int minTimeBeforeExplosion;
-    private int maxTimeBeforeExplosion; 
-    
-    public BombGame(int httpPort, int wsPort, int appPort, int n) throws IOException {
+    private int maxTimeBeforeExplosion;
+
+    public BombGame(int httpPort, int wsPort, int appPort, int n)
+                    throws IOException {
         super(httpPort, wsPort, appPort);
         maxNumberOfPlayers = n;
-        players = new Vector<Player>();
+        players = new HashMap<Integer, Player>();
         gameOn = false;
     }
-    
-    protected void processMessagesFromClients(ArrayList<String> commandStack){
+
+    protected void processMessagesFromClients(ArrayList<String> commandStack) {
         String cmd = "";
-        for(int i = 0; i<commandStack.size(); ++i){
+        for (int i = 0; i < commandStack.size(); ++i) {
             cmd = commandStack.get(i);
             print("incoming command: " + cmd);
-            
-            //Figure out which client whos talking
-            int ind1 = cmd.indexOf("=");//must be a string " ".
+
+            // Figure out which client whos talking
+            int ind1 = cmd.indexOf("=");// must be a string " ".
             int ind2 = cmd.indexOf(' ');
-            String idStr = cmd.substring(ind1+1, ind2);
+            String idStr = cmd.substring(ind1 + 1, ind2);
             int thisID = Integer.parseInt(idStr);
             print("this id = " + thisID);
-            int thisIndex = idToIndex(thisID);
-            
-            cmd = cmd.substring(ind2+1);
+
+            cmd = cmd.substring(ind2 + 1);
             print("cmd = " + cmd);
-            if (cmd.compareTo("connected") == 0){
+            if (cmd.compareTo("connected") == 0) {
                 print("player " + thisID + " connected");
                 addPlayer(thisID);
             }
-            
-            if(cmd.length() > 10 && cmd.substring(0, 10).compareTo("hasTheBomb") == 0){
+            if (cmd.startsWith("var=disconnected")) {
+                print("Disconnecting player " + thisID);
+                players.remove(thisID);
+            }
+
+            if (cmd.length() > 10
+                            && cmd.substring(0, 10).compareTo("hasTheBomb") == 0) {
                 boolean hasTheBomb = Boolean.parseBoolean(cmd.substring(11));
-                print("id " + thisID + " asserts hasTheBomb=" + hasTheBomb + ". Java says hasTheBomb=" + players.elementAt(thisIndex).hasTheBomb);
-                if(players.elementAt(thisIndex).hasTheBomb != hasTheBomb){
+                print("id " + thisID + " asserts hasTheBomb=" + hasTheBomb
+                                + ". Java says hasTheBomb="
+                                + players.get(thisID).hasTheBomb);
+                if (players.get(thisID).hasTheBomb != hasTheBomb) {
                     print("BOMB EXPLODED IN THE AIR!!!!!!!!!!!!!!!");
                     /*
-                    sendToAllClients("you win");
-                    sleep(1000);
-                    
-                    int seconds = 5;
-                    sendToAllClients("countdown="+seconds);
-                    sleep(seconds*1000);
-                    startGame();
-                    */
+                     * sendToAllClients("you win"); sleep(1000);
+                     * 
+                     * int seconds = 5; sendToAllClients("countdown="+seconds);
+                     * sleep(seconds*1000); startGame();
+                     */
                 }
             }
-            
-            if(!gameOn)
-                return;
-            if (cmd.compareTo("not me!") == 0){
+
+            if (!gameOn) return;
+            if (cmd.compareTo("not me!") == 0) {
                 print("player " + thisID + " threw the bomb");
-                players.elementAt(thisIndex).hasTheBomb = false;
+                players.get(thisID).hasTheBomb = false;
                 throwBombRandomly();
-            }
-            if (cmd.compareTo("damn it") == 0){
+            } else if (cmd.compareTo("damn it") == 0) {
                 gameOn = false;
                 print("player " + thisID + " lost");
                 sendToAllClientsExcept(thisID, "you win");
                 sleep(1000);
-                
+
                 int seconds = 10;
-                sendToAllClientsExcept(thisID, "countdown="+seconds);
-                sleep(seconds*1000);
+                sendToAllClientsExcept(thisID, "countdown=" + seconds);
+                sleep(seconds * 1000);
                 startGame();
             }
         }
     }
-    
-    public void setExplosionInterval(int min, int max){
+
+    public void setExplosionInterval(int min, int max) {
         minTimeBeforeExplosion = min;
         maxTimeBeforeExplosion = max;
     }
-    
-    private void addPlayer(int id){
-        players.add(new Player(id));
+
+    private void addPlayer(int id) {
+        players.put(id, new Player());
         print("players.size() = " + players.size());
         print("maxNumberOfPlayers = " + maxNumberOfPlayers);
-        if(players.size() == maxNumberOfPlayers){
+        if (players.size() == maxNumberOfPlayers) {
             startGame();
         }
     }
-    
-    private void startGame(){
-        for(int i = 0; i<players.size(); ++i){
-            players.elementAt(i).hasTheBomb = false;
+
+    private void removePlayer(int id) {
+        print("remove id = " + id);
+        players.remove(id);
+    }
+
+    private void startGame() {
+        Iterator<Entry<Integer, Player>> it = players.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, Player> pairs = (Map.Entry<Integer, Player>) it
+                            .next();
+            pairs.getValue().hasTheBomb = false;
         }
+
         print("Starting Game!");
-        
+
         gameOn = true;
         sendToAllClients("start");
         sleep(1000);
         throwBombRandomly();
         startTicking();
     }
-    
-    private void startTicking(){
+
+    private void startTicking() {
         Random r = new Random();
-        int secondsToExplosion = minTimeBeforeExplosion + 
-                        r.nextInt(maxTimeBeforeExplosion-minTimeBeforeExplosion);
+        int secondsToExplosion = minTimeBeforeExplosion
+                        + r.nextInt(maxTimeBeforeExplosion
+                                        - minTimeBeforeExplosion);
         timer = new Timer();
-        timer.schedule(new TimerTask(){
+        timer.schedule(new TimerTask() {
             @Override
-            public void run(){
+            public void run() {
                 bombExplode();
             }
-            
+
         }, secondsToExplosion * 1000);
     }
-    
-    private void bombExplode(){
+
+    private void bombExplode() {
         print("bomb exploded");
-        for(int i = 0; i<players.size(); ++i)
-            print(players.elementAt(i));
-        
+        Iterator<Entry<Integer, Player>> it = players.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, Player> pairs = (Map.Entry<Integer, Player>) it
+                            .next();
+            print(pairs.getValue());
+        }
+
         sendToAllClients("explode");
     }
-    
-    private void sendToAllClientsExcept(int id, String msg){
-        for(int j = 0; j<players.size(); ++j){
-            if (players.elementAt(j).id != id){
-                int othersID = players.elementAt(j).id;
-                sendToClient(othersID, msg);
+
+    private void sendToAllClientsExcept(int id, String msg) {
+        Iterator<Entry<Integer, Player>> it = players.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Integer, Player> pairs = (Map.Entry<Integer, Player>) it
+                            .next();
+            if (pairs.getKey() != id) {
+                sendToClient(pairs.getKey(), msg);
             }
         }
+
     }
-    
-    private void throwBombRandomly(){
+
+    private void throwBombRandomly() {
         Random r = new Random();
-        int newInd = r.nextInt(players.size());
-        int newID = players.elementAt(newInd).id;
-        throwBombTo(newID);
+        int playerNumber = r.nextInt(players.size());
+
+        Iterator<Entry<Integer, Player>> it = players.entrySet().iterator();
+        Map.Entry<Integer, Player> pairs;
+        int i = 0;
+        do {
+            pairs = (Map.Entry<Integer, Player>) it.next();
+            i++;
+        } while (i < playerNumber);
+
+        throwBombTo(pairs.getKey());
     }
-    
-    private void throwBombTo(int id){
+
+    private void throwBombTo(int id) {
         print("throw bomb to " + id);
         sendToClient(id, "catch");
-        int index = idToIndex(id);
-        players.elementAt(index).hasTheBomb = true;
+        players.get(id).hasTheBomb = true;
     }
-    
-    private int idToIndex(int id){
-        for (int i = 0; i<players.size(); ++i){
-            if (players.elementAt(i).id == id)
-                return i;
-        }
-        return -1;
-    }
-    
+
     private class Player{
-        public int id;
         public boolean hasTheBomb;
-        
-        public Player(int id){
-            this.id = id;
+
+        public Player() {
             this.hasTheBomb = false;
         }
-        
-        public String toString(){
-            return "id=" + id + " hasTheBomb=" + hasTheBomb;
+
+        public String toString() {
+            return "hasTheBomb=" + hasTheBomb;
         }
     }
-    
-    private void sleep(int millis){
+
+    private void sleep(int millis) {
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {

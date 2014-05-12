@@ -119,7 +119,9 @@ public class MMDGServer extends ConsolePrinter{
             // Send messages from web site to connected application
 
             commandStack = webSocketServer.getCommandStack();
-            processMessagesFromClients(commandStack);
+            if (commandStack.size() > 0){
+                processMessagesFromClients(commandStack);
+            }
 
 
             // webSocketServer.clearCommandStack();
@@ -138,13 +140,11 @@ public class MMDGServer extends ConsolePrinter{
     }
     
     protected void processMessageFromApplication(String message){
+        print("process message from applicaiton: " + message);
         forwardMessageFromApp(message);
     }
     
     protected void processMessagesFromClients(ArrayList<String> commandStack){
-        if (commandStack.size() == 0)
-            return;
-        
         String message = "";
         for (int i = 0; i < commandStack.size(); ++i) {
             message += commandStack.get(i) + CMD_DELIMITER;
