@@ -19,6 +19,8 @@ public class MMDGServer extends ConsolePrinter{
 
     /** The IP used by the HTTP server */
     private String serverIP = "undefined";
+    
+    private String applicationIP = "130.236.67.201";
 
     /** The port used by HTTP server */
     private final int HTTP_PORT = 1337;
@@ -59,7 +61,7 @@ public class MMDGServer extends ConsolePrinter{
 
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
-        tcpHandler = new TCPHandler(serverIP, TCP_PORT);
+        tcpHandler = new TCPHandler(applicationIP, TCP_PORT);
 
         print(getLinkToQRCode(600, "000000", "FFFFFF"));
         print("MMDGServer constructor done!\n");
