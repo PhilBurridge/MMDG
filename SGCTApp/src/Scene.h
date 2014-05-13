@@ -26,6 +26,7 @@ public:
     void addPlayer(int id, Player *);
     bool removePlayer(int id);
     Player * getPlayer(int id);
+    unsigned int getNumberOfPlayers();
 
     void draw();
     

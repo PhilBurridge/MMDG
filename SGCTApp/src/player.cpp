@@ -15,6 +15,7 @@ const glm::vec2 Player::DIRECTIONS[] = {
 
 const float Player::COP_SPEED = 0.1f;
 const float Player::ROB_SPEED = 0.2f;
+const double Player::COP_TIMER_LIMIT = 1.0;
 
 // Player constructor
 Player::Player(glm::vec2 pos, bool isCop):
@@ -28,12 +29,14 @@ void Player::switchToCop() {
     cop = true;
     speed = COP_SPEED;
     textureName = "cop";
+    resetCopTimer();
 }
 
 void Player::switchToRobber() {
     cop = false;
     speed = ROB_SPEED;
     textureName = "rob";
+    startCopTimer = 0;
 }
 
 bool Player::isCop() {
@@ -78,5 +81,19 @@ void Player::display() const{
 void Player::draw() const {
 
     DrawableObject::draw(position.x, position.y);
+}
+
+// Returns false if the maximum cop time is exceded
+bool Player::copTimer() {
+    endCopTimer = clock();
+    if((endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC) >= COP_TIMER_LIMIT) {
+        return false;
+    }
+
+    return true;
+}
+
+void Player::resetCopTimer() {
+    startCopTimer = clock();
 }
 

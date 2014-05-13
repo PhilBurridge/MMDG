@@ -45,6 +45,7 @@ void Scene::checkCollisions() {
             if(glm::length(p1->getPosition() - p2->getPosition()) < (p1->getSize() + p2->getSize())) { 
 
                 // Do somthing when collision happens. KILL THA ROBBBA
+                p1->resetCopTimer();
                 p2->switchToCop();
 
                 std::cout << "****************************************" << std::endl;
@@ -58,6 +59,10 @@ void Scene::checkCollisions() {
 
         
 void Scene::addPlayer(int id, Player *p) {
+    // Set cop texture and start cop timer
+    if(p->isCop())
+        p->switchToCop();
+
     players.insert(std::pair<int, Player *>(id, p));
 }
 
@@ -75,6 +80,11 @@ Player * Scene::getPlayer(int id){
     return players[id];
 }
 
+// Gets the amount of currently connected players
+unsigned int Scene::getNumberOfPlayers() {
+    return players.size();
+}
+
 void Scene::draw() {
     //Draw Background image
     background->draw(0.0f, 0.0f, -0.01f);
@@ -82,10 +92,6 @@ void Scene::draw() {
     for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
         std::pair<int, Player *> pair = *it;
         
-        // If the player is a cop, swap the texture (rob texture is standard)
-        if(pair.second->isCop()) {
-            pair.second->switchToCop();
-        }
         // Disable depth test for the alpha blending to draw correct when players collide
         glDisable(GL_DEPTH_TEST);
         pair.second->draw();

@@ -123,11 +123,22 @@ void RobberCop::process(int id, std::string var, std::string val) {
 
 void RobberCop::update(float dt){
     scene->update(dt);
+    checkCopTimer();
 }
 
 void RobberCop::draw() const {
     scene->draw();
 }
 
+// Checks how long a player have been a cop
+void RobberCop::checkCopTimer() {
+    for(unsigned int i = 0; i < scene->getNumberOfPlayers(); i++) {
+        // if the player have been a cop for too long and not caught a robber, he gets switched to a robber
+        if(!(scene->getPlayer(i)->copTimer()) && (scene->getPlayer(i)->isCop())) {
+            //std::cout << "IF-STATEMENT!" << std::endl;
+            scene->getPlayer(i)->switchToRobber();
+        }
+    }
+}
 
 // id=0 var=btn1 val=pressed;
