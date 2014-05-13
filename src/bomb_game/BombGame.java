@@ -31,6 +31,8 @@ public class BombGame extends MMDGServer{
     }
 
     protected void processMessagesFromClients(ArrayList<String> commandStack) {
+        
+        
         String cmd = "";
         for (int i = 0; i < commandStack.size(); ++i) {
             cmd = commandStack.get(i);
@@ -45,17 +47,18 @@ public class BombGame extends MMDGServer{
 
             cmd = cmd.substring(ind2 + 1);
             print("cmd = " + cmd);
+            
             if (cmd.compareTo("connected") == 0) {
                 print("player " + thisID + " connected");
                 addPlayer(thisID);
             }
+            
             if (cmd.startsWith("var=disconnected")) {
                 print("Disconnecting player " + thisID);
                 players.remove(thisID);
             }
 
-            if (cmd.length() > 10
-                            && cmd.substring(0, 10).compareTo("hasTheBomb") == 0) {
+            if (cmd.length() > 10 && cmd.startsWith("hasTheBomb")) {
                 boolean hasTheBomb = Boolean.parseBoolean(cmd.substring(11));
                 print("id " + thisID + " asserts hasTheBomb=" + hasTheBomb
                                 + ". Java says hasTheBomb="
@@ -80,12 +83,10 @@ public class BombGame extends MMDGServer{
                 gameOn = false;
                 print("player " + thisID + " lost");
                 sendToAllClientsExcept(thisID, "you win");
-                sleep(1000);
 
                 int seconds = 10;
-                sendToAllClientsExcept(thisID, "countdown=" + seconds);
-                sleep(seconds * 1000);
-                startGame();
+                delayedSendToAllClientsExcept(thisID, "countdown=" + seconds, 1000);
+                delayedStartGame(seconds*1000);
             }
         }
     }
@@ -104,11 +105,6 @@ public class BombGame extends MMDGServer{
         }
     }
 
-    private void removePlayer(int id) {
-        print("remove id = " + id);
-        players.remove(id);
-    }
-
     private void startGame() {
         Iterator<Entry<Integer, Player>> it = players.entrySet().iterator();
         while (it.hasNext()) {
@@ -124,6 +120,16 @@ public class BombGame extends MMDGServer{
         sleep(1000);
         throwBombRandomly();
         startTicking();
+    }
+    
+    private void delayedStartGame(final int delayMillis){
+        Thread t = new Thread(new Runnable(){
+            public void run(){
+                sleep(delayMillis);
+                startGame();
+            }
+        });
+        t.run();
     }
 
     private void startTicking() {
@@ -162,7 +168,16 @@ public class BombGame extends MMDGServer{
                 sendToClient(pairs.getKey(), msg);
             }
         }
-
+    }
+    
+    private void delayedSendToAllClientsExcept(final int id, final String msg, final int delayMillis){
+        Thread t = new Thread(new Runnable(){
+            public void run(){
+                sleep(delayMillis);
+                sendToAllClientsExcept(id, msg);
+            }
+        });
+        t.run();
     }
 
     private void throwBombRandomly() {
@@ -197,6 +212,8 @@ public class BombGame extends MMDGServer{
             return "hasTheBomb=" + hasTheBomb;
         }
     }
+    
+    
 
     private void sleep(int millis) {
         try {
