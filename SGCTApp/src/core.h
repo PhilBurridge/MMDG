@@ -5,7 +5,7 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <ctime>
+//#include <ctime>
 #include "sgct.h"
 //#include "robberCop.h"
 
