@@ -133,7 +133,7 @@ public class MMDGServer extends ConsolePrinter{
 
             // sleep for 1/unloadPerSeconds seconds
                 // How often stacks get sent to application
-            if(XThread.delay((int) (1000 / unloadsPerSecond)))
+            if(!XThread.delay((int) (1000 / unloadsPerSecond)))
                 break;
  
 
