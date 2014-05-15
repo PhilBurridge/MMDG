@@ -96,4 +96,3 @@ bool Player::copTimer() {
 void Player::resetCopTimer() {
     startCopTimer = clock();
 }
-

@@ -28,6 +28,8 @@ public:
     unsigned int getNumberOfPlayers();
 
     void draw();
+
+    void printPlayerName(int id);
     
 private:
     DrawableObject *background;

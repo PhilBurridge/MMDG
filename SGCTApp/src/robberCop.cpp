@@ -8,6 +8,10 @@ Core(gEngine) {
 
 void RobberCop::init(){
 
+    // --- INIT FONT --- //
+    if( !sgct_text::FontManager::instance()->addFont( "Verdana", "verdana.ttf" ) )
+        sgct_text::FontManager::instance()->getFont( "Verdana", 14 );
+
     // --- INIT OPENGL --- // 
 
     // Set the filter size of texture (just makes it look better)
