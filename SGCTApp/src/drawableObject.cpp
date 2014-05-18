@@ -52,6 +52,10 @@ void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
 
 }
 
+void DrawableObject::drawSphereical(float r, float theta, float phi) const{
+    //TO IMPLEMENT
+}
+
 // Sets the size of a player
 void DrawableObject::setSize(float s) {
     size = s;
