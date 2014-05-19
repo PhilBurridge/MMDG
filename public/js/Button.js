@@ -1,3 +1,7 @@
+/** 
+* The class for a button, saves the name, position
+* and icon address for each button. 
+*/
 function Button(n,p,i)
 {
 	this.name = n;
@@ -7,7 +11,15 @@ function Button(n,p,i)
 
 Button.prototype = {
 
+
+    /** 
+    * This class' only method, will print the html for only button.
+    */
 	printButton: function(){
+
+        if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+
+        }
         document.write("<div class='button' style='background-image:url(");
         document.write(this.icon);
         document.write(");' onmousedown='buttonDown(");
@@ -20,4 +32,8 @@ Button.prototype = {
         document.write(this.name);
         document.write(");'></div>");
     }
+
+    // TO DO
+    // Implement a way for this class to know if the client wants a 
+    // Larger button that takes up 3 fields.
 }
