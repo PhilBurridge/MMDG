@@ -10,6 +10,7 @@ function Gui()
 {
 	this.buttons = new Array();
 	this.displays = new Array();
+	this.textfields = new Array();
 
 	/** 
 	* An array with the empty fields in the 3x3 grid of divs.
@@ -48,7 +49,8 @@ Gui.prototype = {
             xmlDoc=xmlhttp.responseXML;
 
             var b = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
-            var d = xmlDoc.getElementsByTagName("DISPLAY"); //Buttons
+            var d = xmlDoc.getElementsByTagName("DISPLAY"); //Displays
+            var t = xmlDoc.getElementsByTagName("TEXTFIELD"); //Textfields
 
 	        for (var i=0;i<b.length;i++){
 
@@ -66,6 +68,14 @@ Gui.prototype = {
 	            var icon = d[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
 
 	         	this.displays.push(new Display(name,pos,icon));
+	         	this.remove(pos);
+	        }
+
+	        for (var i=0;i<t.length;i++){
+
+	         	var pos = t[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
+	            var name = t[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
+	         	this.textfields.push(new Textfield(name,pos));
 	         	this.remove(pos);
 	        }
 
@@ -178,6 +188,10 @@ Gui.prototype = {
 		for(var i=0;i<this.displays.length;i++){
 			if(this.displays[i].pos == ori)
 				this.displays[i].printDisplay();			
+		}
+		for(var i=0;i<this.textfields.length;i++){
+			if(this.textfields[i].pos == ori)
+				this.textfields[i].printTextfield();			
 		}
 		for(var i=0;i<this.empty.length;i++){
 			if(this.empty[i] == ori)

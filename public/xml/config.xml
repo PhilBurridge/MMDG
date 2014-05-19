@@ -17,12 +17,11 @@ SLIDER:
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
-	<BUTTON>
-		<ICON>standard_buttons/top_center.png</ICON>
+	<TEXTFIELD>
 		<NAME>0</NAME>
 		<POS>upcenter</POS>
 		<EMPTY>no</EMPTY>
-	</BUTTON>
+	</TEXTFIELD>
 	<BUTTON>
 		<ICON>standard_buttons/top_right.png</ICON>
 		<NAME>1</NAME>
