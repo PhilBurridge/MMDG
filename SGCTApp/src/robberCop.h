@@ -24,7 +24,6 @@ public:
     void update(float dt);
     void draw() const;
     void init();
-    void checkCopTimer();
     
     Scene *scene;
 };

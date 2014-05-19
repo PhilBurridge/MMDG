@@ -8,17 +8,23 @@ Scene::Scene(){
 
 // Updates all the required stuff for players before drawing
 void Scene::update(float dt) {
-    updatePositions(dt);
+    Player * p;
+    for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+        std::pair<int, Player *> pair = *it;
+        p = pair.second;
+
+        // Updates the positions of all players with a specific step
+        p->movePlayer(dt);
+
+        // Make cops to robber if they have caught any robbers in a while
+        if(p->isCop() && !p->copTimer()){
+            p->switchToRobber();
+        }
+    }
     checkCollisions();
 }
 
-// Updates the positions of all players with a specific step
-void Scene::updatePositions(float dt) {
-    for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
-        std::pair<int, Player *> pair = *it;
-        pair.second->movePlayer(dt);
-    }
-}
+
 
 void Scene::checkCollisions() {
     Player * p1;

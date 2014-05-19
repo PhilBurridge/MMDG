@@ -68,10 +68,6 @@ run-fisheye:
 	./$(BINFOLD)$(BINNAME) -config "configs/single_fisheye_fxaa.xml"
 .PHONY: run
 
-report:
-	cd docs && latex report.tex && bibtex refs && latex report.tex && latex report.tex && cd ..
-.PHONY: run
-
 talk:
 	$(FOO)
 .PHONY: run
