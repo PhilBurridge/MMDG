@@ -70,6 +70,14 @@ void Player::setPosition(glm::vec2 p) {
     position = p;
 }
 
+void Player::setName(std::string n) {
+    name = n;
+}
+
+std::string Player::getName() const{
+    return name;
+}
+
 void Player::display() const{
     DrawableObject::display();
     std::cout << "pos: x=" << position.x << " y=" << position.y << std::endl;
@@ -81,6 +89,22 @@ void Player::display() const{
 void Player::draw() const {
 
     DrawableObject::draw(position.x, position.y);
+}
+
+void Player::drawName() {
+
+    // pixel x: 1280 / 2 = 640
+    // pixel y: 720 / 2 = 360
+    // Om någon vill fixa 3d -> pixel-koordinater bättre, then pls do!
+
+    // Lägg till: http://webstaff.itn.liu.se/~miran46/sgct/docs/html/classsgct_1_1_s_g_c_t_window.html#a2ad2da4f951b2b6d710d54f9e8ac3767
+
+    // Draw id on screen
+    sgct_text::print(sgct_text::FontManager::instance()->getFont
+        ("SGCTFont", 14 ), 
+        640 + (position.x * 360), 
+        420 + (position.y * 360), 
+        name.c_str());
 }
 
 // Returns false if the maximum cop time is exceded

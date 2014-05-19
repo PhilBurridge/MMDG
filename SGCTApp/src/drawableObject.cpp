@@ -49,7 +49,6 @@ void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
         glVertex3f(x-width, y-height, z);
 
     glEnd();
-
 }
 
 // Sets the size of a player

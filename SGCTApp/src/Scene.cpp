@@ -101,13 +101,14 @@ void Scene::draw() {
         // Disable depth test for the alpha blending to draw correct when players collide
         glDisable(GL_DEPTH_TEST);
         pair.second->draw();
-        printPlayerName(pair.first);
+        pair.second->drawName();
+        glEnable(GL_DEPTH_TEST);
     }
 }
-
+/*
 // Prints the id of a player above it's canvas,
 // later change this to the players name, i.e a string
-void Scene::printPlayerName(int id) {
+void Scene::printPlayerId(std::string name) {
 
 // pixel x: 1280 / 2 = 640
 // pixel y: 720 / 2 = 360
@@ -118,10 +119,11 @@ void Scene::printPlayerName(int id) {
     ss << id;
     std::string str_id = ss.str();
 
-    // Print the id to the screen
+    // Draw id on screen
     sgct_text::print(sgct_text::FontManager::instance()->getFont
         ("SGCTFont", 14 ), 
-        (players.at(id)->getPosition().x * 360) + 640, 
-        (players.at(id)->getPosition().y * (640/1.778)) + 420, 
+        640 + ( players.at(id)->getPosition().x * 360), 
+        420 + ( players.at(id)->getPosition().y * 360), 
         str_id.c_str());
 }
+*/

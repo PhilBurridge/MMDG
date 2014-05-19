@@ -29,7 +29,7 @@ public:
 
     void draw();
 
-    void printPlayerName(int id);
+    //void printPlayerId(int id);
     
 private:
     DrawableObject *background;

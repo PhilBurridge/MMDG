@@ -33,12 +33,15 @@ public:
     glm::vec2 getPosition() const;
     void setPosition(glm::vec2 p);
 
+    void setName(std::string);
+    std::string getName() const;
+
     void display() const;
 
     void draw() const;
+    void drawName();
     
     bool copTimer();
-
     void resetCopTimer();
     
     enum DirectionEnum{
@@ -62,6 +65,7 @@ private:
     int directionIndex;
     glm::vec2 position;
     glm::vec2 direction;
+    std::string name;
 
     clock_t startCopTimer;
     clock_t endCopTimer;

@@ -76,8 +76,6 @@ void init() {
     std::cout << "  ** MAIN INIT DONE **  " << std::endl;
 }
 
-
-
 void draw() {
     robberCop->draw();
 }

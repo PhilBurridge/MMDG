@@ -19,7 +19,7 @@ class RobberCop: public Core{
 public:
     RobberCop(sgct::Engine * gEngine); 
 
-    virtual void process(int id, std::string action, std::string value);
+    virtual void process(int id, std::string action, std::string value, std::string name);
     
     void update(float dt);
     void draw() const;

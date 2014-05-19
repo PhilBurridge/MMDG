@@ -18,7 +18,7 @@ public:
 
 	//Handles communication from clients
 	void handleExternalInput(const char * recievedChars, int size, int clientId);
-	virtual void process(int id, std::string variable, std::string value);
+	virtual void process(int id, std::string variable, std::string value, std::string name);
 
 	//Handles communication to clients
 	void sendToAll(std::string msg);
@@ -62,7 +62,7 @@ private:
     std::vector<std::string> extractCommands(std::string externalInputString);
 
     //Analyzes commands for "arguments" separated by ARG_DELIMITER
-    bool analyzeCommand(std::string command, int *id, std::string *variable, std::string *value);
+    bool analyzeCommand(std::string command, int *id, std::string *variable, std::string *value, std::string *name);
 
     //A pointer to the SGCT engine
     sgct::Engine * gEngine;

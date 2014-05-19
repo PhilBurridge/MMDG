@@ -29,10 +29,10 @@ void RobberCop::init(){
 
 
     // Enable some openGL stuff
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
     glEnable( GL_COLOR_MATERIAL );
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glDisable( GL_LIGHTING );
     glEnable(GL_CULL_FACE);
     glEnable( GL_TEXTURE_2D );
@@ -44,10 +44,10 @@ void RobberCop::init(){
 }
 
 // Overiding method from core
-void RobberCop::process(int id, std::string var, std::string val) {
+void RobberCop::process(int id, std::string var, std::string val, std::string name) {
 
     std::cout << "INPUT: " << std::endl;
-    Core::process(id,var,val);
+    Core::process(id,var,val,name);
 
     std::cout << "HANDELING INPUT" << std::endl;
 
@@ -74,6 +74,9 @@ void RobberCop::process(int id, std::string var, std::string val) {
         Player *p = new Player(glm::vec2(rand_x, rand_y), isCop);
 
         scene->addPlayer(id, p);
+        
+        p->setName(name);
+        
         return;
     }
 
@@ -121,7 +124,6 @@ void RobberCop::process(int id, std::string var, std::string val) {
                 p->stop();
             }
         }
-
     }
 }
 

@@ -7,6 +7,7 @@ gEngine(gEngine){
     cmd_args.push_back("id=");
     cmd_args.push_back("var=");
     cmd_args.push_back("val=");
+    cmd_args.push_back("name=");
 }
 
 const std::string Core::ARG_DELIMITER = " ";
@@ -20,12 +21,13 @@ void Core::handleExternalInput(const char * recievedChars, int size, int clientI
     int id;
     std::string variable = "";
     std::string value = "";
+    std::string name = "";
     for (int i = 0; i < command_vec.size(); ++i){
 
         //Pass pointer to variables. This method will update the variables values.
-        if(analyzeCommand(command_vec[i], &id, &variable, &value)){
+        if(analyzeCommand(command_vec[i], &id, &variable, &value, &name)){
             //Now do something with the extracted information
-            process(id,variable,value);
+            process(id,variable,value,name);
         }    
     }
 }
@@ -52,12 +54,12 @@ std::vector<std::string> Core::extractCommands(std::string externalInputString){
 }
 
 // Decodes the received command and sends it to the process function
-bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::string *val) {
+bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::string *val, std::string *name) {
 
     
     std::cout << "analyzing: " << command << std::endl;
 
-    const size_t n_cmd_args = 3;
+    const size_t n_cmd_args = 4;
     std::string extracted_values[n_cmd_args];
     
     size_t delimiter_pos;
@@ -88,18 +90,20 @@ bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::s
     *id = atoi(extracted_values[0].c_str());
     *var = extracted_values[1];
     *val = extracted_values[2];
+    *name = extracted_values[3];
 
     return true;
 }
 
 // Determines what to do with the messages
-void Core::process(int id, std::string variable, std::string value){
+void Core::process(int id, std::string variable, std::string value, std::string name){
     //this method is to be overridden by applications like RobberCop
 
     std::cout << "Extracted input data: " << std::endl;
     std::cout << "id = " << id << std::endl;
     std::cout << "variable = " << variable << std::endl;
     std::cout << "value = " << value << std::endl;
+    std::cout << "name = " << name << std::endl;
     std::cout << std::endl;
 
     if(variable == "recieved_pings"){
