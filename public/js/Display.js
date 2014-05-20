@@ -1,3 +1,7 @@
+/** 
+* The class for a Display, saves the name, position
+* and icon address for each display. 
+*/
 function Display(n,p,i)
 {
 	this.name = n;

@@ -20,49 +20,41 @@ SLIDER:
 	<TEXTFIELD>
 		<NAME>0</NAME>
 		<POS>upcenter</POS>
-		<EMPTY>no</EMPTY>
 	</TEXTFIELD>
 	<BUTTON>
 		<ICON>standard_buttons/top_right.png</ICON>
 		<NAME>1</NAME>
 		<POS>upright</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/middle_right.png</ICON> 
 		<NAME>2</NAME>
 		<POS>centerright</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/bottom_right.png</ICON>
 		<NAME>3</NAME>
 		<POS>downright</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/bottom_center.png</ICON>
 		<NAME>4</NAME>
 		<POS>downcenter</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/bottom_left.png</ICON>
 		<NAME>5</NAME>
 		<POS>downleft</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/middle_left.png</ICON>
 		<NAME>6</NAME>
 		<POS>centerleft</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/top_left.png</ICON>
 		<NAME>7</NAME>
 		<POS>upleft</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<DISPLAY>
 		<ICON>standard_buttons/center_panel.png</ICON>
