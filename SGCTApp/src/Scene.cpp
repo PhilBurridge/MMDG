@@ -2,7 +2,7 @@
 
 
 // Scene constructor
-Scene::Scene(){
+Scene::Scene(sgct::Engine * gEngine){
     background = new DrawableObject("mmdg", 2.0f, 1.0f);
 }
 

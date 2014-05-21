@@ -15,7 +15,7 @@ textureName(t), size(s) {
 
 
 // Draws a player with a set position and MVP matrix
-void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
+void DrawableObject::draw(float x, float y, float z) const {
     // Set the active texture unit
     glActiveTexture(GL_TEXTURE0);
 

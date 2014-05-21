@@ -16,8 +16,8 @@ class Player: public DrawableObject {
 
 public:
     Player();
-    Player(glm::vec2 pos, 
-        bool state);
+    Player(glm::vec2 pos, glm::vec3 c,
+        bool state, sgct::Engine * e);
 
 	void switchToCop();
     void switchToRobber();
@@ -60,12 +60,15 @@ public:
 
 private:
 
+    sgct::Engine * gEngine;
+
     float speed;
     bool cop;
     int directionIndex;
     glm::vec2 position;
     glm::vec2 direction;
     std::string name;
+    glm::vec3 color;
 
     clock_t startCopTimer;
     clock_t endCopTimer;

@@ -15,7 +15,7 @@ public:
     DrawableObject(const std::string& texture, float w, float h);
     DrawableObject(const std::string& texture, float s);
 
-    void draw(/*glm::mat4 MVP,*/ float x=0.0f, float y=0.0f, float z=0.0f) const;
+    void draw(float x=0.0f, float y=0.0f, float z=0.0f) const;
     void setSize(float s);
     float getSize() const;
     void display() const;

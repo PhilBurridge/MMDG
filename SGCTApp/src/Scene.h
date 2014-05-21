@@ -19,7 +19,7 @@ class Scene {
 
 
 public:
-    Scene();
+    Scene(sgct::Engine * gEngine);
     void update(float dt);
     void checkCollisions();
     void addPlayer(int id, Player *);
