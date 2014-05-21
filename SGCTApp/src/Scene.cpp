@@ -105,25 +105,3 @@ void Scene::draw() {
         glEnable(GL_DEPTH_TEST);
     }
 }
-/*
-// Prints the id of a player above it's canvas,
-// later change this to the players name, i.e a string
-void Scene::printPlayerId(std::string name) {
-
-// pixel x: 1280 / 2 = 640
-// pixel y: 720 / 2 = 360
-// Om någon vill fixa 3d -> pixel-koordinater bättre, then pls do!
-
-    // Convert int to string
-    std::stringstream ss;
-    ss << id;
-    std::string str_id = ss.str();
-
-    // Draw id on screen
-    sgct_text::print(sgct_text::FontManager::instance()->getFont
-        ("SGCTFont", 14 ), 
-        640 + ( players.at(id)->getPosition().x * 360), 
-        420 + ( players.at(id)->getPosition().y * 360), 
-        str_id.c_str());
-}
-*/
