@@ -2,7 +2,7 @@
 
 RobberCop::RobberCop(sgct::Engine * gEngine):
 Core(gEngine) {
-    scene = new Scene(gEngine);
+    scene = new Scene();
     std::cout << "constructing RobberCop" << std::endl;
     srand (static_cast <unsigned> (time(0)));
 };
