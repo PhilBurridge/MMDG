@@ -13,6 +13,7 @@ function Gui()
 			"downcenter",
 			"downright"
 			];
+	//gör en vector med alla player-namn som kollas genom för att se så att namnet är unikt!
 };
 
 Gui.prototype = {
@@ -32,8 +33,17 @@ Gui.prototype = {
             xmlDoc=xmlhttp.responseXML;
 
             var b = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
-            var d = xmlDoc.getElementsByTagName("DISPLAY"); //Buttons
+            var d = xmlDoc.getElementsByTagName("DISPLAY"); //Display
+			var s = xmlDoc.getElementsByTagName("SUBMITNAME"); //Submit name popup window
 
+			var show = s[0].getElementsByTagName("SHOW")[0].childNodes[0].nodeValue;
+			if(show == yes){
+				var description = d[0].getElementsByTagName("DESCRIPTION")[0].childNodes[0].nodeValue;
+				
+				this.submitname.push(new submitname(description));
+
+			}
+			
 	        for (var i=0;i<b.length;i++){
 
 	         	var pos = b[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
@@ -52,7 +62,6 @@ Gui.prototype = {
 	         	this.displays.push(new Display(name,pos,icon));
 	         	this.remove(pos);
 	        }
-
 	},
 
 	remove: function(pos){

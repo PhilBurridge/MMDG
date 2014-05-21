@@ -4,19 +4,28 @@ Example on what is available to modify in this xml file.
 
 All positions of the 3x3 grid Must be filled to ensure a correct alignment!
 
+SUBMITNAME:
+-SHOW: yes/no, If a popup window should appear that asks for the name of the customer
+-DESCRIPTION: any string, The description written in the popup window
+
 BUTTON:
 -ICON: URL or path in folder. 
 -NAME: any name, not too long. This name is sent to the application. 
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright. 
--EMPTY: yes/no for space without button.
+-EMPTY: yes/no, for space without button.
 
 SLIDER: 
 -NAME: any name, not too long. This name is sent to the application with the value. 
 -STARTVALUE: any value, not bigger than ENDVALUE. 
--ENDVALUE: any value. 
+-ENDVALUE: any value.
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
+	<SUBMITNAME>
+		<SHOW>yes</SHOW>
+		<DESCRIPTION>Please enter your name, 3-12 letters!</DESCRIPTION>
+	</SUBMITNAME>
+	
 	<BUTTON>
 		<ICON>arrows/up.png</ICON>
 		<NAME>0</NAME>
