@@ -41,6 +41,7 @@ public:
 
     int getPoints();
     void addPoints();
+    void removePoints();
     bool robberTimer();
 
     void resetCopTimer();

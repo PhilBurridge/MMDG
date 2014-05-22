@@ -20,10 +20,10 @@ const double Player::ROBBER_TIMER_LIMIT = 0.5;
 
 // Player constructor
 Player::Player(glm::vec2 pos, bool isCop):
-DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0){
+DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0), points(0){
     std::cout << "Player constructor" << std::endl;
     speed = isCop ? COP_SPEED : ROB_SPEED;
-    points=0;
+    //points = 0;
     display();
 }
 
@@ -88,7 +88,7 @@ void Player::draw() const {
 // Returns false if the maximum cop time is exceded
 bool Player::copTimer() {
     endCopTimer = clock();
-    std::cout << "TIMER: " << (endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC * 2) << std::endl;
+    //std::cout << "TIMER: " << (endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC * 2) << std::endl;
     if((endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC * 4) >= COP_TIMER_LIMIT) {
         return false;
     }
@@ -109,7 +109,15 @@ void Player::addPoints() {
         points++;
     else 
         points += 5;
-    std::cout << "score: " << points << std::endl;
+    //std::cout << "score: " << points << std::endl;
+}
+
+void Player::removePoints() {
+    if(isCop() && points >= 0)
+        points--;
+    else if(!isCop() && points >= 0)
+        points -= 3;
+    //std::cout << "score: " << points << std::endl;
 }
 
 //Checks if the robber should get a point
