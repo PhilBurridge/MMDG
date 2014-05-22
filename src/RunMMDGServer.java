@@ -4,7 +4,6 @@ import mmdg_server.MMDGServer;
 
 
 public class RunMMDGServer{
-
     /**
      * @param args
      */

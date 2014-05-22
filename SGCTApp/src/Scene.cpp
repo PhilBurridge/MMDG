@@ -20,6 +20,11 @@ void Scene::update(float dt) {
         if(p->isCop() && !p->copTimer()){
             p->switchToRobber();
         }
+        //Adding one point to robber if not being caught in a while
+        if(!p->isCop() && !p->robberTimer()){
+            p->addPoints();
+            p->resetRobberTimer();
+        }
     }
     checkCollisions();
 }

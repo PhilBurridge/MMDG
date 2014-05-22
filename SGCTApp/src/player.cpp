@@ -16,12 +16,14 @@ const glm::vec2 Player::DIRECTIONS[] = {
 const float Player::COP_SPEED = 0.1f;
 const float Player::ROB_SPEED = 0.2f;
 const double Player::COP_TIMER_LIMIT = 1.0;
+const double Player::ROBBER_TIMER_LIMIT = 0.5;
 
 // Player constructor
 Player::Player(glm::vec2 pos, bool isCop):
 DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0){
     std::cout << "Player constructor" << std::endl;
     speed = isCop ? COP_SPEED : ROB_SPEED;
+    points=0;
     display();
 }
 
@@ -95,5 +97,27 @@ bool Player::copTimer() {
 
 void Player::resetCopTimer() {
     startCopTimer = clock();
+}
+//Returns the amount of points
+int Player::getPoints(){
+    return points;
+}
+
+//Gets the time difference and updates the points
+void Player::addPoints() {
+    points++;
+}
+//Checks if the robber should get a point
+bool Player::robberTimer() {
+    robberPointTimer = clock();
+    //If the time elapsed since becoming a robber is greater than the time limit
+    if((robberPointTimer - startRobberTimer)/(double)(CLOCKS_PER_SEC) >= ROBBER_TIMER_LIMIT) {
+        return false;
+    }
+    return true;
+}
+//Resets the time for robber
+void Player::resetRobberTimer() {
+    startRobberTimer = clock();
 }
 

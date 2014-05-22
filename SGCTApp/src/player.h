@@ -39,7 +39,12 @@ public:
     
     bool copTimer();
 
+    int getPoints();
+    void addPoints();
+    bool robberTimer();
+
     void resetCopTimer();
+    void resetRobberTimer();
     
     enum DirectionEnum{
         STOP = 0,
@@ -57,6 +62,7 @@ public:
 
 private:
 
+    int points;
     float speed;
     bool cop;
     int directionIndex;
@@ -65,7 +71,10 @@ private:
 
     clock_t startCopTimer;
     clock_t endCopTimer;
+    clock_t startRobberTimer;
+    clock_t robberPointTimer;
     static const double COP_TIMER_LIMIT;
+    static const double ROBBER_TIMER_LIMIT;
 
     static const float COP_SPEED;
     static const float ROB_SPEED;
