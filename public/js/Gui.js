@@ -55,7 +55,7 @@ Gui.prototype = {
 	        for (var i=0;i<b.length;i++){
 
 	         	var pos = b[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
-	            var name = b[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
+	            var name = b[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
 	            var icon = b[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
 	         	this.buttons.push(new Button(name,pos,icon));
 	         	this.remove(pos);
@@ -64,7 +64,7 @@ Gui.prototype = {
 	        for (var i=0;i<d.length;i++){
 
 	         	var pos = d[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
-	            var name = d[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
+	            var name = d[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
 	            var icon = d[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
 
 	         	this.displays.push(new Display(name,pos,icon));
@@ -74,8 +74,9 @@ Gui.prototype = {
 	        for (var i=0;i<t.length;i++){
 
 	         	var pos = t[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
-	            var name = t[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
-	         	this.textfields.push(new Textfield(name,pos));
+	            var id = t[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
+	            var buttontext = t[i].getElementsByTagName("BUTTONTEXT")[0].childNodes[0].nodeValue;
+	         	this.textfields.push(new Textfield(buttontext,id,pos));
 	         	this.remove(pos);
 	        }
 

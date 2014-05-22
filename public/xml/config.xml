@@ -6,59 +6,60 @@ All positions of the 3x3 grid Must be filled to ensure a correct alignment!
 
 BUTTON:
 -ICON: URL or path in folder. 
--NAME: any name, not too long. This name is sent to the application. 
+-ID: any ID, not too long. This ID is sent to the application. 
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright. 
 -EMPTY: yes/no for space without button.
 
 SLIDER: 
--NAME: any name, not too long. This name is sent to the application with the value. 
+-ID: any ID, not too long. This ID is sent to the application with the value. 
 -STARTVALUE: any value, not bigger than ENDVALUE. 
 -ENDVALUE: any value. 
 -POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
 	<TEXTFIELD>
-		<NAME>0</NAME>
-		<POS>upcenter</POS>
+		<ID>0</ID>
+		<BUTTONTEXT>POST</BUTTONTEXT>
+		<POS>downcenter</POS>
 	</TEXTFIELD>
 	<BUTTON>
 		<ICON>standard_buttons/top_right.png</ICON>
-		<NAME>1</NAME>
+		<ID>1</ID>
 		<POS>upright</POS>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/middle_right.png</ICON> 
-		<NAME>2</NAME>
+		<ID>2</ID>
 		<POS>centerright</POS>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/bottom_right.png</ICON>
-		<NAME>3</NAME>
+		<ID>3</ID>
 		<POS>downright</POS>
 	</BUTTON>
 	<BUTTON>
-		<ICON>standard_buttons/bottom_center.png</ICON>
-		<NAME>4</NAME>
-		<POS>downcenter</POS>
+		<ICON>standard_buttons/top_center.png</ICON>
+		<ID>4</ID>
+		<POS>upcenter</POS>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/bottom_left.png</ICON>
-		<NAME>5</NAME>
+		<ID>5</ID>
 		<POS>downleft</POS>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/middle_left.png</ICON>
-		<NAME>6</NAME>
+		<ID>6</ID>
 		<POS>centerleft</POS>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/top_left.png</ICON>
-		<NAME>7</NAME>
+		<ID>7</ID>
 		<POS>upleft</POS>
 	</BUTTON>
 	<DISPLAY>
 		<ICON>standard_buttons/center_panel.png</ICON>
-		<NAME>0</NAME>
+		<ID>0</ID>
 		<POS>centercenter</POS>
 	</DISPLAY>
 </CATALOG>
