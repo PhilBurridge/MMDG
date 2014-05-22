@@ -56,23 +56,17 @@ void DrawableSquare::draw(/*mat4::MVP,*/ float x, float y, float z) const {
 
 void DrawableSquare::drawSpherical(float r, float theta, float phi) const{
 
-    float theta_player = 2*glm::atan(height, 2*r);
-    float phi_player = 2*glm::atan(width, 2*r);
-
     float x = r*glm::sin(phi)*glm::cos(theta);
     float y = r*glm::sin(phi)*glm::sin(theta);
     float z = r*glm::cos(phi);
 
-    std::cout << "r    =" << r << std::endl;
+    /*std::cout << "r    =" << r << std::endl;
     std::cout << "phi  =" << phi << std::endl;
     std::cout << "theta=" << theta << std::endl;
     std::cout << "x=" << x << std::endl;
     std::cout << "y=" << y << std::endl;
     std::cout << "z=" << z << std::endl;
-    std::cout << "----" << std::endl;
-
-
-    //std::cout << "theta_player = " << theta_player << std::endl;
+    std::cout << "----" << std::endl;*/
 
 
     glActiveTexture(GL_TEXTURE0);

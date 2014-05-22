@@ -94,32 +94,32 @@ unsigned int Scene::getNumberOfPlayers() {
 }
 
 void Scene::draw() {
-    
-    //glRotatef(0, 0.0f, 1.0f, 0.0f);
 
-    //Draw Background image
-    //background->draw(0.0f, 0.0f, -0.01f);
-    //glDisable(GL_CULL_FACE);
-    glPushMatrix();
-        //glTranslatef(0.0f, 0.0f, 4.0f);
-        float s = 1.5f;
-        glScalef(s,s,s);
-        bg_sphere->draw();
-    glPopMatrix();
-    //glEnable(GL_CULL_FACE);
+    bool drawSpherical = true;
+    glDisable(GL_DEPTH_TEST);
 
-    glPushMatrix();
-    glTranslatef(0.0f, 0.0f, 0.0f);
+    if(drawSpherical){ 
+        // Draw Dome mode
+        glPushMatrix();
+            float s = 1.5f;
+            glScalef(s,s,s);
+            bg_sphere->draw();
+        glPopMatrix();
 
-    for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
-        std::pair<int, Player *> pair = *it;
-        
-        // Disable depth test for the alpha blending to draw correct when players collide
-        //glDisable(GL_DEPTH_TEST);
-        pair.second->drawSpherical();
+        for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+            std::pair<int, Player *> pair = *it;
+            pair.second->drawSpherical();
+        }
     }
+    else{ 
+        //Draw normal desktop mode
+        background->draw(0.0f, 0.0f, -0.01f);
 
-    glPopMatrix();
+        for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+            std::pair<int, Player *> pair = *it;
+            pair.second->draw();
+        }
+    }
 }
 
 
