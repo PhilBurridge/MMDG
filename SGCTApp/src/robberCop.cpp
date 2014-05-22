@@ -129,5 +129,4 @@ void RobberCop::draw() const {
     scene->draw();
 }
 
-
 // id=0 var=btn1 val=pressed;

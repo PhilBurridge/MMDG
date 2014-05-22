@@ -20,8 +20,15 @@ function buttonDown(btnId) {
     ws.send("var=btn" + btnId + config.arg_delimiter + "val=1");
 };
 
+function buttonClick(id){
+
+    var msg = document.getElementById(id).value;
+	console.log("id: %s, message: %s", id,msg);
+	ws.send("var="+id+ config.arg_delimiter + "val=" + msg);
+}
+
 function buttonUp(btnId){
-	//document.getElementById('display').innerHTML += '<br>released! ';
+	//document.getElementById('display').innerHTML += '<br>released! '
 	postOnDisplay("released!");
 	ws.send("var=btn" + btnId + config.arg_delimiter + "val=0");
 };

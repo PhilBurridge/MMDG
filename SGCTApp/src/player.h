@@ -5,7 +5,7 @@
 //#include <vector>
 //#include <iostream>
 //#include <glm/glm.hpp>
-
+#include <ctime>
 #include "sgct.h"
 #include "scene.h"
 #include "drawableObject.h"
@@ -37,6 +37,9 @@ public:
 
     void draw() const;
     
+    bool copTimer();
+
+    void resetCopTimer();
     
     enum DirectionEnum{
         STOP = 0,
@@ -59,6 +62,10 @@ private:
     int directionIndex;
     glm::vec2 position;
     glm::vec2 direction;
+
+    clock_t startCopTimer;
+    clock_t endCopTimer;
+    static const double COP_TIMER_LIMIT;
 
     static const float COP_SPEED;
     static const float ROB_SPEED;

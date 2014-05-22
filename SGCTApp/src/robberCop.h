@@ -24,7 +24,7 @@ public:
     void update(float dt);
     void draw() const;
     void init();
-
+    
     Scene *scene;
 };
 

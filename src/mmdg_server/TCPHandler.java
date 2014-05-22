@@ -1,3 +1,4 @@
+package mmdg_server;
 import java.io.*;
 import java.net.*;
 import java.util.ArrayList;
@@ -64,7 +65,6 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
      */
     public ArrayList<String> getMessageStack() {
         return messagesFromApp;
-
     }
     
     /**
@@ -233,6 +233,7 @@ public class TCPHandler extends ConsolePrinter implements Runnable{
 
         if (newStatus == true) {
             print("Connection established!");
+            messagesFromApp.add("id=server" + MMDGServer.ARG_DELIMITER + "appConnected");
         } else {
             print("No connection to application");
             print("New attempts to connect will be made every "

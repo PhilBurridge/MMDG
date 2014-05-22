@@ -21,11 +21,11 @@ class Scene {
 public:
     Scene();
     void update(float dt);
-    void updatePositions(float dt);
     void checkCollisions();
     void addPlayer(int id, Player *);
     bool removePlayer(int id);
     Player * getPlayer(int id);
+    unsigned int getNumberOfPlayers();
 
     void draw();
     
@@ -34,9 +34,7 @@ private:
 
     int width;
     int height;
-    //size_t backgroundhandle;
 
-    std::vector<Player *> player_vec;
     std::map<int, Player *> players;
 };
 
