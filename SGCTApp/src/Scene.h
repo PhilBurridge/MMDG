@@ -22,6 +22,7 @@ public:
     Scene();
     void update(float dt);
     void checkCollisions();
+    void handleScore();
     void addPlayer(int id, Player *);
     bool removePlayer(int id);
     Player * getPlayer(int id);

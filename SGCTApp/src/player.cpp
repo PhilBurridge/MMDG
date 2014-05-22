@@ -88,10 +88,10 @@ void Player::draw() const {
 // Returns false if the maximum cop time is exceded
 bool Player::copTimer() {
     endCopTimer = clock();
-    if((endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC) >= COP_TIMER_LIMIT) {
+    std::cout << "TIMER: " << (endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC * 2) << std::endl;
+    if((endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC * 4) >= COP_TIMER_LIMIT) {
         return false;
     }
-
     return true;
 }
 
@@ -105,8 +105,13 @@ int Player::getPoints(){
 
 //Gets the time difference and updates the points
 void Player::addPoints() {
-    points++;
+    if(!isCop())
+        points++;
+    else 
+        points += 5;
+    std::cout << "score: " << points << std::endl;
 }
+
 //Checks if the robber should get a point
 bool Player::robberTimer() {
     robberPointTimer = clock();
@@ -116,6 +121,7 @@ bool Player::robberTimer() {
     }
     return true;
 }
+
 //Resets the time for robber
 void Player::resetRobberTimer() {
     startRobberTimer = clock();

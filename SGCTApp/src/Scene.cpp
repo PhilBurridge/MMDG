@@ -15,18 +15,9 @@ void Scene::update(float dt) {
 
         // Updates the positions of all players with a specific step
         p->movePlayer(dt);
-
-        // Make cops to robber if they have caught any robbers in a while
-        if(p->isCop() && !p->copTimer()){
-            p->switchToRobber();
-        }
-        //Adding one point to robber if not being caught in a while
-        if(!p->isCop() && !p->robberTimer()){
-            p->addPoints();
-            p->resetRobberTimer();
-        }
     }
     checkCollisions();
+    handleScore();
 }
 
 
@@ -58,7 +49,7 @@ void Scene::checkCollisions() {
                 // Do somthing when collision happens. KILL THA ROBBBA
                 p1->resetCopTimer();
                 p2->switchToCop();
-
+                p1->addPoints();
                 std::cout << "****************************************" << std::endl;
                 std::cout << "collision between player " << (*itRob).first << " and " << (*itCop).first << std::endl;
                 std::cout << "****************************************" << std::endl;
@@ -66,6 +57,25 @@ void Scene::checkCollisions() {
         }
     }
 
+}
+
+void Scene::handleScore() {
+
+    Player * p;
+    for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+        std::pair<int, Player *> pair = *it;
+        p = pair.second;
+
+        //Adding one point to robber if not being caught in a while
+        if(!p->isCop() && !p->robberTimer()){
+            p->addPoints();
+            p->resetRobberTimer();
+        }
+        // Make cops to robbers if they have caught any robbers in a while
+        if(p->isCop() && !p->copTimer()){
+            p->switchToRobber();
+        }
+    }
 }
 
         
