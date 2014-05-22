@@ -4,6 +4,7 @@
 // Scene constructor
 Scene::Scene(){
     background = new DrawableSquare("mmdg", 4.0f, 3.0f);
+    bg_sphere = new ModelMesh("sphere", "mmdg");
 }
 
 // Updates all the required stuff for players before drawing
@@ -92,12 +93,22 @@ unsigned int Scene::getNumberOfPlayers() {
 }
 
 void Scene::draw() {
-    glPushMatrix();
-    glTranslatef(0.0f, 0.0f, -3.0f);
+    
     //glRotatef(0, 0.0f, 1.0f, 0.0f);
 
     //Draw Background image
-    background->draw(0.0f, 0.0f, -0.01f);
+    //background->draw(0.0f, 0.0f, -0.01f);
+    glDisable(GL_CULL_FACE);
+    glPushMatrix();
+        //glTranslatef(0.0f, 0.0f, 4.0f);
+        float s = 1.0f;
+        glScalef(s,s,s);
+        bg_sphere->draw();
+    glPopMatrix();
+    glEnable(GL_CULL_FACE);
+
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -3.0f);
 
     for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
         std::pair<int, Player *> pair = *it;

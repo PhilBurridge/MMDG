@@ -13,6 +13,7 @@
 #include "robberCop.h"
 #include "player.h"
 #include "DrawableSquare.h"
+#include "ModelMesh.h"
 
 class Player;
 class Scene {
@@ -31,6 +32,7 @@ public:
     
 private:
     DrawableSquare *background;
+    ModelMesh *bg_sphere;
 
     int width;
     int height;
