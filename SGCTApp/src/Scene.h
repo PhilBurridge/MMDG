@@ -12,7 +12,7 @@
 #include "sgct.h"
 #include "robberCop.h"
 #include "player.h"
-#include "drawableObject.h"
+#include "DrawableSquare.h"
 
 class Player;
 class Scene {
@@ -30,7 +30,7 @@ public:
     void draw();
     
 private:
-    DrawableObject *background;
+    DrawableSquare *background;
 
     int width;
     int height;

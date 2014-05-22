@@ -3,7 +3,7 @@
 
 // Scene constructor
 Scene::Scene(){
-    background = new DrawableObject("mmdg", 4.0f, 3.0f);
+    background = new DrawableSquare("mmdg", 4.0f, 3.0f);
 }
 
 // Updates all the required stuff for players before drawing

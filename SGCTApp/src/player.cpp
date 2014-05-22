@@ -19,7 +19,7 @@ const double Player::COP_TIMER_LIMIT = 1.0;
 
 // Player constructor
 Player::Player(glm::vec2 pos, bool isCop):
-DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0){
+DrawableSquare("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0){
     std::cout << "Player constructor" << std::endl;
     speed = isCop ? COP_SPEED : ROB_SPEED;
     display();
@@ -71,7 +71,7 @@ void Player::setPosition(glm::vec2 p) {
 }
 
 void Player::display() const{
-    DrawableObject::display();
+    DrawableSquare::display();
     std::cout << "pos: x=" << position.x << " y=" << position.y << std::endl;
     std::cout << "direction: x=" << direction.x << " y=" << direction.y << std::endl;
     std::cout << "isCop = " << cop << std::endl;
@@ -80,7 +80,7 @@ void Player::display() const{
 
 void Player::draw() const {
 
-    DrawableObject::draw(position.x, position.y);
+    DrawableSquare::draw(position.x, position.y);
 }
 
 // Returns false if the maximum cop time is exceded

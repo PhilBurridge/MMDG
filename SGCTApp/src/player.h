@@ -8,11 +8,11 @@
 #include <ctime>
 #include "sgct.h"
 #include "scene.h"
-#include "drawableObject.h"
+#include "DrawableSquare.h"
 #include "debug.h"
 
 
-class Player: public DrawableObject {
+class Player: public DrawableSquare {
 
 public:
     Player();

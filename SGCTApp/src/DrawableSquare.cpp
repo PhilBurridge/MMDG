@@ -1,20 +1,20 @@
-#include "drawableObject.h"
+#include "DrawableSquare.h"
 
-DrawableObject::DrawableObject(const std::string& t, float w, float h):
+DrawableSquare::DrawableSquare(const std::string& t, float w, float h):
 textureName(t), width(w), height(h) {
-    std::cout << "DrawableObject constructor" << std::endl;
+    std::cout << "DrawableSquare constructor" << std::endl;
     size = fmax(w,h);
 }
 
-DrawableObject::DrawableObject(const std::string& t, float s):
+DrawableSquare::DrawableSquare(const std::string& t, float s):
 textureName(t), size(s) {
-    std::cout << "DrawableObject constructor" << std::endl;
+    std::cout << "DrawableSquare constructor" << std::endl;
     width = s;
     height = s;
 }
 
 // Draws a player with a set position and MVP matrix
-void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
+void DrawableSquare::draw(/*mat4::MVP,*/ float x, float y, float z) const {
     // Set the active texture unit
     glActiveTexture(GL_TEXTURE0);
 
@@ -58,7 +58,7 @@ void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
 
 }
 
-void DrawableObject::drawSphereical(float r, float theta, float phi) const{
+void DrawableSquare::drawSphereical(float r, float theta, float phi) const{
     float theta_player = 2*glm::atan(height, 2*r);
     float phi_player = 2*glm::atan(width, 2*r);
 
@@ -66,16 +66,16 @@ void DrawableObject::drawSphereical(float r, float theta, float phi) const{
 }
 
 // Sets the size of a player
-void DrawableObject::setSize(float s) {
+void DrawableSquare::setSize(float s) {
     size = s;
 }
 
 // Gets the size of a player
-float DrawableObject::getSize() const {
+float DrawableSquare::getSize() const {
     return size;
 }
 
-void DrawableObject::display() const{
+void DrawableSquare::display() const{
     std::cout << "size = " << size << std::endl;
     std::cout << "width = " << width << std::endl;
     std::cout << "height = " << height << std::endl;
