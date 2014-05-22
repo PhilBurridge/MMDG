@@ -21,10 +21,8 @@ void DrawableSquare::draw(/*mat4::MVP,*/ float x, float y, float z) const {
     // Bind the texture by its set handle
     glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByName(textureName));
 
-    float s = getSize()/2;
     glPushMatrix();
-    //glRotatef(drawCalls++/3, 0.0f, 1.0f, 0.0f);
-
+    glTranslatef(x,y,z);
 
     // Draw the player polygon
     glBegin(GL_QUADS);
@@ -39,30 +37,79 @@ void DrawableSquare::draw(/*mat4::MVP,*/ float x, float y, float z) const {
 
         // Define polygon vertices in counter clock wise order
         glTexCoord2d(1, 0);
-        glVertex3f(x+width, y-height, z);
+        glVertex3f(+width, -height, 0);
 
         glTexCoord2d(1, 1);
-        glVertex3f(x+width, y+height, z);
+        glVertex3f(+width, +height, 0);
 
         glTexCoord2d(0, 1);
-        glVertex3f(x-width, y+height, z);
+        glVertex3f(-width, +height, 0);
 
         glTexCoord2d(0, 0);
-        glVertex3f(x-width, y-height, z);
+        glVertex3f(-width, -height, 0);
 
     glEnd();
 
     glPopMatrix();
 
-    //drawSphereical(z,x,y);
+    drawSphereical(1,x,y);
 
 }
 
 void DrawableSquare::drawSphereical(float r, float theta, float phi) const{
+
     float theta_player = 2*glm::atan(height, 2*r);
     float phi_player = 2*glm::atan(width, 2*r);
 
-    std::cout << "theta_player = " << theta_player << std::endl;
+    float x = r*glm::sin(phi)*glm::cos(theta);
+    float y = r*glm::sin(phi)*glm::sin(theta);
+    float z = r*glm::cos(phi);
+
+    std::cout << "r    =" << r << std::endl;
+    std::cout << "phi  =" << phi << std::endl;
+    std::cout << "theta=" << theta << std::endl;
+    std::cout << "x=" << x << std::endl;
+    std::cout << "y=" << y << std::endl;
+    std::cout << "z=" << z << std::endl;
+    std::cout << "----" << std::endl;
+
+
+    //std::cout << "theta_player = " << theta_player << std::endl;
+
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByName(textureName));
+
+    glPushMatrix();
+    glTranslatef(x,y,z);
+
+    // Draw the player polygon
+    glBegin(GL_QUADS);
+        // Set the normal of the polygon
+        glNormal3f(0.0, 0.0, 1.0);
+
+        // Set starting position of the texture mapping
+        // The polygon is drawn from the world coordinates perspective 
+        // (we set the origin in the center of the polygon)
+        // while the texture is drawn from the polygons coordinates 
+        // (we draw from the bottom-left corner of the polygon)
+
+        // Define polygon vertices in counter clock wise order
+        glTexCoord2d(1, 0);
+        glVertex3f(+width, -height, 0);
+
+        glTexCoord2d(1, 1);
+        glVertex3f(+width, +height, 0);
+
+        glTexCoord2d(0, 1);
+        glVertex3f(-width, +height, 0);
+
+        glTexCoord2d(0, 0);
+        glVertex3f(-width, -height, 0);
+
+    glEnd();
+
+    glPopMatrix();
 }
 
 // Sets the size of a player

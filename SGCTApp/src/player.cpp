@@ -79,7 +79,6 @@ void Player::display() const{
 }
 
 void Player::draw() const {
-
     DrawableSquare::draw(position.x, position.y);
 }
 
