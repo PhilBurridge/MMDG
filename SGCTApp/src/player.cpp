@@ -105,7 +105,7 @@ void Player::drawName() {
 
     // Scale the font down if name is longer than 10 chars
     if(name.size() > 10)
-        font_size = font_size * 10 / name.size();
+        font_size = (font_size * 100 * getSize()) / name.size();
 
     // Set the color from the current player object
     glm::vec4 font_color(color.x, color.y, color.z, 1.0f);
@@ -114,7 +114,7 @@ void Player::drawName() {
     // (font type, x-pos in pixels, y-pos in pixels, glm::vec4 color, std::string text)
     sgct_text::print(sgct_text::FontManager::instance()->getFont
         ("SGCTFont", font_size ), 
-        (x_res / 2) + (position.x * (y_res / 1.91f)) - (name.size() * font_size / 2.3), 
+        (x_res / 2) + (position.x * (x_res / 3.556f)) - (name.size() * font_size / 2.3), 
         (y_res / 2) + (position.y * (y_res / 2.0f)) - (getSize() * 0.5f * (y_res/2)), 
         font_color,
         name.c_str());
