@@ -118,6 +118,8 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
 void keyCallBack(int key, int action){
     if(gEngine->isMaster() && action == GLFW_PRESS) {
         switch(key) {
+            case 'S':
+                robberCop->toggleDrawSpherical();
             case 'T':
                 robberCop->printPingStats();
             break;

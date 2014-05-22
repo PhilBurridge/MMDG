@@ -93,10 +93,9 @@ unsigned int Scene::getNumberOfPlayers() {
     return players.size();
 }
 
-void Scene::draw() {
+void Scene::draw(bool drawSpherical) {
 
-    bool drawSpherical = true;
-    glDisable(GL_DEPTH_TEST);
+    
 
     if(drawSpherical){ 
         // Draw Dome mode
