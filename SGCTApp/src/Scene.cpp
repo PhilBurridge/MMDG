@@ -5,6 +5,7 @@
 Scene::Scene(){
     background = new DrawableSquare("mmdg", 4.0f, 3.0f);
     bg_sphere = new ModelMesh("sphere", "mmdg");
+
 }
 
 // Updates all the required stuff for players before drawing
@@ -98,24 +99,24 @@ void Scene::draw() {
 
     //Draw Background image
     //background->draw(0.0f, 0.0f, -0.01f);
-    glDisable(GL_CULL_FACE);
+    //glDisable(GL_CULL_FACE);
     glPushMatrix();
         //glTranslatef(0.0f, 0.0f, 4.0f);
-        float s = 1.0f;
+        float s = 1.5f;
         glScalef(s,s,s);
         bg_sphere->draw();
     glPopMatrix();
-    glEnable(GL_CULL_FACE);
+    //glEnable(GL_CULL_FACE);
 
     glPushMatrix();
-    glTranslatef(0.0f, 0.0f, -3.0f);
+    glTranslatef(0.0f, 0.0f, 0.0f);
 
     for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
         std::pair<int, Player *> pair = *it;
         
         // Disable depth test for the alpha blending to draw correct when players collide
-        glDisable(GL_DEPTH_TEST);
-        pair.second->draw();
+        //glDisable(GL_DEPTH_TEST);
+        pair.second->drawSpherical();
     }
 
     glPopMatrix();

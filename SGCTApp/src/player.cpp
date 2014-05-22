@@ -16,6 +16,7 @@ const glm::vec2 Player::DIRECTIONS[] = {
 const float Player::COP_SPEED = 0.1f;
 const float Player::ROB_SPEED = 0.2f;
 const double Player::COP_TIMER_LIMIT = 1.0;
+const float Player::RADIOUS = 1.0f;
 
 // Player constructor
 Player::Player(glm::vec2 pos, bool isCop):
@@ -80,6 +81,10 @@ void Player::display() const{
 
 void Player::draw() const {
     DrawableSquare::draw(position.x, position.y);
+}
+
+void Player::drawSpherical() const{
+    DrawableSquare::drawSpherical(-1, position.y, -position.x);
 }
 
 // Returns false if the maximum cop time is exceded

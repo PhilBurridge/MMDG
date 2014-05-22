@@ -52,11 +52,9 @@ void DrawableSquare::draw(/*mat4::MVP,*/ float x, float y, float z) const {
 
     glPopMatrix();
 
-    drawSphereical(1,x,y);
-
 }
 
-void DrawableSquare::drawSphereical(float r, float theta, float phi) const{
+void DrawableSquare::drawSpherical(float r, float theta, float phi) const{
 
     float theta_player = 2*glm::atan(height, 2*r);
     float phi_player = 2*glm::atan(width, 2*r);
@@ -81,34 +79,34 @@ void DrawableSquare::drawSphereical(float r, float theta, float phi) const{
     glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByName(textureName));
 
     glPushMatrix();
-    glTranslatef(x,y,z);
+        glRotatef(180.0f*phi/3.1415f, 0,1,0);
+        glRotatef(180.0f*theta/3.1415f, 1,0,0);
+        glTranslatef(0,0,r);
+        
+        // Draw the player polygon
+        glBegin(GL_QUADS);
+            // Set the normal of the polygon
+            glNormal3f(0.0, 0.0, 1.0);
 
-    // Draw the player polygon
-    glBegin(GL_QUADS);
-        // Set the normal of the polygon
-        glNormal3f(0.0, 0.0, 1.0);
+            // Set starting position of the texture mapping
+            // The polygon is drawn from the world coordinates perspective 
+            // (we set the origin in the center of the polygon)
+            // while the texture is drawn from the polygons coordinates 
+            // (we draw from the bottom-left corner of the polygon)
 
-        // Set starting position of the texture mapping
-        // The polygon is drawn from the world coordinates perspective 
-        // (we set the origin in the center of the polygon)
-        // while the texture is drawn from the polygons coordinates 
-        // (we draw from the bottom-left corner of the polygon)
+            // Define polygon vertices in counter clock wise order
+            glTexCoord2d(1, 0);
+            glVertex3f(+width, -height, 0);
 
-        // Define polygon vertices in counter clock wise order
-        glTexCoord2d(1, 0);
-        glVertex3f(+width, -height, 0);
+            glTexCoord2d(1, 1);
+            glVertex3f(+width, +height, 0);
 
-        glTexCoord2d(1, 1);
-        glVertex3f(+width, +height, 0);
+            glTexCoord2d(0, 1);
+            glVertex3f(-width, +height, 0);
 
-        glTexCoord2d(0, 1);
-        glVertex3f(-width, +height, 0);
-
-        glTexCoord2d(0, 0);
-        glVertex3f(-width, -height, 0);
-
-    glEnd();
-
+            glTexCoord2d(0, 0);
+            glVertex3f(-width, -height, 0);
+        glEnd();
     glPopMatrix();
 }
 
