@@ -3,7 +3,7 @@
 
 // Scene constructor
 Scene::Scene(){
-    background = new DrawableObject("mmdg", 2.0f, 1.0f);
+    background = new DrawableObject("mmdg", 4.0f, 3.0f);
 }
 
 // Updates all the required stuff for players before drawing
@@ -92,6 +92,10 @@ unsigned int Scene::getNumberOfPlayers() {
 }
 
 void Scene::draw() {
+    glPushMatrix();
+    glTranslatef(0.0f, 0.0f, -3.0f);
+    //glRotatef(0, 0.0f, 1.0f, 0.0f);
+
     //Draw Background image
     background->draw(0.0f, 0.0f, -0.01f);
 
@@ -102,6 +106,8 @@ void Scene::draw() {
         glDisable(GL_DEPTH_TEST);
         pair.second->draw();
     }
+
+    glPopMatrix();
 }
 
 

@@ -13,7 +13,6 @@ textureName(t), size(s) {
     height = s;
 }
 
-
 // Draws a player with a set position and MVP matrix
 void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
     // Set the active texture unit
@@ -23,6 +22,9 @@ void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
     glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByName(textureName));
 
     float s = getSize()/2;
+    glPushMatrix();
+    //glRotatef(drawCalls++/3, 0.0f, 1.0f, 0.0f);
+
 
     // Draw the player polygon
     glBegin(GL_QUADS);
@@ -50,10 +52,17 @@ void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
 
     glEnd();
 
+    glPopMatrix();
+
+    //drawSphereical(z,x,y);
+
 }
 
 void DrawableObject::drawSphereical(float r, float theta, float phi) const{
-    //TO IMPLEMENT
+    float theta_player = 2*glm::atan(height, 2*r);
+    float phi_player = 2*glm::atan(width, 2*r);
+
+    std::cout << "theta_player = " << theta_player << std::endl;
 }
 
 // Sets the size of a player
