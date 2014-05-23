@@ -16,13 +16,19 @@
 #include "ModelMesh.h"
 
 class Player;
+
 class Scene {
-
-
 public:
+    // Constructor
     Scene();
+
+    // Updates the Scene
     void update(float dt);
+
+    // Checks if a collision occurs
     void checkCollisions();
+
+    // Handels Players
     void addPlayer(int id, Player *);
     bool removePlayer(int id);
     Player * getPlayer(int id);
@@ -37,6 +43,7 @@ private:
     int width;
     int height;
 
+    // Players in the Scene
     std::map<int, Player *> players;
 };
 

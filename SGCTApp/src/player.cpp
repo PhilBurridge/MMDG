@@ -13,7 +13,6 @@ const glm::vec2 Player::DIRECTIONS[] = {
     glm::vec2(-0.707106f, 0.707106f)
 };
 
-
 const float Player::COP_SPEED = 0.4f;
 const float Player::ROB_SPEED = 0.8f;
 const double Player::COP_TIMER_LIMIT = 3.0;
@@ -30,6 +29,7 @@ DrawableSquare("rob", 0.15f, 0.15f), position(pos), cop(isCop), directionIndex(0
     display();
 }
 
+// Switch from Robber to Cop
 void Player::switchToCop() {
     cop = true;
     speed = COP_SPEED;
@@ -37,6 +37,7 @@ void Player::switchToCop() {
     resetCopTimer();
 }
 
+// Switch from Cop to Robber
 void Player::switchToRobber() {
     cop = false;
     speed = ROB_SPEED;
@@ -44,13 +45,16 @@ void Player::switchToRobber() {
     startCopTimer = 0;
 }
 
+// Check if Player is a cop
 bool Player::isCop() {
     return cop;
 }
 
-void Player::setMoveDirection(int d) {
+// Set the direction of Player
+void Player::setMoveDirection(int d){
     assert(0 <= d && d < 9);
     directionIndex = d;
+    // Sets the direction with values form the Directions vector
     direction = DIRECTIONS[d];
 }
 
@@ -58,11 +62,13 @@ int Player::getMoveDirection() const {
     return directionIndex;
 }
 
-void Player::stop() {
+// Stops a player
+void Player::stop(){
+    // Sets the player direction, to 0, to stop the player
     direction = glm::vec2(0.0f, 0.0f);
 }
 
-
+// Multiplies the player direction with its speed
 void Player::movePlayer(float dt) {
     position += dt*speed*direction;
 }
@@ -71,10 +77,10 @@ glm::vec2 Player::getPosition() const {
     return position;
 }
 
+// Set the players position to a specific position
 void Player::setPosition(glm::vec2 p) {
     position = p;
 }
-
 
 void Player::setName(std::string n) {
     name = n;
@@ -86,12 +92,14 @@ std::string Player::getName() const {
 
 void Player::display() const {
     DrawableSquare::display();
+    
     std::cout << "pos: x=" << position.x << " y=" << position.y << std::endl;
     std::cout << "direction: x=" << direction.x << " y=" << direction.y << std::endl;
     std::cout << "isCop = " << cop << std::endl;
     std::cout << "speed = " << speed << std::endl;
 }
 
+// Draw a Player
 void Player::draw() const {
     DrawableSquare::draw(position.x, position.y);
 }
@@ -136,6 +144,7 @@ bool Player::copTimer() {
     return true;
 }
 
+// Sets the cop timer to current time
 void Player::resetCopTimer() {
     startCopTimer = clock();
 }
