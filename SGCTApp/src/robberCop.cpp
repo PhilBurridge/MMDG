@@ -67,7 +67,7 @@ void RobberCop::process(int id, std::string var, std::string val) {
         float rand_x = ((1.57 - (-1.57)) * ((float) rand() / RAND_MAX)) + (-1.57);
         float rand_y = ((0.78 - (-0.78)) * ((float) rand() / RAND_MAX)) + (-0.78);
 
-        Player *p = new Player(glm::vec2(rand_x, rand_y), isCop);
+        Player *p = new Player(glm::vec2(rand_x, rand_y), isCop, gEngine);
 
         scene->addPlayer(id, p);
         return;

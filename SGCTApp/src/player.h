@@ -17,7 +17,8 @@ class Player: public DrawableObject {
 public:
     Player();
     Player(glm::vec2 pos, 
-        bool state);
+        bool state, 
+        sgct::Engine * e);
 
 	void switchToCop();
     void switchToRobber();
@@ -62,6 +63,7 @@ public:
 
 
 private:
+    sgct::Engine * gEngine;
 
     int points;
     float speed;

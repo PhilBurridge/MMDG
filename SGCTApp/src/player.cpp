@@ -19,8 +19,8 @@ const double Player::COP_TIMER_LIMIT = 1.0;
 const double Player::ROBBER_TIMER_LIMIT = 0.5;
 
 // Player constructor
-Player::Player(glm::vec2 pos, bool isCop):
-DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0), points(0){
+Player::Player(glm::vec2 pos, bool isCop, sgct::Engine * e):
+DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0), gEngine(e), points(0){
     std::cout << "Player constructor" << std::endl;
     speed = isCop ? COP_SPEED : ROB_SPEED;
     //points = 0;
