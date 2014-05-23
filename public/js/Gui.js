@@ -11,6 +11,7 @@ function Gui()
 	this.buttons = new Array();
 	this.displays = new Array();
 	this.textfields = new Array();
+	this.submitname = new Array();
 
 	/** 
 	* An array with the empty fields in the 3x3 grid of divs.
@@ -54,17 +55,13 @@ Gui.prototype = {
             var d = xmlDoc.getElementsByTagName("DISPLAY"); //Display
 			var s = xmlDoc.getElementsByTagName("SUBMITNAME"); //Submit name popup window
             var t = xmlDoc.getElementsByTagName("TEXTFIELD"); //Textfields
-
-			var show = s[0].getElementsByTagName("SHOW")[0].childNodes[0].nodeValue;
-			if(show == yes){
-				var description = d[0].getElementsByTagName("DESCRIPTION")[0].childNodes[0].nodeValue;
-				
-				this.submitname.push(new submitname(description));
-
+			
+			if(s.length!=0){
+				var description = s[0].getElementsByTagName("DESCRIPTION")[0].childNodes[0].nodeValue;
+				this.submitname.push(new Submitname(description));
 			}
 			
 	        for (var i=0;i<b.length;i++){
-
 	         	var pos = b[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
 	            var name = b[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
 	            var icon = b[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
@@ -73,7 +70,6 @@ Gui.prototype = {
 	        }
 
 	        for (var i=0;i<d.length;i++){
-
 	         	var pos = d[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
 	            var name = d[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
 	            var icon = d[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
@@ -82,7 +78,6 @@ Gui.prototype = {
 	         	this.remove(pos);
 	        }
 	        for (var i=0;i<t.length;i++){
-
 	         	var pos = t[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
 	            var id = t[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
 	            var buttontext = t[i].getElementsByTagName("BUTTONTEXT")[0].childNodes[0].nodeValue;
@@ -166,7 +161,12 @@ Gui.prototype = {
 	* Might need to be refactored in the future.
 	*/
 	drawGui: function(){
-
+	
+		if(this.submitname.length != 0){
+			while(!this.submitname[0].printSubmitname()){}
+			//this.submitname[0].printSubmitname();
+		}
+		
 		this.drawElement("up");
 		this.drawElement("left");
 		this.drawElement("upleft");
@@ -182,7 +182,6 @@ Gui.prototype = {
 		this.drawElement("downcenter");
 		this.drawElement("downright");
 		this.drawElement("right");
-
 
 	},
 
@@ -220,3 +219,12 @@ Gui.prototype = {
 
 	}
 }
+
+/**
+* When the user has connected to the web page 
+* the name from Submitname should be sent to the application 
+*/
+window.onload=function(){
+	if(person!="")
+		sendMessage("var=name" + config.arg_delimiter + "val="  + person);
+};

@@ -7,7 +7,7 @@ package mmdg_server;
 public class ConsolePrinter{
 
     /** Decides if prints are allowed. This is public for easy access. */
-    protected boolean allowPrints = false;
+    protected boolean allowPrints = true;
 
     
     /**
