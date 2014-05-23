@@ -24,8 +24,12 @@ public:
     void update(float dt);
     void draw() const;
     void init();
+    void toggleDrawSpherical();
     
     Scene *scene;
+
+private:
+	bool drawSpherical;
 };
 
 #endif // ROBBERCOP_H

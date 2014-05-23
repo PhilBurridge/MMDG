@@ -8,11 +8,11 @@
 #include <ctime>
 #include "sgct.h"
 #include "scene.h"
-#include "drawableObject.h"
+#include "DrawableSquare.h"
 #include "debug.h"
 
 
-class Player: public DrawableObject {
+class Player: public DrawableSquare {
 
 public:
     Player();
@@ -36,6 +36,7 @@ public:
     void display() const;
 
     void draw() const;
+    void drawSpherical() const;
     
     bool copTimer();
 
@@ -65,10 +66,13 @@ private:
 
     clock_t startCopTimer;
     clock_t endCopTimer;
+
     static const double COP_TIMER_LIMIT;
 
     static const float COP_SPEED;
     static const float ROB_SPEED;
+
+    static const float RADIOUS;
     
     static const glm::vec2 DIRECTIONS[];
 };

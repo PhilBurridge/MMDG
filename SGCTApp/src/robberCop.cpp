@@ -1,7 +1,7 @@
 #include "robberCop.h"
 
 RobberCop::RobberCop(sgct::Engine * gEngine):
-Core(gEngine) {
+Core(gEngine), drawSpherical(false){
     scene = new Scene();
     std::cout << "constructing RobberCop" << std::endl;
 };
@@ -37,6 +37,7 @@ void RobberCop::init(){
     glCullFace(GL_BACK);
     // The polygon winding is counter clockwise (CCW)
     glFrontFace(GL_CCW);
+    glDisable(GL_DEPTH_TEST);
 }
 
 // Overiding method from core
@@ -121,12 +122,16 @@ void RobberCop::process(int id, std::string var, std::string val) {
     }
 }
 
+void RobberCop::toggleDrawSpherical(){
+    drawSpherical = !drawSpherical;
+}
+
 void RobberCop::update(float dt){
     scene->update(dt);
 }
 
 void RobberCop::draw() const {
-    scene->draw();
+    scene->draw(drawSpherical);
 }
 
 // id=0 var=btn1 val=pressed;

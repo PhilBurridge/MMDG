@@ -13,13 +13,14 @@ const glm::vec2 Player::DIRECTIONS[] = {
     glm::vec2(-0.707106f, 0.707106f)
 };
 
-const float Player::COP_SPEED = 0.1f;
-const float Player::ROB_SPEED = 0.2f;
-const double Player::COP_TIMER_LIMIT = 1.0;
+const float Player::COP_SPEED = 0.4f;
+const float Player::ROB_SPEED = 0.8f;
+const double Player::COP_TIMER_LIMIT = 3.0;
+const float Player::RADIOUS = 1.0f;
 
 // Player constructor
 Player::Player(glm::vec2 pos, bool isCop):
-DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0){
+DrawableSquare("rob", 0.1f, 0.1f), position(pos), cop(isCop), directionIndex(0){
     std::cout << "Player constructor" << std::endl;
     speed = isCop ? COP_SPEED : ROB_SPEED;
     display();
@@ -71,7 +72,7 @@ void Player::setPosition(glm::vec2 p) {
 }
 
 void Player::display() const{
-    DrawableObject::display();
+    DrawableSquare::display();
     std::cout << "pos: x=" << position.x << " y=" << position.y << std::endl;
     std::cout << "direction: x=" << direction.x << " y=" << direction.y << std::endl;
     std::cout << "isCop = " << cop << std::endl;
@@ -79,8 +80,11 @@ void Player::display() const{
 }
 
 void Player::draw() const {
+    DrawableSquare::draw(position.x, position.y);
+}
 
-    DrawableObject::draw(position.x, position.y);
+void Player::drawSpherical() const{
+    DrawableSquare::drawSpherical(-RADIOUS, position.y, -position.x);
 }
 
 // Returns false if the maximum cop time is exceded

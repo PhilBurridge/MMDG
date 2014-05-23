@@ -3,7 +3,9 @@
 
 // Scene constructor
 Scene::Scene(){
-    background = new DrawableObject("mmdg", 2.0f, 1.0f);
+    background = new DrawableSquare("mmdg", 4.0f, 3.0f);
+    bg_sphere = new ModelMesh("sphere", "mmdg");
+
 }
 
 // Updates all the required stuff for players before drawing
@@ -91,16 +93,31 @@ unsigned int Scene::getNumberOfPlayers() {
     return players.size();
 }
 
-void Scene::draw() {
-    //Draw Background image
-    background->draw(0.0f, 0.0f, -0.01f);
+void Scene::draw(bool drawSpherical) {
 
-    for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
-        std::pair<int, Player *> pair = *it;
-        
-        // Disable depth test for the alpha blending to draw correct when players collide
-        glDisable(GL_DEPTH_TEST);
-        pair.second->draw();
+    
+
+    if(drawSpherical){ 
+        // Draw Dome mode
+        glPushMatrix();
+            float s = 1.5f;
+            glScalef(s,s,s);
+            bg_sphere->draw();
+        glPopMatrix();
+
+        for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+            std::pair<int, Player *> pair = *it;
+            pair.second->drawSpherical();
+        }
+    }
+    else{ 
+        //Draw normal desktop mode
+        background->draw(0.0f, 0.0f, -0.01f);
+
+        for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+            std::pair<int, Player *> pair = *it;
+            pair.second->draw();
+        }
     }
 }
 
