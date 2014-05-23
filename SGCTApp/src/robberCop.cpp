@@ -120,8 +120,29 @@ void RobberCop::process(int id, std::string var, std::string val) {
     }
 }
 
+void RobberCop::sendScore() {
+    
+    std::stringstream ss;
+    //std::cout << std::endl <<  "SKICKA SCORE, INNAN I LOOP!" << std::endl << std::endl;
+    for(int i = 0; i < scene->getNumberOfPlayers(); i++) {
+        Player *p = scene->getPlayer(i);
+        //std::cout << "SKICKA SCORE, INNE I LOOP!" << std::endl;
+
+        if(p->getSendScore()) {
+            int score = p->getPoints();
+            ss << score;
+            std::string msg = "points=" + ss.str();
+            
+            Core::sendTo(msg, i);
+
+            p->setSendScore(false);
+        }
+    }
+}
+
 void RobberCop::update(float dt){
     scene->update(dt);
+    sendScore();
 }
 
 void RobberCop::draw() const {

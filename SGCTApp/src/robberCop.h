@@ -24,6 +24,7 @@ public:
     void update(float dt);
     void draw() const;
     void init();
+    void sendScore();
     
     Scene *scene;
 };

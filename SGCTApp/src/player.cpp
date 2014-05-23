@@ -20,9 +20,10 @@ const double Player::ROBBER_TIMER_LIMIT = 0.5;
 
 // Player constructor
 Player::Player(glm::vec2 pos, bool isCop, sgct::Engine * e):
-DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0), gEngine(e), points(0){
+DrawableObject("rob", 0.2f, 0.2f), position(pos), cop(isCop), directionIndex(0), points(0){
     std::cout << "Player constructor" << std::endl;
     speed = isCop ? COP_SPEED : ROB_SPEED;
+    gEngine = e;
     //points = 0;
     display();
 }
@@ -103,15 +104,17 @@ int Player::getPoints(){
     return points;
 }
 
-//Gets the time difference and updates the points
+// Gets the time difference and updates the points
 void Player::addPoints() {
     if(!isCop())
         points++;
     else 
         points += 5;
-    //std::cout << "score: " << points << std::endl;
+    std::cout << "score: " << points << std::endl;
+    sendScore = true;
 }
 
+// Removes points from a player
 void Player::removePoints() {
     if(isCop() && points >= 0)
         points--;
@@ -130,8 +133,18 @@ bool Player::robberTimer() {
     return true;
 }
 
-//Resets the time for robber
+// Resets the time for robber
 void Player::resetRobberTimer() {
     startRobberTimer = clock();
+}
+
+// Returns true if the score shall be sent to a client
+bool Player::getSendScore() {
+    return sendScore;
+}
+
+// Sets if a players score shall be sent to a client or not
+void Player::setSendScore(bool s) {
+    sendScore = s;
 }
 

@@ -47,6 +47,8 @@ public:
 
     void resetCopTimer();
     void resetRobberTimer();
+    bool getSendScore();
+    void setSendScore(bool);
     
     enum DirectionEnum{
         STOP = 0,
@@ -68,6 +70,7 @@ private:
     int points;
     float speed;
     bool cop;
+    bool sendScore = false;
     int directionIndex;
     glm::vec2 position;
     glm::vec2 direction;

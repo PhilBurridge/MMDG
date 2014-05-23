@@ -114,6 +114,7 @@ unsigned int Scene::getNumberOfPlayers() {
     return players.size();
 }
 
+
 void Scene::draw() {
     //Draw Background image
     background->draw(0.0f, 0.0f, -0.01f);
