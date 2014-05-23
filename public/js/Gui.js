@@ -10,6 +10,8 @@ function Gui()
 {
 	this.buttons = new Array();
 	this.displays = new Array();
+	this.textfields = new Array();
+	this.submitname = new Array();
 
 	/** 
 	* An array with the empty fields in the 3x3 grid of divs.
@@ -28,6 +30,7 @@ function Gui()
 			"downcenter",
 			"downright"
 			];
+	//gör en vector med alla player-namn som kollas genom för att se så att namnet är unikt!
 };
 
 // every function inside this prototype can be thought of like the class' methods.
@@ -48,27 +51,39 @@ Gui.prototype = {
             xmlDoc=xmlhttp.responseXML;
 
             var b = xmlDoc.getElementsByTagName("BUTTON"); //Buttons
-            var d = xmlDoc.getElementsByTagName("DISPLAY"); //Buttons
 
+            var d = xmlDoc.getElementsByTagName("DISPLAY"); //Display
+			var s = xmlDoc.getElementsByTagName("SUBMITNAME"); //Submit name popup window
+            var t = xmlDoc.getElementsByTagName("TEXTFIELD"); //Textfields
+			
+			if(s.length!=0){
+				var description = s[0].getElementsByTagName("DESCRIPTION")[0].childNodes[0].nodeValue;
+				this.submitname.push(new Submitname(description));
+			}
+			
 	        for (var i=0;i<b.length;i++){
-
 	         	var pos = b[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
-	            var name = b[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
+	            var name = b[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
 	            var icon = b[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
 	         	this.buttons.push(new Button(name,pos,icon));
 	         	this.remove(pos);
 	        }
 
 	        for (var i=0;i<d.length;i++){
-
 	         	var pos = d[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
-	            var name = d[i].getElementsByTagName("NAME")[0].childNodes[0].nodeValue;
+	            var name = d[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
 	            var icon = d[i].getElementsByTagName("ICON")[0].childNodes[0].nodeValue;
 
 	         	this.displays.push(new Display(name,pos,icon));
 	         	this.remove(pos);
 	        }
-
+	        for (var i=0;i<t.length;i++){
+	         	var pos = t[i].getElementsByTagName("POS")[0].childNodes[0].nodeValue; 
+	            var id = t[i].getElementsByTagName("ID")[0].childNodes[0].nodeValue;
+	            var buttontext = t[i].getElementsByTagName("BUTTONTEXT")[0].childNodes[0].nodeValue;
+	         	this.textfields.push(new Textfield(buttontext,id,pos));
+	         	this.remove(pos);
+	        }
 	},
 
 	/** 
@@ -146,7 +161,12 @@ Gui.prototype = {
 	* Might need to be refactored in the future.
 	*/
 	drawGui: function(){
-
+	
+		if(this.submitname.length != 0){
+			while(!this.submitname[0].printSubmitname()){}
+			//this.submitname[0].printSubmitname();
+		}
+		
 		this.drawElement("up");
 		this.drawElement("left");
 		this.drawElement("upleft");
@@ -163,7 +183,6 @@ Gui.prototype = {
 		this.drawElement("downright");
 		this.drawElement("right");
 
-
 	},
 
 	/** 
@@ -178,6 +197,10 @@ Gui.prototype = {
 		for(var i=0;i<this.displays.length;i++){
 			if(this.displays[i].pos == ori)
 				this.displays[i].printDisplay();			
+		}
+		for(var i=0;i<this.textfields.length;i++){
+			if(this.textfields[i].pos == ori)
+				this.textfields[i].printTextfield();			
 		}
 		for(var i=0;i<this.empty.length;i++){
 			if(this.empty[i] == ori)
@@ -196,3 +219,12 @@ Gui.prototype = {
 
 	}
 }
+
+/**
+* When the user has connected to the web page 
+* the name from Submitname should be sent to the application 
+*/
+window.onload=function(){
+	if(person!="")
+		sendMessage("var=name" + config.arg_delimiter + "val="  + person);
+};

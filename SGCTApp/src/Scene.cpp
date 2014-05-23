@@ -95,8 +95,6 @@ unsigned int Scene::getNumberOfPlayers() {
 
 void Scene::draw(bool drawSpherical) {
 
-    
-
     if(drawSpherical){ 
         // Draw Dome mode
         glPushMatrix();
@@ -117,8 +115,7 @@ void Scene::draw(bool drawSpherical) {
         for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
             std::pair<int, Player *> pair = *it;
             pair.second->draw();
+            pair.second->drawName();
         }
     }
 }
-
-

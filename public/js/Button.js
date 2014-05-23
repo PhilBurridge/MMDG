@@ -11,9 +11,8 @@ function Button(n,p,i)
 
 Button.prototype = {
 
-
     /** 
-    * This class' only method, will print the html for only button.
+    * This class' only method, will print the html for a button.
     */
 	printButton: function(){
 

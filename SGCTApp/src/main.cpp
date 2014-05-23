@@ -57,7 +57,8 @@ int main( int argc, char* argv[] ) {
 
     //test
     //robberCop->process(1,"connected","1");
-
+    //int x_res = gEngine->getActiveXResolution();
+    //std::cout << "X-RES: " << x_res << std::endl;
     // Main loop
     gEngine->render();
 
@@ -75,8 +76,6 @@ void init() {
     robberCop->init();
     std::cout << "  ** MAIN INIT DONE **  " << std::endl;
 }
-
-
 
 void draw() {
     robberCop->draw();
