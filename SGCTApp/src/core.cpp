@@ -12,7 +12,7 @@ gEngine(gEngine){
 const std::string Core::ARG_DELIMITER = " ";
 const std::string Core::CMD_DELIMITER = ";";
 
-
+// Handles the input and then pass it on to process
 void Core::handleExternalInput(const char * recievedChars, int size, int clientId){
     std::string externalInputString(recievedChars);
     std::vector<std::string> command_vec = extractCommands(externalInputString);
@@ -30,7 +30,7 @@ void Core::handleExternalInput(const char * recievedChars, int size, int clientI
     }
 }
 
-
+// Extracts commands delimited by CMD_DELIMITER from a string
 std::vector<std::string> Core::extractCommands(std::string externalInputString){
     std::cout << "external input string: " << externalInputString << std::endl;
 

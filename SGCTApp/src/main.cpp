@@ -70,6 +70,7 @@ int main( int argc, char* argv[] ) {
     exit(EXIT_SUCCESS);
 }
 
+// Initiation function
 void init() {
     std::cout << "  ** MAIN INIT **  " << std::endl;
     robberCop->init();
@@ -77,11 +78,12 @@ void init() {
 }
 
 
-
+// Draw function
 void draw() {
     robberCop->draw();
 }
 
+// Sets the time and timeintervall(dt)
 void preSync() {
     // Set the time only on the master
     if( gEngine->isMaster() ) {
@@ -107,6 +109,7 @@ void cleanUp() {
     // add stuff
 }
 
+// Receives messages from the TPC connection
 void externalControlCallback(const char * recievedChars, int size, int clientId) {
     // Only do something with the received message if the game is master
     if(gEngine->isMaster()) {
@@ -115,6 +118,7 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
     }
 }
 
+// Handles input from keyboard
 void keyCallBack(int key, int action){
     if(gEngine->isMaster() && action == GLFW_PRESS) {
         switch(key) {

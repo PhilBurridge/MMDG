@@ -49,10 +49,10 @@ void RobberCop::process(int id, std::string var, std::string val) {
 
     if(var == "connected"){
         std::cout << "adding new player" << std::endl;
-        //Player *p = new Player(glm::vec2(1.0f, 0.0f), false);
 
         bool isCop;
         // Maybe change the ratio between robbers and cops, now it's 50/50
+        // Sets a player to Cop or Robber with a chosen percent
         if((id % 2) == 0) {
             isCop = false;
             std::cout << "Player " << id << " is a robber" << std::endl;
@@ -64,36 +64,42 @@ void RobberCop::process(int id, std::string var, std::string val) {
         // Randomize spawn position, took this from stackoverflow.
         // Might not be the best rng ever.
         //srand (static_cast <unsigned> (time(0)));
+        // Randomize spawn position
         float rand_x = ((1.57 - (-1.57)) * ((float) rand() / RAND_MAX)) + (-1.57);
         float rand_y = ((0.78 - (-0.78)) * ((float) rand() / RAND_MAX)) + (-0.78);
 
+        // Create the player
         Player *p = new Player(glm::vec2(rand_x, rand_y), isCop);
 
+        // add the player to the scen
         scene->addPlayer(id, p);
         return;
     }
 
-    // If a player disconnects, remove that bitch
+    // If a Player disconnects remove that Player
     if(var == "disconnected"){
         std::cout << "Player disconnected" << std::endl;
         scene->removePlayer(id);
         return;
     }
 
+    // Get the Players Id
     Player * p = scene->getPlayer(id);
 
+    // Error handler
     if(p == NULL){
         std::cout << "WARNING! TRYING TO ACCESS NULL POINTER" << std::endl;
         return;
     }
 
+    // Checks what button is pressed and then sets the corrensponding direction 
     if(var.substr(0,3) == "btn"){
         int btnNumber = atoi(var.substr(3,1).c_str());
         bool pressed = (val == "1");
         std::cout << "btn number: " << btnNumber << std::endl;
         std::cout << "btn is pressed: " << pressed << std::endl;
             
-        
+        // Chooses the corrensponding direction
         int direction;
         switch(btnNumber){
             case 0: direction = Player::NORTH; break;
@@ -107,6 +113,7 @@ void RobberCop::process(int id, std::string var, std::string val) {
             default: std::cout << "ERROR! BAD BUTTON NUMBER" << std::endl;
         }
         
+        // Check if pressed or released
         if(pressed){
             p->setMoveDirection(direction);
         }
@@ -121,12 +128,12 @@ void RobberCop::process(int id, std::string var, std::string val) {
     }
 }
 
+// Updates robberCop
 void RobberCop::update(float dt){
     scene->update(dt);
 }
 
+// Draws robberCop
 void RobberCop::draw() const {
     scene->draw();
 }
-
-// id=0 var=btn1 val=pressed;

@@ -55,8 +55,6 @@ private:
 
 	// for converting numbers to strings
 	//std::ostringstream convert;
-    
-    //virtual void handleMessage(int id, std::string action, std::string value);
 	
     //extracts commands delimited by CMD_DELIMITER from a string
     std::vector<std::string> extractCommands(std::string externalInputString);

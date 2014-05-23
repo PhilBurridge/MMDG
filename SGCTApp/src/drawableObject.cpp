@@ -1,11 +1,12 @@
 #include "drawableObject.h"
-
+// Constructor for background
 DrawableObject::DrawableObject(const std::string& t, float w, float h):
 textureName(t), width(w), height(h) {
     std::cout << "DrawableObject constructor" << std::endl;
     size = fmax(w,h);
 }
 
+// Constructor for a player
 DrawableObject::DrawableObject(const std::string& t, float s):
 textureName(t), size(s) {
     std::cout << "DrawableObject constructor" << std::endl;
@@ -52,6 +53,7 @@ void DrawableObject::draw(/*mat4::MVP,*/ float x, float y, float z) const {
 
 }
 
+// 
 void DrawableObject::drawSphereical(float r, float theta, float phi) const{
     //TO IMPLEMENT
 }
@@ -66,6 +68,7 @@ float DrawableObject::getSize() const {
     return size;
 }
 
+// Displays an objects properties
 void DrawableObject::display() const{
     std::cout << "size = " << size << std::endl;
     std::cout << "width = " << width << std::endl;
