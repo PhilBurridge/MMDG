@@ -8,6 +8,17 @@ function Submitname(d)
 {
 	this.description = d;
 	this.person="";
+
+	badWords = ["kuk","penis","fitta","slida",
+				"bajs","fuck","döda","neger",
+				"hora","cp","jude","guling",
+				"nigger","knark","sex","knull",
+				"knulla","samlag","dick","slut",
+				"whore","shit","nigga","pussy",
+				"ass","bitch","beatch","piss",
+				"skit","död","snopp","puta", 
+				"kukpenis", "hitler", "kukfitta",
+				"fitthitler", "adolf", "fittler"];
 };
 
 Submitname.prototype = {
@@ -23,18 +34,18 @@ Submitname.prototype = {
 			unique = false;
 		}*/
 		
-		if (person == null || person.length > 12 || person.length < 2 || person == "kuk" || person == "penis" 
-		|| person == "fitta" || person == "slida" || person == "bajs" || person == "fuck" || person == "döda" 
-		|| person == "neger" || person == "hora" || person == "cp" || person == "jude" || person == "guling" 
-		|| person == "nigger" || person == "knark" || person == "sex" || person == "knull" || person == "knulla" 
-		|| person == "samlag" || person == "dick" || person == "slut" || person == "whore" || person == "shit" 
-		|| person == "nigga" || person == "pussy" || person == "ass" || person == "bitch" || person == "beatch" 
-		|| person == "piss" || person == "skit" || person == "död" || person == "snopp" || person == "puta"){
-			alert("That nickname is invalid!");
+		if (person == null || person.length > 12 || person.length < 2){
+			alert("Nickname must have 2 - 12 characters.");
 			return false;
 		}
-		else{
-			return true;
-		}
-	}
+
+		for (var i = 0; i < badWords.length; i++) {
+			if (person.toLowerCase() === badWords[i]){
+				alert("That nickname is invalid!");
+				return false;
+			}
+		};
+
+		return true;
+	}	
 }
