@@ -15,6 +15,10 @@ void Scene::update(float dt) {
 
         // Updates the positions of all players with a specific step
         p->movePlayer(dt);
+        // Make cops to robbers if they have caught any robbers in a while
+        if(p->isCop() && !p->copTimer()){
+            p->switchToRobber();
+        }
     }
     checkCollisions();
     handleScore();
@@ -47,11 +51,11 @@ void Scene::checkCollisions() {
             if(glm::length(p1->getPosition() - p2->getPosition()) < (p1->getSize() + p2->getSize())) { 
 
                 // Do somthing when collision happens. KILL THA ROBBBA
-                p1->resetCopTimer();
-                p2->resetRobberTimer();
                 p2->switchToCop();
                 p1->addPoints();
                 p2->removePoints();
+                p1->resetCopTimer();
+                p2->resetRobberTimer();
                 std::cout << "****************************************" << std::endl;
                 std::cout << "collision between player " << (*itRob).first << " and " << (*itCop).first << std::endl;
                 std::cout << "****************************************" << std::endl;
@@ -77,11 +81,8 @@ void Scene::handleScore() {
             p->removePoints();
             p->resetCopTimer();
         }
-        // Make cops to robbers if they have caught any robbers in a while
-        if(p->isCop() && !p->copTimer()){
-            p->switchToRobber();
-        }
-        std::cout << "POINTS: " << p->getPoints() << std::endl;
+        
+        //std::cout << "POINTS: " << p->getPoints() << std::endl;
     }
 }
 

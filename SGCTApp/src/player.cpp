@@ -89,7 +89,7 @@ void Player::draw() const {
 bool Player::copTimer() {
     endCopTimer = clock();
     //std::cout << "TIMER: " << (endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC * 2) << std::endl;
-    if((endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC * 4) >= COP_TIMER_LIMIT) {
+    if((endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC) >= COP_TIMER_LIMIT) {
         return false;
     }
     return true;

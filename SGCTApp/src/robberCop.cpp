@@ -117,7 +117,6 @@ void RobberCop::process(int id, std::string var, std::string val) {
                 p->stop();
             }
         }
-
     }
 }
 
