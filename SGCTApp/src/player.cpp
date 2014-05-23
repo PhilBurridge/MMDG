@@ -110,7 +110,7 @@ void Player::addPoints() {
         points++;
     else 
         points += 5;
-    std::cout << "score: " << points << std::endl;
+    //std::cout << "score: " << points << std::endl;
     sendScore = true;
 }
 

@@ -133,6 +133,7 @@ void RobberCop::sendScore() {
             ss << score;
             std::string msg = "points=" + ss.str();
             
+            // Send msg to id i
             Core::sendTo(msg, i);
 
             p->setSendScore(false);

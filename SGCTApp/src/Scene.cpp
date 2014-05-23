@@ -81,7 +81,6 @@ void Scene::handleScore() {
             p->removePoints();
             p->resetCopTimer();
         }
-        
         //std::cout << "POINTS: " << p->getPoints() << std::endl;
     }
 }
