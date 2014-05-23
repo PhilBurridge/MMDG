@@ -45,10 +45,10 @@ void RobberCop::init(){
 }
 
 // Overiding method from core
-void RobberCop::process(int id, std::string var, std::string val, std::string name) {
+void RobberCop::process(int id, std::string var, std::string val) {
 
     std::cout << "INPUT: " << std::endl;
-    Core::process(id,var,val,name);
+    Core::process(id,var,val);
 
     std::cout << "HANDELING INPUT" << std::endl;
 
@@ -81,9 +81,12 @@ void RobberCop::process(int id, std::string var, std::string val, std::string na
 
         scene->addPlayer(id, p);
         
-        p->setName(name);
-        
         return;
+    }
+
+    // set name of player if var = "name"
+    if(var == "name") {
+        scene->getPlayer(id)->setName(val);
     }
 
     // If a player disconnects, remove that bitch
@@ -142,3 +145,5 @@ void RobberCop::draw() const {
 }
 
 // id=0 var=btn1 val=pressed;
+
+// id=5 var=name val=gunde;
