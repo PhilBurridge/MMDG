@@ -31,13 +31,18 @@ POS: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft,
 -->
 <CATALOG>
 	<SUBMITNAME>
-		<DESCRIPTION>Please enter your name, 3-12 letters!</DESCRIPTION>
+		<DESCRIPTION>Please enter your name, 2-12 letters!</DESCRIPTION>
 	</SUBMITNAME>
-	<TEXTFIELD>
+	<!--<TEXTFIELD>
 		<ID>0</ID>
 		<BUTTONTEXT>POST</BUTTONTEXT>
 		<POS>downcenter</POS>
-	</TEXTFIELD>
+	</TEXTFIELD> -->
+	<BUTTON>
+		<ICON>standard_buttons/top_center.png</ICON>
+		<ID>0</ID>
+		<POS>upcenter</POS>
+	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/top_right.png</ICON>
 		<ID>1</ID>
@@ -54,9 +59,9 @@ POS: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft,
 		<POS>downright</POS>
 	</BUTTON>
 	<BUTTON>
-		<ICON>standard_buttons/top_center.png</ICON>
+		<ICON>standard_buttons/bottom_center.png</ICON>
 		<ID>4</ID>
-		<POS>upcenter</POS>
+		<POS>downcenter</POS>
 	</BUTTON>
 	<BUTTON>
 		<ICON>standard_buttons/bottom_left.png</ICON>
@@ -74,7 +79,7 @@ POS: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft,
 		<POS>upleft</POS>
 	</BUTTON>
 	<DISPLAY>
-		<ID>0</ID>
+		<ID>10</ID>
 		<ICON>standard_buttons/center_panel.png</ICON>
 		<POS>centercenter</POS>
 	</DISPLAY>
