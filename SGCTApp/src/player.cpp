@@ -15,7 +15,7 @@ const glm::vec2 Player::DIRECTIONS[] = {
 
 const float Player::COP_SPEED = 0.1f;
 const float Player::ROB_SPEED = 0.2f;
-const double Player::COP_TIMER_LIMIT = 1.0;
+const double Player::COP_TIMER_LIMIT = 100.0;
 
 // Player constructor
 Player::Player(glm::vec2 pos, glm::vec3 c, bool isCop, sgct::Engine * e):
