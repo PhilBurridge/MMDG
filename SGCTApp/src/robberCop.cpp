@@ -4,9 +4,14 @@ RobberCop::RobberCop(sgct::Engine * gEngine):
 Core(gEngine) {
     scene = new Scene();
     std::cout << "constructing RobberCop" << std::endl;
+    srand (static_cast <unsigned> (time(0)));
 };
 
 void RobberCop::init(){
+
+    // --- INIT FONT --- //
+    if( !sgct_text::FontManager::instance()->addFont( "Verdana", "verdana.ttf" ) )
+        sgct_text::FontManager::instance()->getFont( "Verdana", 14 );
 
     // --- INIT OPENGL --- // 
 
@@ -25,10 +30,10 @@ void RobberCop::init(){
 
 
     // Enable some openGL stuff
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
     glEnable( GL_COLOR_MATERIAL );
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glDisable( GL_LIGHTING );
     glEnable(GL_CULL_FACE);
     glEnable( GL_TEXTURE_2D );
@@ -63,14 +68,25 @@ void RobberCop::process(int id, std::string var, std::string val) {
 
         // Randomize spawn position, took this from stackoverflow.
         // Might not be the best rng ever.
-        //srand (static_cast <unsigned> (time(0)));
+        
         float rand_x = ((1.57 - (-1.57)) * ((float) rand() / RAND_MAX)) + (-1.57);
         float rand_y = ((0.78 - (-0.78)) * ((float) rand() / RAND_MAX)) + (-0.78);
 
-        Player *p = new Player(glm::vec2(rand_x, rand_y), isCop);
+        // Randomize a color for every player
+        float rand_R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float rand_G = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float rand_B = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+
+        Player *p = new Player(glm::vec2(rand_x, rand_y), glm::vec3(rand_R, rand_G, rand_B), isCop, gEngine);
 
         scene->addPlayer(id, p);
+        
         return;
+    }
+
+    // set name of player if var = "name"
+    if(var == "name") {
+        scene->getPlayer(id)->setName(val);
     }
 
     // If a player disconnects, remove that bitch
@@ -117,7 +133,6 @@ void RobberCop::process(int id, std::string var, std::string val) {
                 p->stop();
             }
         }
-
     }
 }
 
@@ -130,3 +145,5 @@ void RobberCop::draw() const {
 }
 
 // id=0 var=btn1 val=pressed;
+
+// id=5 var=name val=gunde;

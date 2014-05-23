@@ -101,7 +101,7 @@ void Scene::draw() {
         // Disable depth test for the alpha blending to draw correct when players collide
         glDisable(GL_DEPTH_TEST);
         pair.second->draw();
+        pair.second->drawName();
+        glEnable(GL_DEPTH_TEST);
     }
 }
-
-
