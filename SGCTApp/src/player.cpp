@@ -165,14 +165,6 @@ void Player::drawNameSpherical() const{
     float z = r*glm::cos(phi);
 
     glm::mat4 vp = gEngine->getActiveViewProjectionMatrix();
-    for (int y = 0; y < 4; ++y)
-    {
-        for (int x = 0; x < 4; ++x)
-        {
-            std::cout << "  " << vp[y][x];
-        }
-        std::cout << std::endl;
-    }
 
     glm::mat4 rotateY = glm::rotate(vp, 180.0f*phi/3.1415f, glm::vec3(0,1,0));
     glm::mat4 rotateX = glm::rotate(rotateY, 180.0f*theta/3.1415f, glm::vec3(1,0,0));
