@@ -60,6 +60,7 @@ run:
 	./$(BINFOLD)$(BINNAME) -config "configs/single.xml"
 .PHONY: run
 
+#TWO NODES 
 run-double:
 	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 0
 .PHONY: run
@@ -67,6 +68,16 @@ run-double:
 run-double-second:
 	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 1 --slave
 .PHONY: run
+
+# CLUSTER TEST
+run-fish-cluster:
+	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 0
+.PHONY: run
+
+run-fish-cluster-second:
+	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 1 --slave
+.PHONY: run
+
 
 run-dome:
 	./$(BINFOLD)$(BINNAME) -config "configs/dome_sim.xml"
