@@ -15,7 +15,7 @@ const glm::vec2 Player::DIRECTIONS[] = {
 
 const float Player::COP_SPEED = 0.1f;
 const float Player::ROB_SPEED = 0.2f;
-const double Player::COP_TIMER_LIMIT = 1.0;
+const double Player::COP_TIMER_LIMIT = 30.0;
 
 // Player constructor
 Player::Player(glm::vec2 pos, bool isCop):
@@ -30,6 +30,7 @@ void Player::switchToCop() {
     speed = COP_SPEED;
     textureName = "cop";
     resetCopTimer();
+    blinking = true;
 }
 
 void Player::switchToRobber() {
@@ -80,14 +81,69 @@ void Player::display() const{
 
 void Player::draw() const {
 
-    DrawableObject::draw(position.x, position.y);
+    if(blinking == true && drawIt == true){
+        DrawableObject::draw(position.x, position.y);
+        std::cout << "HomoSAPIENS!!! " << std::endl;
+    }
+    else if (blinking == false){
+        DrawableObject::draw(position.x, position.y);
+    }
 }
 
 // Returns false if the maximum cop time is exceded
 bool Player::copTimer() {
     endCopTimer = clock();
-    if((endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC) >= COP_TIMER_LIMIT) {
+    double currTime = (endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC);
+    if(currTime > COP_TIMER_LIMIT) {
         return false;
+    }
+    else if(blinking && (currTime < 0.5)) {
+        drawIt = false;
+    }
+    else if(blinking && (currTime < 1)) {
+        drawIt = true;
+    }
+    else if(blinking && (currTime < 1.5)) {
+        drawIt = false; 
+        std::cout << "AAAAAA1 " << std::endl;
+    }
+    else if(blinking && (currTime < 2)) {
+        drawIt = true; 
+    }
+    else if(blinking && (currTime < 2.5)) {
+        drawIt = false; 
+    }
+    else if(blinking && (currTime < 3)) {
+        drawIt = true; 
+    }
+    else if(blinking && (currTime < 3.5)) {
+        drawIt = false; 
+        std::cout << "AAAAAAAAA5 " << std::endl;
+    }
+    else if(blinking && (currTime < 4)) {
+        drawIt = true; 
+    }
+    else if(blinking && (currTime < 4.5)) {
+        drawIt = false; 
+    }
+    else if(blinking && (currTime < 5)) {
+        drawIt = true; 
+    }
+    
+    // if (currTime < 5){
+    //     if(blinking && (currTime < i) && ((i % 2) == 0)) {
+    //         drawIt = false;
+    //         i--;
+    //         std::cout << "sBAJSBAJSBAJ " << std::endl;
+    //     }
+    //     else if(blinking && (currTime < i)) {
+    //         drawIt = true;
+    //         i--;
+    //         std::cout << "snoppsnopp" << std::endl; 
+    //     }    
+    // } 
+    if(blinking && (currTime > 5)) {
+        blinking=false;
     }
 
     return true;
@@ -96,4 +152,3 @@ bool Player::copTimer() {
 void Player::resetCopTimer() {
     startCopTimer = clock();
 }
-

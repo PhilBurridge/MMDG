@@ -59,7 +59,10 @@ private:
 
     float speed;
     bool cop;
+    bool blinking;
+    bool drawIt;
     int directionIndex;
+    int i =8;
     glm::vec2 position;
     glm::vec2 direction;
 
