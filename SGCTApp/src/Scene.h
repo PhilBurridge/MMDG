@@ -35,6 +35,10 @@ public:
     unsigned int getNumberOfPlayers();
 
     void draw(bool drawSpherical);
+
+    const std::map<int, Player *>& getPlayerMap() const;
+    void setPlayerMap(std::map<int, Player *> playerMap);
+    void setPlayerPositions(std::vector<glm::vec2> positions);
     
 private:
     DrawableSquare *background;

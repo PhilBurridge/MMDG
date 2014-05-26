@@ -70,15 +70,19 @@ void RobberCop::process(int id, std::string var, std::string val) {
         // Randomize spawn position, took this from stackoverflow.
         // Might not be the best rng ever.
 
-        float rand_x = ((1.57 - (-1.57)) * ((float) rand() / RAND_MAX)) + (-1.57);
-        float rand_y = ((0.78 - (-0.78)) * ((float) rand() / RAND_MAX)) + (-0.78);
+
+        float r1 = fmod((0.22f * scene->getNumberOfPlayers()), 1.0f);
+        float x = ((1.57 + 1.57) * r1 - 1.57);
+
+        float r2 = fmod((0.32f * scene->getNumberOfPlayers()), 1.0f);
+        float y = ((0.78 + 0.78) * r2 - 0.78);
 
         // Randomize a color for every player
-        float rand_R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        float rand_G = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        float rand_B = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float rand_R = r1;
+        float rand_G = r2;
+        float rand_B = fmod((0.42f * scene->getNumberOfPlayers()), 1.0f);
 
-        Player *p = new Player(glm::vec2(rand_x, rand_y), glm::vec3(rand_R, rand_G, rand_B), isCop, gEngine);
+        Player *p = new Player(glm::vec2(x, y), glm::vec3(rand_R, rand_G, rand_B), isCop, gEngine);
 
         // add the player to the scen
         scene->addPlayer(id, p);

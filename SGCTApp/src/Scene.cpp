@@ -8,6 +8,34 @@ Scene::Scene(){
 
 }
 
+const std::map<int, Player *>& Scene::getPlayerMap() const{
+    return players;
+}
+
+void Scene::setPlayerPositions(std::vector<glm::vec2> positions){
+    if(positions.size() != players.size()){
+        
+        std::cout << "Error in Scene: Updating all player positions - size must match!" << std::endl;
+        std::cout << "positions.size() = " << positions.size() << std::endl;
+        std::cout << "players.size() = " << players.size() << std::endl;
+        
+        return;
+    }
+
+    Player * p;
+    int positionIndex = 0;
+    for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+        std::pair<int, Player *> pair = *it;
+        p = pair.second;
+        p->setPosition(positions[positionIndex]);
+        positionIndex++;
+    }
+}
+
+void Scene::setPlayerMap(std::map<int, Player *> playerMap){
+    players = playerMap;
+}
+
 // Updates all the required stuff for players before drawing
 void Scene::update(float dt) {
     Player * p;
