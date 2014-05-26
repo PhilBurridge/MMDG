@@ -2,72 +2,85 @@
 <!-- 
 Example on what is available to modify in this xml file.
 
-All positions of the 3x3 grid Must be filled to ensure a correct alignment!
+All positions of the 3x3 grid Must be filled ONCE to ensure a correct alignment!
+
+SUBMITNAME:
+-DESCRIPTION: any string, The description written in the popup window
+
+TESXTFIELD:
+-ID: any number, not too long. This ID is sent to the application and specifies what button have been pressed. 
+-BUTTONTEXT: any text, nt too long. This is shown ontop of the button
+-POS: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 
 BUTTON:
 -ICON: URL or path in folder. 
--NAME: any name, not too long. This name is sent to the application. 
--POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright. 
--EMPTY: yes/no for space without button.
+-ID: any number, not too long. This ID is sent to the application and specifies what button have been pressed. 
+-POS: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright. 
+-EMPTY: yes/no, for space without button.
 
 SLIDER: 
--NAME: any name, not too long. This name is sent to the application with the value. 
+-ID: any number, not too long. This ID is sent to the application and specifies what slider have been used. 
 -STARTVALUE: any value, not bigger than ENDVALUE. 
--ENDVALUE: any value. 
--POSITION: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
+-ENDVALUE: any value.
+-POS: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
+
+DISPLAY:
+ID: any id
+ICON: URL or path in folder. 
+POS: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
-	<BUTTON>
-		<ICON>arrows/up.png</ICON>
-		<NAME>0</NAME>
-		<POS>upcenter</POS>
-		<EMPTY>no</EMPTY>
-	</BUTTON>
-	<BUTTON>
-		<ICON>arrows/upright.png</ICON>
-		<NAME>1</NAME>
-		<POS>upright</POS>
-		<EMPTY>no</EMPTY>
-	</BUTTON>
-	<BUTTON>
-		<ICON>arrows/right.png</ICON> 
-		<NAME>2</NAME>
-		<POS>centerright</POS>
-		<EMPTY>no</EMPTY>
-	</BUTTON>
-	<BUTTON>
-		<ICON>arrows/downright.png</ICON>
-		<NAME>3</NAME>
-		<POS>downright</POS>
-		<EMPTY>no</EMPTY>
-	</BUTTON>
-	<BUTTON>
-		<ICON>arrows/down.png</ICON>
-		<NAME>4</NAME>
+	<SUBMITNAME>
+		<DESCRIPTION>Please enter your name, 2-12 letters!</DESCRIPTION>
+	</SUBMITNAME>
+	<!--<TEXTFIELD>
+		<ID>0</ID>
+		<BUTTONTEXT>POST</BUTTONTEXT>
 		<POS>downcenter</POS>
-		<EMPTY>no</EMPTY>
+	</TEXTFIELD> -->
+	<BUTTON>
+		<ICON>standard_buttons/top_center.png</ICON>
+		<ID>0</ID>
+		<POS>upcenter</POS>
 	</BUTTON>
 	<BUTTON>
-		<ICON>arrows/downleft.png</ICON>
-		<NAME>5</NAME>
+		<ICON>standard_buttons/top_right.png</ICON>
+		<ID>1</ID>
+		<POS>upright</POS>
+	</BUTTON>
+	<BUTTON>
+		<ICON>standard_buttons/middle_right.png</ICON> 
+		<ID>2</ID>
+		<POS>centerright</POS>
+	</BUTTON>
+	<BUTTON>
+		<ICON>standard_buttons/bottom_right.png</ICON>
+		<ID>3</ID>
+		<POS>downright</POS>
+	</BUTTON>
+	<BUTTON>
+		<ICON>standard_buttons/bottom_center.png</ICON>
+		<ID>4</ID>
+		<POS>downcenter</POS>
+	</BUTTON>
+	<BUTTON>
+		<ICON>standard_buttons/bottom_left.png</ICON>
+		<ID>5</ID>
 		<POS>downleft</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>arrows/left.png</ICON>
-		<NAME>6</NAME>
+		<ICON>standard_buttons/middle_left.png</ICON>
+		<ID>6</ID>
 		<POS>centerleft</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<BUTTON>
-		<ICON>arrows/upleft.png</ICON>
-		<NAME>7</NAME>
+		<ICON>standard_buttons/top_left.png</ICON>
+		<ID>7</ID>
 		<POS>upleft</POS>
-		<EMPTY>no</EMPTY>
 	</BUTTON>
 	<DISPLAY>
-		<ICON>arrows/display.png</ICON>
-		<NAME>0</NAME>
+		<ID>10</ID>
+		<ICON>standard_buttons/center_panel.png</ICON>
 		<POS>centercenter</POS>
 	</DISPLAY>
 </CATALOG>

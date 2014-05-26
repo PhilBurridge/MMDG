@@ -44,6 +44,8 @@ public:
 
 	std::vector<std::string> cmd_args;
 
+    //A pointer to the SGCT engine
+    sgct::Engine * gEngine;
 
 	//Benchmarking
 	void startBenchmark();
@@ -55,17 +57,12 @@ private:
 
 	// for converting numbers to strings
 	//std::ostringstream convert;
-    
-    //virtual void handleMessage(int id, std::string action, std::string value);
 	
     //extracts commands delimited by CMD_DELIMITER from a string
     std::vector<std::string> extractCommands(std::string externalInputString);
 
     //Analyzes commands for "arguments" separated by ARG_DELIMITER
     bool analyzeCommand(std::string command, int *id, std::string *variable, std::string *value);
-
-    //A pointer to the SGCT engine
-    sgct::Engine * gEngine;
 
     /* BENCHMARKING VARIABLES */
 	clock_t startClock;

@@ -1,12 +1,17 @@
 #include "robberCop.h"
 
 RobberCop::RobberCop(sgct::Engine * gEngine):
-Core(gEngine) {
+Core(gEngine), drawSpherical(false){
     scene = new Scene();
     std::cout << "constructing RobberCop" << std::endl;
+    srand (static_cast <unsigned> (time(0)));
 };
 
 void RobberCop::init(){
+
+    // --- INIT FONT --- //
+    if( !sgct_text::FontManager::instance()->addFont( "Verdana", "verdana.ttf" ) )
+        sgct_text::FontManager::instance()->getFont( "Verdana", 14 );
 
     // --- INIT OPENGL --- // 
 
@@ -25,10 +30,10 @@ void RobberCop::init(){
 
 
     // Enable some openGL stuff
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
     glEnable( GL_COLOR_MATERIAL );
     glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     //glDisable( GL_LIGHTING );
     glEnable(GL_CULL_FACE);
     glEnable( GL_TEXTURE_2D );
@@ -37,6 +42,7 @@ void RobberCop::init(){
     glCullFace(GL_BACK);
     // The polygon winding is counter clockwise (CCW)
     glFrontFace(GL_CCW);
+    glDisable(GL_DEPTH_TEST);
 }
 
 // Overiding method from core
@@ -49,10 +55,10 @@ void RobberCop::process(int id, std::string var, std::string val) {
 
     if(var == "connected"){
         std::cout << "adding new player" << std::endl;
-        //Player *p = new Player(glm::vec2(1.0f, 0.0f), false);
 
         bool isCop;
         // Maybe change the ratio between robbers and cops, now it's 50/50
+        // Sets a player to Cop or Robber with a chosen percent
         if((id % 2) == 0) {
             isCop = false;
             std::cout << "Player " << id << " is a robber" << std::endl;
@@ -63,37 +69,52 @@ void RobberCop::process(int id, std::string var, std::string val) {
 
         // Randomize spawn position, took this from stackoverflow.
         // Might not be the best rng ever.
-        //srand (static_cast <unsigned> (time(0)));
+
         float rand_x = ((1.57 - (-1.57)) * ((float) rand() / RAND_MAX)) + (-1.57);
         float rand_y = ((0.78 - (-0.78)) * ((float) rand() / RAND_MAX)) + (-0.78);
 
-        Player *p = new Player(glm::vec2(rand_x, rand_y), isCop);
+        // Randomize a color for every player
+        float rand_R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float rand_G = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float rand_B = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
 
+        Player *p = new Player(glm::vec2(rand_x, rand_y), glm::vec3(rand_R, rand_G, rand_B), isCop, gEngine);
+
+        // add the player to the scen
         scene->addPlayer(id, p);
+        
         return;
     }
 
-    // If a player disconnects, remove that bitch
+    // set name of player if var = "name"
+    if(var == "name") {
+        scene->getPlayer(id)->setName(val);
+    }
+
+    // If a Player disconnects remove that Player
     if(var == "disconnected"){
         std::cout << "Player disconnected" << std::endl;
         scene->removePlayer(id);
         return;
     }
 
+    // Get the Players Id
     Player * p = scene->getPlayer(id);
 
+    // Error handler
     if(p == NULL){
         std::cout << "WARNING! TRYING TO ACCESS NULL POINTER" << std::endl;
         return;
     }
 
+    // Checks what button is pressed and then sets the corrensponding direction 
     if(var.substr(0,3) == "btn"){
         int btnNumber = atoi(var.substr(3,1).c_str());
         bool pressed = (val == "1");
         std::cout << "btn number: " << btnNumber << std::endl;
         std::cout << "btn is pressed: " << pressed << std::endl;
             
-        
+        // Chooses the corrensponding direction
         int direction;
         switch(btnNumber){
             case 0: direction = Player::NORTH; break;
@@ -107,6 +128,7 @@ void RobberCop::process(int id, std::string var, std::string val) {
             default: std::cout << "ERROR! BAD BUTTON NUMBER" << std::endl;
         }
         
+        // Check if pressed or released
         if(pressed){
             p->setMoveDirection(direction);
         }
@@ -117,17 +139,18 @@ void RobberCop::process(int id, std::string var, std::string val) {
                 p->stop();
             }
         }
-
     }
+}
+
+void RobberCop::toggleDrawSpherical(){
+    drawSpherical = !drawSpherical;
 }
 
 void RobberCop::update(float dt){
     scene->update(dt);
 }
 
+// Draws robberCop
 void RobberCop::draw() const {
-    scene->draw();
+    scene->draw(drawSpherical);
 }
-
-
-// id=0 var=btn1 val=pressed;

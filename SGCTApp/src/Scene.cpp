@@ -3,23 +3,31 @@
 
 // Scene constructor
 Scene::Scene(){
-    background = new DrawableObject("mmdg", 2.0f, 1.0f);
+    background = new DrawableSquare("mmdg", 4.0f, 3.0f);
+    bg_sphere = new ModelMesh("sphere", "mmdg");
+
 }
 
 // Updates all the required stuff for players before drawing
 void Scene::update(float dt) {
-    updatePositions(dt);
+    Player * p;
+    for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+        std::pair<int, Player *> pair = *it;
+        p = pair.second;
+
+        // Updates the positions of all players with a specific step
+        p->movePlayer(dt);
+
+        // Make cops to robber if they have caught any robbers in a while
+        if(p->isCop() && !p->copTimer()){
+            p->switchToRobber();
+        }
+    }
     checkCollisions();
 }
 
-// Updates the positions of all players with a specific step
-void Scene::updatePositions(float dt) {
-    for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
-        std::pair<int, Player *> pair = *it;
-        pair.second->movePlayer(dt);
-    }
-}
 
+// Detects collisions between Players
 void Scene::checkCollisions() {
     Player * p1;
     Player * p2;
@@ -45,6 +53,7 @@ void Scene::checkCollisions() {
             if(glm::length(p1->getPosition() - p2->getPosition()) < (p1->getSize() + p2->getSize())) { 
 
                 // Do somthing when collision happens. KILL THA ROBBBA
+                p1->resetCopTimer();
                 p2->switchToCop();
 
                 std::cout << "****************************************" << std::endl;
@@ -56,11 +65,16 @@ void Scene::checkCollisions() {
 
 }
 
-        
+// Adds Player to the scene
 void Scene::addPlayer(int id, Player *p) {
+    // Set cop texture and start cop timer
+    if(p->isCop())
+        p->switchToCop();
+
     players.insert(std::pair<int, Player *>(id, p));
 }
 
+// Removes the Player with a specific Id
 bool Scene::removePlayer(int id){
     std::map<int, Player *>::iterator it = players.find(id);
     
@@ -71,25 +85,37 @@ bool Scene::removePlayer(int id){
     return true;
 }
 
+// returns Player Id
 Player * Scene::getPlayer(int id){
     return players[id];
 }
 
-void Scene::draw() {
-    //Draw Background image
-    background->draw(0.0f, 0.0f, -0.01f);
-
-    for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
-        std::pair<int, Player *> pair = *it;
-        
-        // If the player is a cop, swap the texture (rob texture is standard)
-        if(pair.second->isCop()) {
-            pair.second->switchToCop();
-        }
-        // Disable depth test for the alpha blending to draw correct when players collide
-        glDisable(GL_DEPTH_TEST);
-        pair.second->draw();
-    }
+// Gets the amount of currently connected Players
+unsigned int Scene::getNumberOfPlayers() {
+    return players.size();
 }
 
+void Scene::draw(bool drawSpherical) {
+    if(drawSpherical){ 
+        // Draw Dome mode
+        glPushMatrix();
+            float s = 1.5f;
+            glScalef(s,s,s);
+            bg_sphere->draw();
+        glPopMatrix();
 
+        for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+            std::pair<int, Player *> pair = *it;
+            pair.second->drawSpherical();
+        }
+    }
+    else{ 
+        //Draw normal desktop mode
+        background->draw(0.0f, 0.0f, -0.01f);
+
+        for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+            std::pair<int, Player *> pair = *it;
+            pair.second->draw();
+        }
+    }
+}

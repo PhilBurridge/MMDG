@@ -10,18 +10,27 @@ ws.onopen = function() {
 	if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
  		device = "mobile";
 	}
+	
     ws.send("var=connected" + config.arg_delimiter + "val=" + device);
     init(ws);
 };
 
+function sendMessage(msg){
+	ws.send(msg);
+}
+
+function buttonClick(id){
+    var msg = document.getElementById(id).value;
+	console.log("id: %s, message: %s", id,msg);
+	ws.send("var="+id+ config.arg_delimiter + "val=" + msg);
+}
+
 function buttonDown(btnId) {
-	//document.getElementById('display').innerHTML += '<br>pushed! ';
 	postOnDisplay("pushed!!");
     ws.send("var=btn" + btnId + config.arg_delimiter + "val=1");
 };
 
 function buttonUp(btnId){
-	//document.getElementById('display').innerHTML += '<br>released! ';
 	postOnDisplay("released!");
 	ws.send("var=btn" + btnId + config.arg_delimiter + "val=0");
 };
@@ -48,4 +57,3 @@ function postOnDisplay(message){
   		d.scrollTop = d.scrollHeight - d.clientHeight;
 	}
 }
-

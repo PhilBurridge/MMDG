@@ -18,7 +18,7 @@ public class MMDGServer extends ConsolePrinter{
     /** The IP used by the HTTP server */
     private String serverIP = "undefined";
     
-    private String applicationIP = "130.236.67.201";
+    private String applicationIP = "localhost";
 
     /** The port used by HTTP server */
     private final int HTTP_PORT;
@@ -116,9 +116,10 @@ public class MMDGServer extends ConsolePrinter{
             // tcpHandler.sendMessage(br.readLine());
             appMessageStack = tcpHandler.getMessageStack();
             if (appMessageStack.size() != 0) {
-                
-                outputString = appMessageStack.get(0);
-                forwardMessageFromApp(outputString);
+                for(int i = 0; i<appMessageStack.size(); ++i){
+                    outputString = appMessageStack.get(i);
+                    forwardMessageFromApp(outputString);
+                }
 
             }
             tcpHandler.clearMessageStack();

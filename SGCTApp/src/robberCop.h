@@ -14,18 +14,25 @@
 class Scene;
 
 class RobberCop: public Core{
-
-
 public:
+    // Constructor
     RobberCop(sgct::Engine * gEngine); 
 
+    // Initiates robberCop
+    void init();
+
+    // Handles all actions of robberCop
     virtual void process(int id, std::string action, std::string value);
     
     void update(float dt);
     void draw() const;
-    void init();
 
+    void toggleDrawSpherical();
+    
     Scene *scene;
+
+private:
+	bool drawSpherical;
 };
 
 #endif // ROBBERCOP_H
