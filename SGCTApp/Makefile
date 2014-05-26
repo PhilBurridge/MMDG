@@ -60,22 +60,34 @@ run:
 	./$(BINFOLD)$(BINNAME) -config "configs/single.xml"
 .PHONY: run
 
-#TWO NODES 
-run-double:
+#TWO NODES ON SAME COMPUTER
+run-local-double:
 	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 0
 .PHONY: run
 
-run-double-second:
+run-local-double-second:
 	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 1 --slave
 .PHONY: run
 
-# CLUSTER TEST
-run-fish-cluster:
+
+#TWO NODES ON DIFFERENT CONPUTERS OVER LOCAL NETWORK
+run-double:
+	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml"
+.PHONY: run
+
+
+# CLUSTER TEST ON SAME COMPUTER
+run-local-fish-cluster:
 	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 0
 .PHONY: run
 
-run-fish-cluster-second:
+run-local-fish-cluster-second:
 	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 1 --slave
+.PHONY: run
+
+# CLUSTER TEST ON DIFFERENT COMPUTERS OVER LOCAL NETWORK
+run-fish-cluster:
+	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml"
 .PHONY: run
 
 
