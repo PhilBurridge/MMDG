@@ -13,23 +13,26 @@
 
 
 class Player: public DrawableSquare {
-
 public:
+    // Constructor
     Player();
     Player(glm::vec2 pos, glm::vec3 c,
         bool state, sgct::Engine * e);
 
+    //  Alternates and check if Cop/Robber
 	void switchToCop();
     void switchToRobber();
     bool isCop();
 
+    // Controlls the Players movement
     void setMoveDirection(int d);
     int getMoveDirection() const;
     void stop();
 
-
+    // Multplies speed with direction
     void movePlayer(float dt);
 
+    // Get and set position
     glm::vec2 getPosition() const;
     void setPosition(glm::vec2 p);
 
@@ -38,13 +41,13 @@ public:
 
     void display() const;
 
+
     void draw() const;
     void drawSpherical() const;
     
     void drawName() const;
     void drawNameSpherical() const;
 
-    
     bool copTimer();
     void resetCopTimer();
     
