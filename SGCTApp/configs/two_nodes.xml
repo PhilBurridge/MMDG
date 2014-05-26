@@ -18,7 +18,6 @@
 				</Viewplane>
 			</Viewport>
 		</Window>
-	</Node>
 	<Node address="172.20.10.3" port="20402">
 		<Window fullScreen="false">
 			<Pos x="640" y="300" />
