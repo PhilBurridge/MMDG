@@ -60,8 +60,25 @@ run:
 	./$(BINFOLD)$(BINNAME) -config "configs/single.xml"
 .PHONY: run
 
+
+#TWO NODES: master
+run-double:
+	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 0
+.PHONY: run
+
+#TWO NODES: slave
+run-double-second:
+	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 1 --slave
+.PHONY: run
+
+
+
 run-dome:
 	./$(BINFOLD)$(BINNAME) -config "configs/dome_sim.xml"
+.PHONY: run
+
+run-domealpha:
+	./$(BINFOLD)$(BINNAME) -config "configs/dome_alpha_laptop.xml"
 .PHONY: run
 
 run-fisheye:

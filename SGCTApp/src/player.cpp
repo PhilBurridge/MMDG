@@ -94,14 +94,16 @@ void Player::display() const {
 
 void Player::draw() const {
     DrawableSquare::draw(position.x, position.y);
+    drawName();
 }
 
 void Player::drawSpherical() const{
     DrawableSquare::drawSpherical(-RADIOUS, position.y, -position.x);
+    drawNameSpherical();
 }
 
 // Draws the name of a player on the players canvas
-void Player::drawName() {
+void Player::drawName() const{
 
     // Get the resolution of the openGL window
     float x_res = (float)gEngine->getActiveXResolution();
@@ -123,6 +125,59 @@ void Player::drawName() {
         ("SGCTFont", font_size ), 
         (x_res / 2) + (position.x * (x_res / 3.556f)) - (name.size() * font_size / 2.3), 
         (y_res / 2) + (position.y * (y_res / 2.0f)) - (getSize() * 0.5f * (y_res/2)), 
+        font_color,
+        name.c_str());
+}
+
+void Player::drawNameSpherical() const{
+
+    // Get the resolution of the openGL window
+    float x_res = (float)gEngine->getActiveXResolution();
+    float y_res = (float)gEngine->getActiveYResolution();
+
+    // Calculate the font size depending on the screen resolution
+    unsigned int font_size = gEngine->getActiveXResolution() * getSize() / 20;
+
+    // Scale the font down if name is longer than 10 chars
+    if(name.size() > 10)
+        font_size = (font_size * 100 * getSize()) / name.size();
+
+    // Set the color from the current player object
+    glm::vec4 font_color(color.x, color.y, color.z, 1.0f);
+
+    // Draw name on screen, changes dynamicly depending on screen size
+    // (font type, x-pos in pixels, y-pos in pixels, glm::vec4 color, std::string text)
+
+    float r = -RADIOUS; 
+    float theta = position.y; 
+    float phi = -position.x;
+
+    float x = r*glm::sin(phi)*glm::cos(theta);
+    float y = r*glm::sin(phi)*glm::sin(theta);
+    float z = r*glm::cos(phi);
+
+    glm::mat4 vp = gEngine->getActiveViewProjectionMatrix();
+    for (int y = 0; y < 4; ++y)
+    {
+        for (int x = 0; x < 4; ++x)
+        {
+            std::cout << "  " << vp[y][x];
+        }
+        std::cout << std::endl;
+    }
+
+    glm::mat4 rotateY = glm::rotate(vp, 180.0f*phi/3.1415f, glm::vec3(0,1,0));
+    glm::mat4 rotateX = glm::rotate(rotateY, 180.0f*theta/3.1415f, glm::vec3(1,0,0));
+    glm::mat4 mvp = glm::translate(rotateX, glm::vec3(0,0,r));
+
+
+    const sgct_text::Font * font = sgct_text::FontManager::instance()->getFont("SGCTFont", font_size);
+    sgct_text::print3d(font, mvp, font_color, name.c_str());
+
+    sgct_text::print(sgct_text::FontManager::instance()->getFont
+        ("SGCTFont", font_size ), 
+        (x_res / 2) + (x * (x_res / 3.556f)) - (name.size() * font_size / 2.3), 
+        (y_res / 2) + (y * (y_res / 2.0f)) - (getSize() * 0.5f * (y_res/2)), 
         font_color,
         name.c_str());
 }

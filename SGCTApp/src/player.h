@@ -39,10 +39,10 @@ public:
     void display() const;
 
     void draw() const;
-    
     void drawSpherical() const;
-
-    void drawName();
+    
+    void drawName() const;
+    void drawNameSpherical() const;
 
     
     bool copTimer();
