@@ -30,7 +30,9 @@ void Player::switchToCop() {
     speed = COP_SPEED;
     textureName = "cop";
     resetCopTimer();
+    //when a cop is created the blinking sequence is initiated
     blinking = true;
+    mortal = false;
 }
 
 void Player::switchToRobber() {
@@ -42,6 +44,9 @@ void Player::switchToRobber() {
 
 bool Player::isCop() {
     return cop;
+}
+bool Player::isMortal() {
+    return mortal;
 }
 
 void Player::setMoveDirection(int d){
@@ -80,10 +85,9 @@ void Player::display() const{
 }
 
 void Player::draw() const {
-
+    //if the blinking sequence is initiated and we should draw it it is drawn, no shit sherlock
     if(blinking == true && drawIt == true){
         DrawableObject::draw(position.x, position.y);
-        std::cout << "HomoSAPIENS!!! " << std::endl;
     }
     else if (blinking == false){
         DrawableObject::draw(position.x, position.y);
@@ -94,9 +98,11 @@ void Player::draw() const {
 bool Player::copTimer() {
     endCopTimer = clock();
     double currTime = (endCopTimer - startCopTimer)/(double)(CLOCKS_PER_SEC);
+    // if the current time is more than the cop limit, cop becomes a thief
     if(currTime > COP_TIMER_LIMIT) {
         return false;
     }
+    //Blinking initiated for first 5 seconds
     else if(blinking && (currTime < 0.5)) {
         drawIt = false;
     }
@@ -105,7 +111,6 @@ bool Player::copTimer() {
     }
     else if(blinking && (currTime < 1.5)) {
         drawIt = false; 
-        std::cout << "AAAAAA1 " << std::endl;
     }
     else if(blinking && (currTime < 2)) {
         drawIt = true; 
@@ -118,16 +123,6 @@ bool Player::copTimer() {
     }
     else if(blinking && (currTime < 3.5)) {
         drawIt = false; 
-        std::cout << "AAAAAAAAA5 " << std::endl;
-    }
-    else if(blinking && (currTime < 4)) {
-        drawIt = true; 
-    }
-    else if(blinking && (currTime < 4.5)) {
-        drawIt = false; 
-    }
-    else if(blinking && (currTime < 5)) {
-        drawIt = true; 
     }
     
     // if (currTime < 5){
@@ -142,8 +137,9 @@ bool Player::copTimer() {
     //         std::cout << "snoppsnopp" << std::endl; 
     //     }    
     // } 
-    if(blinking && (currTime > 5)) {
-        blinking=false;
+    if(blinking && (currTime > 3.5)) {
+        blinking = false;
+        mortal = true;
     }
 
     return true;

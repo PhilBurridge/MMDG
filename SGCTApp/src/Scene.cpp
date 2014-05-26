@@ -21,7 +21,9 @@ void Scene::update(float dt) {
             p->switchToRobber();
         }
     }
-    checkCollisions();
+    if(p->isMortal() == true){
+        checkCollisions();
+    }
 }
 
 

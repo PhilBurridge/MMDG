@@ -22,6 +22,7 @@ public:
 	void switchToCop();
     void switchToRobber();
     bool isCop();
+    bool isMortal();
 
     void setMoveDirection(int d);
     int getMoveDirection() const;
@@ -61,8 +62,8 @@ private:
     bool cop;
     bool blinking;
     bool drawIt;
+    bool mortal;
     int directionIndex;
-    int i =8;
     glm::vec2 position;
     glm::vec2 direction;
 
