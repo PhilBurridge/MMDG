@@ -60,6 +60,14 @@ run:
 	./$(BINFOLD)$(BINNAME) -config "configs/single.xml"
 .PHONY: run
 
+run-double:
+	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 0
+.PHONY: run
+
+run-double-second:
+	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 1 --slave
+.PHONY: run
+
 run-dome:
 	./$(BINFOLD)$(BINNAME) -config "configs/dome_sim.xml"
 .PHONY: run

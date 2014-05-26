@@ -27,7 +27,7 @@ void Scene::update(float dt) {
 }
 
 
-// Detects collisions between Players
+
 void Scene::checkCollisions() {
     Player * p1;
     Player * p2;
@@ -65,7 +65,7 @@ void Scene::checkCollisions() {
 
 }
 
-// Adds Player to the scene
+        
 void Scene::addPlayer(int id, Player *p) {
     // Set cop texture and start cop timer
     if(p->isCop())
@@ -74,7 +74,6 @@ void Scene::addPlayer(int id, Player *p) {
     players.insert(std::pair<int, Player *>(id, p));
 }
 
-// Removes the Player with a specific Id
 bool Scene::removePlayer(int id){
     std::map<int, Player *>::iterator it = players.find(id);
     
@@ -85,17 +84,17 @@ bool Scene::removePlayer(int id){
     return true;
 }
 
-// returns Player Id
 Player * Scene::getPlayer(int id){
     return players[id];
 }
 
-// Gets the amount of currently connected Players
+// Gets the amount of currently connected players
 unsigned int Scene::getNumberOfPlayers() {
     return players.size();
 }
 
 void Scene::draw(bool drawSpherical) {
+
     if(drawSpherical){ 
         // Draw Dome mode
         glPushMatrix();

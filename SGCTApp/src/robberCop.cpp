@@ -151,6 +151,6 @@ void RobberCop::update(float dt){
 }
 
 // Draws robberCop
-void RobberCop::draw() const {
+void RobberCop::draw(bool drawSpherical) const {
     scene->draw(drawSpherical);
 }

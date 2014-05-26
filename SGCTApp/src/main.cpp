@@ -26,6 +26,7 @@ void keyCallBack(int key, int action);
 /*** Shared variables ***/
 // The current time on master
 sgct::SharedDouble curr_time(0.0);
+sgct::SharedBool _drawSpherical(false);
 
 
 int main( int argc, char* argv[] ) {
@@ -80,7 +81,7 @@ void init() {
 
 // Draw function
 void draw() {
-    robberCop->draw();
+    robberCop->draw(_drawSpherical.getVal());
 }
 
 // Sets the time and timeintervall(dt)
@@ -97,11 +98,13 @@ void preSync() {
 // Write all shared variables to be shared across the cluster
 void encode() {    
     sgct::SharedData::instance()->writeDouble( &curr_time );
+    sgct::SharedData::instance()->writeBool( &_drawSpherical );
 }
 
 // Read all shared variables to be shared across the cluster
 void decode() {    
     sgct::SharedData::instance()->readDouble( &curr_time );
+    sgct::SharedData::instance()->readBool( &_drawSpherical );
 }
 
 // Deletes all objects when the program is shut down
@@ -123,7 +126,7 @@ void keyCallBack(int key, int action){
     if(gEngine->isMaster() && action == GLFW_PRESS) {
         switch(key) {
             case 'S':
-                robberCop->toggleDrawSpherical();
+                _drawSpherical.toggle();
             case 'T':
                 robberCop->printPingStats();
             break;
