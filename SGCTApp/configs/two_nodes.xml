@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<Cluster masterAddress="127.0.0.1" externalControlPort="20501">
-	<Node address="localhost" port="20401">
+<Cluster masterAddress="130.236.124.98" externalControlPort="20501">
+	<Node address="130.236.124.98" port="20401">
 		<Window fullScreen="false">
 			<Pos x="0" y="300" />
 			<!-- 16:9 aspect ratio -->
@@ -19,7 +19,7 @@
 			</Viewport>
 		</Window>
 	</Node>
-	<Node address="127.0.0.2" port="20402">
+	<Node address="130.236.112.245" port="20402">
 		<Window fullScreen="false">
 			<Pos x="640" y="300" />
 			<!-- 16:9 aspect ratio -->
