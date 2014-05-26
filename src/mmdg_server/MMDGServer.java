@@ -4,8 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 
-public class MMDGServer extends ConsolePrinter{
+public class MMDGServer extends ConsolePrinter implements Runnable{
 
+	private Thread serverThread = new Thread (this);
     /** This is the HTTP server handler class */
     private HTTPServer httpServer;
 
@@ -88,7 +89,8 @@ public class MMDGServer extends ConsolePrinter{
      * 
      * @throws IOException
      */
-    public void run() throws IOException {
+    @Override
+    public void run() {
 
         System.out.println("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
                         + "/robbercop.html>");
@@ -264,6 +266,13 @@ public class MMDGServer extends ConsolePrinter{
             e.printStackTrace();
             return "Couldn't find IP";
         }
+    }
+    
+    public void runServer(){
+    	serverThread.start();
+    }
+    public void stopServer(){
+    	serverThread.interrupt();
     }
 
     /**

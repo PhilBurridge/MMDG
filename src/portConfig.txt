@@ -1,0 +1,3 @@
+httpPort 1337;
+wsPort 1338;
+appPort 20501;
