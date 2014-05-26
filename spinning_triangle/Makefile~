@@ -3,7 +3,7 @@ CC = g++
 
 # Flags:
 # -Wall -pedantic
- CFLAGS = -std=c++11
+# CFLAGS = -O3
 
 # More flags:
 ifeq ($(OS), Windows_NT)
@@ -30,7 +30,7 @@ else
 endif
 
 # Files:
-FILES = $(wildcard src/*.cpp)
+FILES = $(wildcard *.cpp)
 
 # Binary folder:
 BINFOLD = bin/
@@ -60,53 +60,8 @@ run:
 	./$(BINFOLD)$(BINNAME) -config "configs/single.xml"
 .PHONY: run
 
-
-#TWO NODES ON SAME COMPUTER
-#MASTER
-run-local-double:
-	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 0
-.PHONY: run
-
-#SLAVE
-run-local-double-second:
-	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 1 --slave
-.PHONY: run
-
-
-#TWO NODES ON DIFFERENT CONPUTERS OVER LOCAL NETWORK
-run-double:
-	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml"
-.PHONY: run
-
-
-# CLUSTER TEST ON SAME COMPUTER
-# MASTER
-run-local-fish-cluster:
-	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 0
-.PHONY: run
-
-# SLAVE
-run-local-fish-cluster-second:
-	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 1 --slave
-.PHONY: run
-
-# CLUSTER TEST ON DIFFERENT COMPUTERS OVER LOCAL NETWORK
-run-fish-cluster:
-	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml"
-.PHONY: run
-
-
-
-run-dome:
-	./$(BINFOLD)$(BINNAME) -config "configs/dome_sim.xml"
-.PHONY: run
-
-run-domealpha:
-	./$(BINFOLD)$(BINNAME) -config "configs/dome_alpha_laptop.xml"
-.PHONY: run
-
-run-fisheye:
-	./$(BINFOLD)$(BINNAME) -config "configs/single_fisheye_fxaa.xml"
+report:
+	cd docs && latex report.tex && bibtex refs && latex report.tex && latex report.tex && cd ..
 .PHONY: run
 
 talk:

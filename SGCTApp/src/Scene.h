@@ -34,7 +34,7 @@ public:
     Player * getPlayer(int id);
     unsigned int getNumberOfPlayers();
 
-    void draw(bool drawSpherical = false);
+    void draw(bool drawSpherical);
     
 private:
     DrawableSquare *background;

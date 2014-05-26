@@ -60,49 +60,27 @@ run:
 	./$(BINFOLD)$(BINNAME) -config "configs/single.xml"
 .PHONY: run
 
-
-#TWO NODES ON SAME COMPUTER
-#MASTER
-run-local-double:
-	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 0
-.PHONY: run
-
-#SLAVE
-run-local-double-second:
-	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 1 --slave
-.PHONY: run
-
-
-#TWO NODES ON DIFFERENT CONPUTERS OVER LOCAL NETWORK
+#TWO NODES 
 run-double:
 	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml"
 .PHONY: run
 
-
-# CLUSTER TEST ON SAME COMPUTER
-# MASTER
-run-local-fish-cluster:
-	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 0
+run-double-second:
+	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" --slave
 .PHONY: run
 
-# SLAVE
-run-local-fish-cluster-second:
-	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 1 --slave
-.PHONY: run
-
-# CLUSTER TEST ON DIFFERENT COMPUTERS OVER LOCAL NETWORK
+# CLUSTER TEST
 run-fish-cluster:
 	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml"
 .PHONY: run
 
+run-fish-cluster-second:
+	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" --slave
+.PHONY: run
 
 
 run-dome:
 	./$(BINFOLD)$(BINNAME) -config "configs/dome_sim.xml"
-.PHONY: run
-
-run-domealpha:
-	./$(BINFOLD)$(BINNAME) -config "configs/dome_alpha_laptop.xml"
 .PHONY: run
 
 run-fisheye:
