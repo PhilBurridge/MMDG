@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class MMDGServer extends ConsolePrinter implements Runnable{
 
-	private Thread serverThread = new Thread (this);
+	private Thread serverThread;
     /** This is the HTTP server handler class */
     private HTTPServer httpServer;
 
@@ -54,6 +54,7 @@ public class MMDGServer extends ConsolePrinter implements Runnable{
         HTTP_PORT = httpPort;
         WEB_SOCKET_PORT = wsPort;
         APP_PORT = appPort;
+        serverThread = new Thread (this);
         init();
         print("MMDGServer constructor done!\n");
     }
@@ -273,6 +274,9 @@ public class MMDGServer extends ConsolePrinter implements Runnable{
     }
     public void stopServer(){
     	serverThread.interrupt();
+    	tcpHandler.stopListenerThread();
+    	webSocketServer.stopConnectionThread();
+    	httpServer.stop(1);
     }
 
     /**

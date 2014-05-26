@@ -120,6 +120,20 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
      */
     public void stopConnectionThread(){
         connectThread.interrupt();
+        
+        try {
+            Iterator<Entry<Integer, ClientHandler>> it = clientHandlers
+                            .entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry<Integer, ClientHandler> pairs = (Map.Entry<Integer, ClientHandler>) it
+                                .next();
+                pairs.getValue().stop();
+                //it.remove(); // avoids a ConcurrentModificationException
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
     };
     
     /** Send a message to a specific client.
@@ -332,6 +346,7 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
             print("Client " + id + " closed!");
             clientSocket.close();
             alive = false;
+            listenerThread.interrupt();
             // listenerTread.join();
         }
 
@@ -397,9 +412,6 @@ public class WebSocketServer extends ConsolePrinter implements Runnable{
         /**
          * Stops thread that listens for new commands from client
          */
-        public void stopListenerThread(){
-            listenerThread.interrupt();
-        }
         
         /**
          * Checks if the client has sent a false command (cheat)

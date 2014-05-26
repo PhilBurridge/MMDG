@@ -13,27 +13,31 @@ import javax.swing.*;
 
 
 public class RunMMDGServer extends JFrame implements ActionListener{
-	private JPanel panelMain;
+	private JPanel panelMain, panelText;
 	private JLabel lblIp, lblHttp, lblWs, lblApp;
 	private JButton btnStart,btnTerminate;
-	private JTextField txtIp, txtHttp, txtWs, txtApp; 
+	private JTextField txtIp, txtHttp, txtWs, txtApp, txtAddress; 
 	private MMDGServer mmdgServer;
 	
 	 public RunMMDGServer() 
 	 {
 		 
 	 	panelMain = new JPanel();
+	 	panelText = new JPanel();
 	 	
 	 	lblIp = new JLabel("IP: ", JLabel.RIGHT);
 	 	lblHttp = new JLabel("HTTP port: ", JLabel.RIGHT);
 	 	lblWs = new JLabel("ws port: ", JLabel.RIGHT);
 	 	lblApp = new JLabel("App port: ", JLabel.RIGHT);
 	 	
+	 	
 	 	txtIp = new JTextField("");
 	 	txtIp.setEditable(false);
 	 	txtHttp = new JTextField("1337");
 	 	txtWs = new JTextField("1338");
 	 	txtApp = new JTextField("20501");
+	 	txtAddress=  new JTextField(" ",JTextField.CENTER);
+	 	txtAddress.setEditable(false);
 	 	
 	 	btnStart = new JButton("Starta servern");
 	 	btnTerminate = new JButton("Avsluta servern");
@@ -41,7 +45,7 @@ public class RunMMDGServer extends JFrame implements ActionListener{
 		btnStart.addActionListener(this);
 		btnTerminate.addActionListener(this);
 		 
-		panelMain.setLayout(new GridLayout(8,2));
+		panelMain.setLayout(new GridLayout(5,2));
 		panelMain.add(lblIp);
  		panelMain.add(txtIp);
  		panelMain.add(lblHttp);
@@ -52,10 +56,13 @@ public class RunMMDGServer extends JFrame implements ActionListener{
  		panelMain.add(txtApp);
  		panelMain.add(btnStart);
  		panelMain.add(btnTerminate);
+ 		panelText.setLayout(new BorderLayout());
+ 		panelText.add(txtAddress,BorderLayout.CENTER);
 	 		
 	 	Container c = getContentPane();
  		c.setLayout(new BorderLayout());
 	 	c.add(panelMain, BorderLayout.CENTER);
+	 	c.add(panelText, BorderLayout.SOUTH);
 
 	 		
         setTitle("MMDG Server");
@@ -109,12 +116,13 @@ public class RunMMDGServer extends JFrame implements ActionListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+            txtAddress.setText("http://" + ipAdress + ":" + httpPort + "/robbercop.html");
     	}
     	
     	if(e.getSource() == btnTerminate)
     	{
     		mmdgServer.stopServer();
-    		JOptionPane.showMessageDialog(null, "Barkmull is tha shiet!");
+    		txtAddress.setText("Server Stopped");
     	}
     	
     }
