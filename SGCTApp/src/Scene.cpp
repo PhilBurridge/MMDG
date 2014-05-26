@@ -20,7 +20,7 @@ void Scene::update(float dt) {
         if(p->isCop() && !p->copTimer()){
             p->switchToRobber();
         }
-    }
+    }// if the cop is mortal, we should check for collisions
     if(p->isMortal() == true){
         checkCollisions();
     }

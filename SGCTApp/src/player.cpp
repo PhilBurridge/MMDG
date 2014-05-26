@@ -89,6 +89,7 @@ void Player::draw() const {
     if(blinking == true && drawIt == true){
         DrawableObject::draw(position.x, position.y);
     }
+    //if blinking sequence is over we should always draw
     else if (blinking == false){
         DrawableObject::draw(position.x, position.y);
     }
@@ -124,24 +125,11 @@ bool Player::copTimer() {
     else if(blinking && (currTime < 3.5)) {
         drawIt = false; 
     }
-    
-    // if (currTime < 5){
-    //     if(blinking && (currTime < i) && ((i % 2) == 0)) {
-    //         drawIt = false;
-    //         i--;
-    //         std::cout << "sBAJSBAJSBAJ " << std::endl;
-    //     }
-    //     else if(blinking && (currTime < i)) {
-    //         drawIt = true;
-    //         i--;
-    //         std::cout << "snoppsnopp" << std::endl; 
-    //     }    
-    // } 
+    // blinking sequence is over, also the cop is now mortal and is able to collide
     if(blinking && (currTime > 3.5)) {
         blinking = false;
         mortal = true;
     }
-
     return true;
 }
 

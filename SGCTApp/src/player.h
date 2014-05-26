@@ -28,7 +28,6 @@ public:
     int getMoveDirection() const;
     void stop();
 
-
     void movePlayer(float dt);
 
     glm::vec2 getPosition() const;
