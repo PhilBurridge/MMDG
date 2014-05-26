@@ -62,20 +62,20 @@ run:
 
 #TWO NODES 
 run-double:
-	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 0
+	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml"
 .PHONY: run
 
 run-double-second:
-	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" -local 1 --slave
+	./$(BINFOLD)$(BINNAME) -config "configs/two_nodes.xml" --slave
 .PHONY: run
 
 # CLUSTER TEST
 run-fish-cluster:
-	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 0
+	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml"
 .PHONY: run
 
 run-fish-cluster-second:
-	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" -local 1 --slave
+	./$(BINFOLD)$(BINNAME) -config "configs/fisheye_cluster_test.xml" --slave
 .PHONY: run
 
 
