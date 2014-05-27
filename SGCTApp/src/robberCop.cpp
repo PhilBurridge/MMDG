@@ -1,5 +1,6 @@
 #include "robberCop.h"
 
+// Robbercop constructor
 RobberCop::RobberCop(sgct::Engine * gEngine):
 Core(gEngine), drawSpherical(false){
     scene = new Scene();
@@ -7,6 +8,7 @@ Core(gEngine), drawSpherical(false){
     srand (static_cast <unsigned> (time(0)));
 };
 
+// Inits openGL and Fonts
 void RobberCop::init(){
 
     // --- INIT FONT --- //
@@ -34,7 +36,6 @@ void RobberCop::init(){
     glEnable(GL_DEPTH_TEST);
     glEnable( GL_COLOR_MATERIAL );
     glEnable(GL_BLEND);
-    //glDisable( GL_LIGHTING );
     glEnable(GL_CULL_FACE);
     glEnable( GL_TEXTURE_2D );
 
@@ -57,7 +58,6 @@ void RobberCop::process(int id, std::string var, std::string val) {
         std::cout << "adding new player" << std::endl;
 
         bool isCop;
-        // Maybe change the ratio between robbers and cops, now it's 50/50
         // Sets a player to Cop or Robber with a chosen percent
         if((id % 2) == 0) {
             isCop = false;
@@ -67,18 +67,19 @@ void RobberCop::process(int id, std::string var, std::string val) {
             std::cout << "Player " << id << " is a cop" << std::endl;
         } 
 
-        // Randomize spawn position, took this from stackoverflow.
-        // Might not be the best rng ever.
+        // Set the spawn positin for a new player
+        float r1 = fmod((0.22f * scene->getNumberOfPlayers()), 1.0f);
+        float x = ((1.57 + 1.57) * r1 - 1.57);
 
-        float rand_x = ((1.57 - (-1.57)) * ((float) rand() / RAND_MAX)) + (-1.57);
-        float rand_y = ((0.78 - (-0.78)) * ((float) rand() / RAND_MAX)) + (-0.78);
+        float r2 = fmod((0.32f * scene->getNumberOfPlayers()), 1.0f);
+        float y = ((0.78 + 0.78) * r2 - 0.78);
 
         // Randomize a color for every player
-        float rand_R = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        float rand_G = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
-        float rand_B = static_cast <float> (rand()) / static_cast <float> (RAND_MAX);
+        float rand_R = r1;
+        float rand_G = r2;
+        float rand_B = fmod((0.42f * scene->getNumberOfPlayers()), 1.0f);
 
-        Player *p = new Player(glm::vec2(rand_x, rand_y), glm::vec3(rand_R, rand_G, rand_B), isCop, gEngine);
+        Player *p = new Player(glm::vec2(x, y), glm::vec3(rand_R, rand_G, rand_B), isCop, gEngine);
 
         // add the player to the scen
         scene->addPlayer(id, p);
@@ -86,7 +87,7 @@ void RobberCop::process(int id, std::string var, std::string val) {
         return;
     }
 
-    // set name of player if var = "name"
+    // Set name of player if var = "name"
     if(var == "name") {
         scene->getPlayer(id)->setName(val);
     }
@@ -142,10 +143,12 @@ void RobberCop::process(int id, std::string var, std::string val) {
     }
 }
 
+// Is the scene going to be drawn for the dome or for an ordinary screen?
 void RobberCop::toggleDrawSpherical(){
     drawSpherical = !drawSpherical;
 }
 
+// Update the scene
 void RobberCop::update(float dt){
     scene->update(dt);
 }

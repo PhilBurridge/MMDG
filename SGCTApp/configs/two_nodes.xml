@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<Cluster masterAddress="83.190.21.14" externalControlPort="20501">
-	<Node address="83.190.21.14" port="20401">
+<Cluster masterAddress="172.20.10.3" externalControlPort="20501">
+	<Node address="172.20.10.3" port="20401">
 		<Window fullScreen="false">
 			<Pos x="0" y="300" />
 			<!-- 16:9 aspect ratio -->
@@ -18,7 +18,8 @@
 				</Viewplane>
 			</Viewport>
 		</Window>
-	<Node address="172.20.10.3" port="20402">
+	</Node>
+	<Node address="172.20.10.7" port="20402">
 		<Window fullScreen="false">
 			<Pos x="640" y="300" />
 			<!-- 16:9 aspect ratio -->

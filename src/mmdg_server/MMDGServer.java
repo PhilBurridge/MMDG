@@ -19,7 +19,7 @@ public class MMDGServer extends ConsolePrinter implements Runnable{
     /** The IP used by the HTTP server */
     private String serverIP = "undefined";
     
-    private String applicationIP = "130.236.124.49";
+    private String applicationIP = "localhost";
 
     /** The port used by HTTP server */
     private final int HTTP_PORT;

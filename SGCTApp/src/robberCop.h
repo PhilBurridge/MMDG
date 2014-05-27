@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <cstdlib>
 #include <ctime>
+#include <math.h>
 #include "sgct.h"
 #include "scene.h"
 #include "debug.h"
