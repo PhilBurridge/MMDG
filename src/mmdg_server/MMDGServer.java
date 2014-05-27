@@ -19,7 +19,7 @@ public class MMDGServer extends ConsolePrinter implements Runnable{
     /** The IP used by the HTTP server */
     private String serverIP = "undefined";
     
-    private String applicationIP = "localhost";
+    private String applicationIP = "undefined";
 
     /** The port used by HTTP server */
     private final int HTTP_PORT;
@@ -50,10 +50,11 @@ public class MMDGServer extends ConsolePrinter implements Runnable{
 
     
     // CONSTRUCTORS    
-    public MMDGServer(int httpPort, int wsPort, int appPort) throws IOException {
+    public MMDGServer(int httpPort, int wsPort, int appPort, String appIP) throws IOException {
         HTTP_PORT = httpPort;
         WEB_SOCKET_PORT = wsPort;
         APP_PORT = appPort;
+        applicationIP=appIP;
         serverThread = new Thread (this);
         init();
         print("MMDGServer constructor done!\n");
