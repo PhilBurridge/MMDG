@@ -1,0 +1,46 @@
+<?xml version="1.0" ?>
+<Cluster masterAddress="172.20.10.3" externalControlPort="20501">
+	<Node address="172.20.10.3" port="20401">
+		<Window fullScreen="false">
+			<Stereo type="none" />
+			<!-- 16:9 aspect ratio -->
+			<Pos x="0" y="100" />
+			<Size x="512" y="512" />
+			<!-- <Res x="2048" y="2048" /> -->
+			<!--
+				quality options (cubemap size):
+					- low (256)
+					- medium (512)
+					- high/1k (1024)
+					- 2k (2048)
+					- 4k (4096)
+					- 8k (8192)
+				tilt specifies the dome tilt angle in degrees from the horizontal
+			-->
+			<Fisheye fov="165.0" quality="medium" tilt="27.0" />
+		</Window>
+	</Node>
+	<Node address="172.20.10.7" port="20402">
+		<Window fullScreen="false">
+			<Stereo type="none" />
+			<!-- 16:9 aspect ratio -->
+			<Pos x="512" y="100" />
+			<Size x="512" y="512" />
+			<!-- <Res x="2048" y="2048" /> -->
+			<!--
+				quality options (cubemap size):
+					- low (256)
+					- medium (512)
+					- high/1k (1024)
+					- 2k (2048)
+					- 4k (4096)
+					- 8k (8192)
+				tilt specifies the dome tilt angle in degrees from the horizontal
+			-->
+			<Fisheye fov="165.0" quality="medium" tilt="27.0" />
+		</Window>
+	</Node>
+	<User eyeSeparation="0.065">
+		<Pos x="0.0" y="0.0" z="0.0" />
+	</User>
+</Cluster>
