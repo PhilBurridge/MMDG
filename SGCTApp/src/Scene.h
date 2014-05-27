@@ -33,13 +33,10 @@ public:
     bool removePlayer(int id);
     Player * getPlayer(int id);
     unsigned int getNumberOfPlayers();
-
-    void draw(bool drawSpherical);
-
     const std::map<int, Player *>& getPlayerMap() const;
     void setPlayerMap(std::map<int, Player *> playerMap);
     void setPlayerPositions(std::vector<glm::vec2> positions);
-    
+    void draw(bool drawSpherical);
 private:
     DrawableSquare *background;
     ModelMesh *bg_sphere;

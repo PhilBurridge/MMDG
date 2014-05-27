@@ -19,7 +19,7 @@ public:
     Player(glm::vec2 pos, glm::vec3 c,
         bool state, sgct::Engine * e);
 
-    //  Alternates and check if Cop/Robber
+    // Alternates and check if Cop/Robber
 	void switchToCop();
     void switchToRobber();
     bool isCop();
@@ -81,12 +81,9 @@ private:
     clock_t endCopTimer;
 
     static const double COP_TIMER_LIMIT;
-
     static const float COP_SPEED;
     static const float ROB_SPEED;
-
     static const float RADIOUS;
-    
     static const glm::vec2 DIRECTIONS[];
 };
 

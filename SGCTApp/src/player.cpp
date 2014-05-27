@@ -58,6 +58,7 @@ void Player::setMoveDirection(int d){
     direction = DIRECTIONS[d];
 }
 
+// Returns the direction in which a player is moving
 int Player::getMoveDirection() const {
     return directionIndex;
 }
@@ -73,6 +74,7 @@ void Player::movePlayer(float dt) {
     position += dt*speed*direction;
 }
 
+// Returns the position of a player
 glm::vec2 Player::getPosition() const {
     return position;
 }
@@ -82,14 +84,17 @@ void Player::setPosition(glm::vec2 p) {
     position = p;
 }
 
+// Sets the name of a player
 void Player::setName(std::string n) {
     name = n;
 }
 
+// Returns the name of a player
 std::string Player::getName() const {
     return name;
 }
 
+// Displays info about a player
 void Player::display() const {
     DrawableSquare::display();
     
@@ -99,18 +104,19 @@ void Player::display() const {
     std::cout << "speed = " << speed << std::endl;
 }
 
-// Draw a Player
+// Draws a player in normal desktop mode
 void Player::draw() const {
     DrawableSquare::draw(position.x, position.y);
     drawName();
 }
 
+// Draws a player in dome mode
 void Player::drawSpherical() const{
     DrawableSquare::drawSpherical(-RADIOUS, position.y, -position.x);
     //drawNameSpherical();
 }
 
-// Draws the name of a player on the players canvas
+// Draws the name of a player on the players canvas (for desktop mode)
 void Player::drawName() const{
 
     // Get the resolution of the openGL window
@@ -137,6 +143,7 @@ void Player::drawName() const{
         name.c_str());
 }
 
+// Draws the name of a player on the players canvas (for dome mode)
 void Player::drawNameSpherical() const{
 
     // Get the resolution of the openGL window
