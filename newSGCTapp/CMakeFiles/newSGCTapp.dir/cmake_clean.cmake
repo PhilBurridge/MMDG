@@ -6,8 +6,8 @@ FILE(REMOVE_RECURSE
   "CMakeFiles/newSGCTapp.dir/player.cpp.o"
   "CMakeFiles/newSGCTapp.dir/robberCop.cpp.o"
   "CMakeFiles/newSGCTapp.dir/Scene.cpp.o"
-  "/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp.pdb"
-  "/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp"
+  "src/newSGCTapp.pdb"
+  "src/newSGCTapp"
 )
 
 # Per-language clean rules from dependency scanning.

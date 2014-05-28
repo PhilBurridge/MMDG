@@ -41,7 +41,7 @@ CMAKE_EDIT_COMMAND = "/Applications/CMake 2.8-12.app/Contents/bin/ccmake"
 CMAKE_SOURCE_DIR = /Users/erik/Documents/git/MMDG/newSGCTapp/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/erik/Documents/git/MMDG/newSGCTapp/build
+CMAKE_BINARY_DIR = /Users/erik/Documents/git/MMDG/newSGCTapp
 
 # Include any dependencies generated for this target.
 include CMakeFiles/newSGCTapp.dir/depend.make
@@ -53,8 +53,8 @@ include CMakeFiles/newSGCTapp.dir/progress.make
 include CMakeFiles/newSGCTapp.dir/flags.make
 
 CMakeFiles/newSGCTapp.dir/core.cpp.o: CMakeFiles/newSGCTapp.dir/flags.make
-CMakeFiles/newSGCTapp.dir/core.cpp.o: /Users/erik/Documents/git/MMDG/newSGCTapp/src/core.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles $(CMAKE_PROGRESS_1)
+CMakeFiles/newSGCTapp.dir/core.cpp.o: src/core.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles $(CMAKE_PROGRESS_1)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/newSGCTapp.dir/core.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/newSGCTapp.dir/core.cpp.o -c /Users/erik/Documents/git/MMDG/newSGCTapp/src/core.cpp
 
@@ -76,8 +76,8 @@ CMakeFiles/newSGCTapp.dir/core.cpp.o.provides: CMakeFiles/newSGCTapp.dir/core.cp
 CMakeFiles/newSGCTapp.dir/core.cpp.o.provides.build: CMakeFiles/newSGCTapp.dir/core.cpp.o
 
 CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o: CMakeFiles/newSGCTapp.dir/flags.make
-CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o: /Users/erik/Documents/git/MMDG/newSGCTapp/src/DrawableSquare.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles $(CMAKE_PROGRESS_2)
+CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o: src/DrawableSquare.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles $(CMAKE_PROGRESS_2)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o -c /Users/erik/Documents/git/MMDG/newSGCTapp/src/DrawableSquare.cpp
 
@@ -99,8 +99,8 @@ CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o.provides: CMakeFiles/newSGCTapp.d
 CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o.provides.build: CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o
 
 CMakeFiles/newSGCTapp.dir/main.cpp.o: CMakeFiles/newSGCTapp.dir/flags.make
-CMakeFiles/newSGCTapp.dir/main.cpp.o: /Users/erik/Documents/git/MMDG/newSGCTapp/src/main.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles $(CMAKE_PROGRESS_3)
+CMakeFiles/newSGCTapp.dir/main.cpp.o: src/main.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles $(CMAKE_PROGRESS_3)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/newSGCTapp.dir/main.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/newSGCTapp.dir/main.cpp.o -c /Users/erik/Documents/git/MMDG/newSGCTapp/src/main.cpp
 
@@ -122,8 +122,8 @@ CMakeFiles/newSGCTapp.dir/main.cpp.o.provides: CMakeFiles/newSGCTapp.dir/main.cp
 CMakeFiles/newSGCTapp.dir/main.cpp.o.provides.build: CMakeFiles/newSGCTapp.dir/main.cpp.o
 
 CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o: CMakeFiles/newSGCTapp.dir/flags.make
-CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o: /Users/erik/Documents/git/MMDG/newSGCTapp/src/ModelMesh.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles $(CMAKE_PROGRESS_4)
+CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o: src/ModelMesh.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles $(CMAKE_PROGRESS_4)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o -c /Users/erik/Documents/git/MMDG/newSGCTapp/src/ModelMesh.cpp
 
@@ -145,8 +145,8 @@ CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o.provides: CMakeFiles/newSGCTapp.dir/Mo
 CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o.provides.build: CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o
 
 CMakeFiles/newSGCTapp.dir/player.cpp.o: CMakeFiles/newSGCTapp.dir/flags.make
-CMakeFiles/newSGCTapp.dir/player.cpp.o: /Users/erik/Documents/git/MMDG/newSGCTapp/src/player.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles $(CMAKE_PROGRESS_5)
+CMakeFiles/newSGCTapp.dir/player.cpp.o: src/player.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles $(CMAKE_PROGRESS_5)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/newSGCTapp.dir/player.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/newSGCTapp.dir/player.cpp.o -c /Users/erik/Documents/git/MMDG/newSGCTapp/src/player.cpp
 
@@ -168,8 +168,8 @@ CMakeFiles/newSGCTapp.dir/player.cpp.o.provides: CMakeFiles/newSGCTapp.dir/playe
 CMakeFiles/newSGCTapp.dir/player.cpp.o.provides.build: CMakeFiles/newSGCTapp.dir/player.cpp.o
 
 CMakeFiles/newSGCTapp.dir/robberCop.cpp.o: CMakeFiles/newSGCTapp.dir/flags.make
-CMakeFiles/newSGCTapp.dir/robberCop.cpp.o: /Users/erik/Documents/git/MMDG/newSGCTapp/src/robberCop.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles $(CMAKE_PROGRESS_6)
+CMakeFiles/newSGCTapp.dir/robberCop.cpp.o: src/robberCop.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles $(CMAKE_PROGRESS_6)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/newSGCTapp.dir/robberCop.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/newSGCTapp.dir/robberCop.cpp.o -c /Users/erik/Documents/git/MMDG/newSGCTapp/src/robberCop.cpp
 
@@ -191,8 +191,8 @@ CMakeFiles/newSGCTapp.dir/robberCop.cpp.o.provides: CMakeFiles/newSGCTapp.dir/ro
 CMakeFiles/newSGCTapp.dir/robberCop.cpp.o.provides.build: CMakeFiles/newSGCTapp.dir/robberCop.cpp.o
 
 CMakeFiles/newSGCTapp.dir/Scene.cpp.o: CMakeFiles/newSGCTapp.dir/flags.make
-CMakeFiles/newSGCTapp.dir/Scene.cpp.o: /Users/erik/Documents/git/MMDG/newSGCTapp/src/Scene.cpp
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles $(CMAKE_PROGRESS_7)
+CMakeFiles/newSGCTapp.dir/Scene.cpp.o: src/Scene.cpp
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles $(CMAKE_PROGRESS_7)
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Building CXX object CMakeFiles/newSGCTapp.dir/Scene.cpp.o"
 	/usr/bin/c++   $(CXX_DEFINES) $(CXX_FLAGS) -o CMakeFiles/newSGCTapp.dir/Scene.cpp.o -c /Users/erik/Documents/git/MMDG/newSGCTapp/src/Scene.cpp
 
@@ -226,21 +226,21 @@ newSGCTapp_OBJECTS = \
 # External object files for target newSGCTapp
 newSGCTapp_EXTERNAL_OBJECTS =
 
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: CMakeFiles/newSGCTapp.dir/core.cpp.o
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: CMakeFiles/newSGCTapp.dir/main.cpp.o
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: CMakeFiles/newSGCTapp.dir/player.cpp.o
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: CMakeFiles/newSGCTapp.dir/robberCop.cpp.o
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: CMakeFiles/newSGCTapp.dir/Scene.cpp.o
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: CMakeFiles/newSGCTapp.dir/build.make
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: /usr/local/lib/libsgct.a
-/Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp: CMakeFiles/newSGCTapp.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable /Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp"
+src/newSGCTapp: CMakeFiles/newSGCTapp.dir/core.cpp.o
+src/newSGCTapp: CMakeFiles/newSGCTapp.dir/DrawableSquare.cpp.o
+src/newSGCTapp: CMakeFiles/newSGCTapp.dir/main.cpp.o
+src/newSGCTapp: CMakeFiles/newSGCTapp.dir/ModelMesh.cpp.o
+src/newSGCTapp: CMakeFiles/newSGCTapp.dir/player.cpp.o
+src/newSGCTapp: CMakeFiles/newSGCTapp.dir/robberCop.cpp.o
+src/newSGCTapp: CMakeFiles/newSGCTapp.dir/Scene.cpp.o
+src/newSGCTapp: CMakeFiles/newSGCTapp.dir/build.make
+src/newSGCTapp: /usr/local/lib/libsgct.a
+src/newSGCTapp: CMakeFiles/newSGCTapp.dir/link.txt
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --red --bold "Linking CXX executable src/newSGCTapp"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/newSGCTapp.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
-CMakeFiles/newSGCTapp.dir/build: /Users/erik/Documents/git/MMDG/newSGCTapp/src/newSGCTapp
+CMakeFiles/newSGCTapp.dir/build: src/newSGCTapp
 .PHONY : CMakeFiles/newSGCTapp.dir/build
 
 CMakeFiles/newSGCTapp.dir/requires: CMakeFiles/newSGCTapp.dir/core.cpp.o.requires
@@ -257,6 +257,6 @@ CMakeFiles/newSGCTapp.dir/clean:
 .PHONY : CMakeFiles/newSGCTapp.dir/clean
 
 CMakeFiles/newSGCTapp.dir/depend:
-	cd /Users/erik/Documents/git/MMDG/newSGCTapp/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/erik/Documents/git/MMDG/newSGCTapp/src /Users/erik/Documents/git/MMDG/newSGCTapp/src /Users/erik/Documents/git/MMDG/newSGCTapp/build /Users/erik/Documents/git/MMDG/newSGCTapp/build /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles/newSGCTapp.dir/DependInfo.cmake --color=$(COLOR)
+	cd /Users/erik/Documents/git/MMDG/newSGCTapp && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/erik/Documents/git/MMDG/newSGCTapp/src /Users/erik/Documents/git/MMDG/newSGCTapp/src /Users/erik/Documents/git/MMDG/newSGCTapp /Users/erik/Documents/git/MMDG/newSGCTapp /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles/newSGCTapp.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/newSGCTapp.dir/depend
 

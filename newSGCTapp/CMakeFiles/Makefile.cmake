@@ -28,7 +28,7 @@ SET(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/2.8.12.2/CMakeCCompiler.cmake"
   "CMakeFiles/2.8.12.2/CMakeCXXCompiler.cmake"
   "CMakeFiles/2.8.12.2/CMakeSystem.cmake"
-  "/Users/erik/Documents/git/MMDG/newSGCTapp/src/CMakeLists.txt"
+  "src/CMakeLists.txt"
   )
 
 # The corresponding makefile is:

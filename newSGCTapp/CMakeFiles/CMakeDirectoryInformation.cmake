@@ -3,7 +3,7 @@
 
 # Relative path conversion top directories.
 SET(CMAKE_RELATIVE_PATH_TOP_SOURCE "/Users/erik/Documents/git/MMDG/newSGCTapp/src")
-SET(CMAKE_RELATIVE_PATH_TOP_BINARY "/Users/erik/Documents/git/MMDG/newSGCTapp/build")
+SET(CMAKE_RELATIVE_PATH_TOP_BINARY "/Users/erik/Documents/git/MMDG/newSGCTapp")
 
 # Force unix paths in dependencies.
 SET(CMAKE_FORCE_UNIX_PATHS 1)

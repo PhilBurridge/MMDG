@@ -1,0 +1,1 @@
+/Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles/newSGCTapp.dir

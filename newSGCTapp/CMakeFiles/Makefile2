@@ -53,7 +53,7 @@ CMAKE_EDIT_COMMAND = "/Applications/CMake 2.8-12.app/Contents/bin/ccmake"
 CMAKE_SOURCE_DIR = /Users/erik/Documents/git/MMDG/newSGCTapp/src
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/erik/Documents/git/MMDG/newSGCTapp/build
+CMAKE_BINARY_DIR = /Users/erik/Documents/git/MMDG/newSGCTapp
 
 #=============================================================================
 # Target rules for target CMakeFiles/newSGCTapp.dir
@@ -62,7 +62,7 @@ CMAKE_BINARY_DIR = /Users/erik/Documents/git/MMDG/newSGCTapp/build
 CMakeFiles/newSGCTapp.dir/all:
 	$(MAKE) -f CMakeFiles/newSGCTapp.dir/build.make CMakeFiles/newSGCTapp.dir/depend
 	$(MAKE) -f CMakeFiles/newSGCTapp.dir/build.make CMakeFiles/newSGCTapp.dir/build
-	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles  1 2 3 4 5 6 7
+	$(CMAKE_COMMAND) -E cmake_progress_report /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles  1 2 3 4 5 6 7
 	@echo "Built target newSGCTapp"
 .PHONY : CMakeFiles/newSGCTapp.dir/all
 
@@ -72,9 +72,9 @@ all: CMakeFiles/newSGCTapp.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/newSGCTapp.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles 7
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/newSGCTapp.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /Users/erik/Documents/git/MMDG/newSGCTapp/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /Users/erik/Documents/git/MMDG/newSGCTapp/CMakeFiles 0
 .PHONY : CMakeFiles/newSGCTapp.dir/rule
 
 # Convenience name for target.
