@@ -1,0 +1,1 @@
+/usr/bin/c++   -std=c++0x -stdlib=libstdc++  -Wl,-search_paths_first -Wl,-headerpad_max_install_names   CMakeFiles/newSGCTapp.dir/main.cpp.o  -o src/newSGCTapp  /usr/local/lib/libsgct.a -framework AGL -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo 

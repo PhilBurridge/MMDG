@@ -1,0 +1,1 @@
+/Users/erik/Documents/git/MMDG/spinning_triangle/CMakeFiles/newSGCTapp.dir

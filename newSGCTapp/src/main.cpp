@@ -6,10 +6,6 @@
 #include "robberCop.h"
 
 
-
-/* !!!! FIXA ROBERCOP I CORE BRANCHEN !!!! */
-
-
 // Create pointer to the sgct engine, scene and core
 sgct::Engine * gEngine;
 RobberCop *robberCop;
@@ -17,8 +13,10 @@ RobberCop *robberCop;
 void init();
 void draw();
 void preSync();
+void postSyncPreDraw();
 void encode();
 void decode();
+
 void cleanUp();
 void externalControlCallback(const char * recievedChars, int size, int clientId);
 void keyCallBack(int key, int action);
@@ -42,7 +40,7 @@ int main( int argc, char* argv[] ) {
     gEngine->setDrawFunction(draw);
     gEngine->setPreSyncFunction(preSync);
     gEngine->setCleanUpFunction(cleanUp);
-    //gEngine->setPostSyncPreDrawFunction(postSyncPreDraw);
+    gEngine->setPostSyncPreDrawFunction(postSyncPreDraw);
     gEngine->setExternalControlCallback(externalControlCallback);
     gEngine->setKeyboardCallbackFunction(keyCallBack);
 
@@ -83,8 +81,15 @@ void init() {
 }
 
 // Draw function
+int degrees = 0;
+float size = 0;
 void draw() {
-    robberCop->draw(_drawSpherical.getVal());
+    glPushMatrix();
+        float s = pow(2.0f, size);
+        glScalef(s,s,s);
+        glRotatef(degrees, 0, 0, 1);
+        robberCop->draw(_drawSpherical.getVal());
+    glPopMatrix();
 }
 
 // Sets the time and timeintervall(dt)
@@ -119,6 +124,10 @@ void preSync() {
     }
 
     robberCop->update(gEngine->getDt());
+}
+
+void postSyncPreDraw(){
+    
 }
 
 // Write all shared variables to be shared across the cluster
@@ -157,11 +166,16 @@ void externalControlCallback(const char * recievedChars, int size, int clientId)
 void keyCallBack(int key, int action){
     if(gEngine->isMaster() && action == GLFW_PRESS) {
         switch(key) {
+            case 'A': degrees -= 10; break;
+            case 'D': degrees += 10; break;
+            case 'Z': size--; break;
+            case 'X': size++; break;
+
             case 'S':
-                _drawSpherical.toggle();
+                _drawSpherical.toggle(); break;
             case 'T':
-                robberCop->printPingStats();
-            break;
+                robberCop->printPingStats(); break;
+
 
             case 'P':
                 std::cout << "Pinging clients " << std::endl;

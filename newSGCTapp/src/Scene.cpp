@@ -126,7 +126,7 @@ void Scene::draw(bool drawSpherical) {
     if(drawSpherical){ 
         // Draw Dome mode
         glPushMatrix();
-            float s = 1.5f;
+            float s = 100.0f;
             glScalef(s,s,s);
             bg_sphere->draw();
         glPopMatrix();

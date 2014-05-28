@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
-<Cluster masterAddress="130.236.124.49" externalControlPort="20501">
-	<Node address="130.236.124.49" port="20401">
+<Cluster masterAddress="172.20.10.3" externalControlPort="20501">
+	<Node address="172.20.10.3" port="20401">
 		<Window fullScreen="false">
 			<Stereo type="none" />
 			<!-- 16:9 aspect ratio -->
@@ -20,7 +20,7 @@
 			<Fisheye fov="165.0" quality="medium" tilt="27.0" />
 		</Window>
 	</Node>
-	<Node address="130.236.133.83" port="20402">
+	<Node address="172.20.10.7" port="20402">
 		<Window fullScreen="false">
 			<Stereo type="none" />
 			<!-- 16:9 aspect ratio -->
