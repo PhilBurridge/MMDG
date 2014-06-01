@@ -1,0 +1,20 @@
+
+MIRO:
+
+Om något syns första framen men inte på nästa beror på att internt i SGCT så kan vissa states disablas.
+
+Antingen får ni pusha alla era states i början på draw och poppa dem i slutet. Eller så får ni sätta vissa states i början på draw och disabla dem efteråt. Detta slipper man i modern openGL men i legacy bygger allt på states. Tror det kan vara så att er textur inte är aktiv eller likande. 
+
+Testa sätt:
+
+glEnable( GL_TEXTURE_2D );
+glActiveTexture(GL_TEXTURE0);
+
+rendera…
+
+glDisable( GL_TEXTURE_2D );
+
+Är det inte texturen så testa med andra states som kan göra att det ni renderar inte syns. När ni hittar problemet så berätta gärna vad det är så kan jag kolla i SGCT och se om det går att förebygga och göra SGCT bättre.
+
+
+Skickar även med min config när jag testar en domevy och första slaven i klustret:"
