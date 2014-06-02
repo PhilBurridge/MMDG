@@ -1,0 +1,35 @@
+<?xml version="1.0" ?>
+<Cluster masterAddress="130.236.124.215" externalControlPort="20500">
+	<Settings>
+		<Display swapInterval="0" refreshRate="60" />
+	</Settings>
+	<Node address="130.236.124.215" port="20400" swapLock="false">
+		<Window fullScreen="false" numberOfSamples="1">
+			<Pos x="0.0" y="0.0" />
+			<Stereo type="none" />
+			<!--<Size x="1388" y="400" />-->
+			<Size x="512" y="512" />
+			<Fisheye fov="180.0" quality="medium" tilt="0.0" />
+		</Window>
+	</Node>
+	<Node address="130.236.133.18" port="20401" swapLock="false">
+		<Window fullScreen="false" numberOfSamples="4">
+			<Pos x="512.0" y="0.0" />
+			<Stereo type="none" />
+			<Size x="400" y="300" />
+			<Viewport mesh="current/channel1_planar.sgc" mask="current/channel1.png" name="Channel 1">
+				<Viewplane>
+					<!-- Lower left -->
+					<Pos x="-5.187650" y="-1.880789" z="-5.637431" />
+					<!-- Upper left -->
+					<Pos x="-5.187650" y="4.301180" z="-4.666044" />
+					<!-- Upper right -->
+					<Pos x="5.187650" y="4.301180" z="-4.666044" />
+				</Viewplane>
+			</Viewport>
+		</Window>
+	</Node>
+	<User eyeSeparation="0.065">
+		<Pos x="0.0" y="0.0" z="0.0" />
+	</User>
+</Cluster>

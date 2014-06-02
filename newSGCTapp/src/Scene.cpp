@@ -130,18 +130,18 @@ void Scene::draw(bool drawSpherical) {
             bg_sphere->draw();
         glPopMatrix();
 
-        for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+        /*for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
             std::pair<int, Player *> pair = *it;
             pair.second->drawSpherical();
-        }
+        }*/
     }
     else{ 
         //Draw normal desktop mode
         background->draw(0.0f, 0.0f, -0.01f);
 
-        for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
+        /*for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
             std::pair<int, Player *> pair = *it;
             pair.second->draw();
-        }
+        }*/
     }
 }

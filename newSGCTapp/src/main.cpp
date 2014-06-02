@@ -22,20 +22,28 @@ void cleanUp();
 void externalControlCallback(const char * recievedChars, int size, int clientId);
 void keyCallBack(int key, int action);
 
-
 struct SharedPlayer{
     float phi;
     float theta;
     bool cop;
 };
 
+void drawPlayers(const std::vector<SharedPlayer> &v, bool drawSpherical);
+void drawPlayer(const SharedPlayer &sp);
+void drawPlayerSpherical(const SharedPlayer &sp);
+
+const float PLAYER_RADIUS = 2.0f;
+float width = 0.15f;
+float height = 0.15f;
+
+std::vector<SharedPlayer> sharedUserDataCopy(MAX_USERS);
 
 /*** Shared variables ***/
 sgct::SharedDouble curr_time(0.0);
 sgct::SharedBool _drawSpherical(false);
-
+sgct::SharedInt nPlayers(0);
 sgct::SharedVector<SharedPlayer> sharedUserData;
-std::vector<SharedPlayer> sharedUserDataCopy(MAX_USERS);
+
 
 
 int main( int argc, char* argv[] ) {
@@ -104,6 +112,8 @@ void preSync() {
             sharedUserDataCopy.push_back(sp);
         }
         sharedUserData.setVal(sharedUserDataCopy);
+
+        nPlayers.setVal(playerMap.size());
     }
 }
 
@@ -111,6 +121,7 @@ void preSync() {
 void encode() {    
     sgct::SharedData::instance()->writeDouble( &curr_time );
     sgct::SharedData::instance()->writeBool( &_drawSpherical );
+    sgct::SharedData::instance()->writeInt( &nPlayers );
     sgct::SharedData::instance()->writeVector( &sharedUserData );
 }
 
@@ -118,6 +129,7 @@ void encode() {
 void decode() {    
     sgct::SharedData::instance()->readDouble( &curr_time );
     sgct::SharedData::instance()->readBool( &_drawSpherical );
+    sgct::SharedData::instance()->readInt( &nPlayers );
     sgct::SharedData::instance()->readVector( &sharedUserData );
 }
 
@@ -125,21 +137,26 @@ void postSyncPreDraw(){
     if (!gEngine->isMaster()){
         sharedUserDataCopy = sharedUserData.getVal();
     }
-    for (std::vector<SharedPlayer>::iterator i = sharedUserDataCopy.begin(); i != sharedUserDataCopy.end(); ++i){
-        std::cout << "phi = " << i->phi << " theta = " << i->theta << " cop = " << i->cop << std::endl;
-    }
 }
 
 // Draw function
 int degrees = 0;
 float size = 0;
 void draw() {
+    glEnable( GL_TEXTURE_2D );
+    glActiveTexture(GL_TEXTURE0);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
     glPushMatrix();
         float s = pow(2.0f, size);
         glScalef(s,s,s);
         glRotatef(degrees, 0, 0, 1);
         robberCop->draw(_drawSpherical.getVal());
     glPopMatrix();
+
+    drawPlayers(sharedUserDataCopy, _drawSpherical.getVal());
+
+    glDisable( GL_TEXTURE_2D );
 }
 
 
@@ -179,3 +196,117 @@ void keyCallBack(int key, int action){
         }
     }
 }
+
+void drawPlayers(const std::vector<SharedPlayer> &v, bool drawSpherical){
+    if (drawSpherical){
+        for (std::vector<SharedPlayer>::iterator i = sharedUserDataCopy.begin(); i != sharedUserDataCopy.end(); ++i){
+            drawPlayerSpherical(*i);
+        }
+    }
+    else{
+        for (std::vector<SharedPlayer>::iterator i = sharedUserDataCopy.begin(); i != sharedUserDataCopy.end(); ++i){
+            drawPlayer(*i);
+        }
+    }
+}
+
+void drawPlayer(const SharedPlayer &sp){
+    float x = sp.phi;
+    float y = sp.theta;
+    float z = PLAYER_RADIUS;
+
+    glActiveTexture(GL_TEXTURE0);
+
+
+    // Bind the texture by its set handle
+    std::string textureName = sp.cop ? "cop" : "rob";
+    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByName(textureName));
+
+    glPushMatrix();
+    glTranslatef(x,y,z);
+
+    // Draw the player polygon
+    glBegin(GL_QUADS);
+        // Set the normal of the polygon
+        glNormal3f(0.0, 0.0, 1.0);
+
+        // Set starting position of the texture mapping
+        // The polygon is drawn from the world coordinates perspective 
+        // (we set the origin in the center of the polygon)
+        // while the texture is drawn from the polygons coordinates 
+        // (we draw from the bottom-left corner of the polygon)
+
+        // Define polygon vertices in counter clock wise order
+        glTexCoord2d(1, 0);
+        glVertex3f(+width, -height, 0);
+
+        glTexCoord2d(1, 1);
+        glVertex3f(+width, +height, 0);
+
+        glTexCoord2d(0, 1);
+        glVertex3f(-width, +height, 0);
+
+        glTexCoord2d(0, 0);
+        glVertex3f(-width, -height, 0);
+
+    glEnd();
+
+    glPopMatrix();
+
+}
+
+void drawPlayerSpherical(const SharedPlayer &sp){
+    float phi = -sp.phi;
+    float theta = sp.theta;
+    float r = -PLAYER_RADIUS;
+
+    float x = r*glm::sin(phi)*glm::cos(theta);
+    float y = r*glm::sin(phi)*glm::sin(theta);
+    float z = r*glm::cos(phi);
+
+    /*std::cout << "r    =" << r << std::endl;
+    std::cout << "phi  =" << phi << std::endl;
+    std::cout << "theta=" << theta << std::endl;
+    std::cout << "x=" << x << std::endl;
+    std::cout << "y=" << y << std::endl;
+    std::cout << "z=" << z << std::endl;
+    std::cout << "----" << std::endl;*/
+
+
+    glActiveTexture(GL_TEXTURE0);
+    std::string textureName = sp.cop ? "cop" : "rob";
+    glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByName(textureName));
+
+    glPushMatrix();
+        glRotatef(180.0f*phi/3.1415f, 0,1,0);
+        glRotatef(180.0f*theta/3.1415f, 1,0,0);
+        glTranslatef(0,0,r);
+        
+        // Draw the player polygon
+        glBegin(GL_QUADS);
+            // Set the normal of the polygon
+            glNormal3f(0.0, 0.0, 1.0);
+
+            // Set starting position of the texture mapping
+            // The polygon is drawn from the world coordinates perspective 
+            // (we set the origin in the center of the polygon)
+            // while the texture is drawn from the polygons coordinates 
+            // (we draw from the bottom-left corner of the polygon)
+
+            // Define polygon vertices in counter clock wise order
+            glTexCoord2d(1, 0);
+            glVertex3f(+width, -height, 0);
+
+            glTexCoord2d(1, 1);
+            glVertex3f(+width, +height, 0);
+
+            glTexCoord2d(0, 1);
+            glVertex3f(-width, +height, 0);
+
+            glTexCoord2d(0, 0);
+            glVertex3f(-width, -height, 0);
+        glEnd();
+    glPopMatrix();
+}
+
+
