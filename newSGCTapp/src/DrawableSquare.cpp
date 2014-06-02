@@ -111,7 +111,7 @@ void DrawableSquare::setSize(float s) {
 
 // Gets the size of a player
 float DrawableSquare::getSize() const {
-    return size;
+    return width;
 }
 
 void DrawableSquare::display() const{

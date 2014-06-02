@@ -51,8 +51,6 @@ void RobberCop::process(int id, std::string var, std::string val) {
     std::cout << "INPUT: " << std::endl;
     Core::process(id,var,val);
 
-    std::cout << "HANDELING INPUT" << std::endl;
-
     if(var == "connected"){
         std::cout << "adding new player" << std::endl;
 
@@ -156,9 +154,7 @@ void RobberCop::update(float dt){
 
 // Draws robberCop
 void RobberCop::draw(bool drawSpherical) const {
-    glEnable( GL_TEXTURE_2D );
-    glActiveTexture(GL_TEXTURE0);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    
     scene->draw(drawSpherical);
-    glDisable( GL_TEXTURE_2D );
+    
 }

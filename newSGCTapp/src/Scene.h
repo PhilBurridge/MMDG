@@ -36,7 +36,7 @@ public:
 
     void draw(bool drawSpherical);
 
-    const std::map<int, Player *>& getPlayerMap() const;
+    std::map<int, Player *>& getPlayerMap();
     void setPlayerMap(std::map<int, Player *> playerMap);
     void setPlayerPositions(std::vector<glm::vec2> positions);
     

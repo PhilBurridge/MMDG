@@ -22,7 +22,7 @@ public:
     //  Alternates and check if Cop/Robber
 	void switchToCop();
     void switchToRobber();
-    bool isCop();
+    bool isCop() const;
 
     // Controlls the Players movement
     void setMoveDirection(int d);
@@ -33,7 +33,7 @@ public:
     void movePlayer(float dt);
 
     // Get and set position
-    glm::vec2 getPosition() const;
+    const glm::vec2& getPosition() const;
     void setPosition(glm::vec2 p);
 
     void setName(std::string);

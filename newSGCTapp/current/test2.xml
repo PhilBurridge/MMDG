@@ -1,9 +1,9 @@
 <?xml version="1.0" ?>
-<Cluster masterAddress="172.19.1.125" externalControlPort="20500">
+<Cluster masterAddress="130.236.124.215" externalControlPort="20500">
 	<Settings>
 		<Display swapInterval="0" refreshRate="60" />
 	</Settings>
-	<Node address="172.19.1.125" port="20400" swapLock="false">
+	<Node address="130.236.124.215" port="20400" swapLock="false">
 		<Window fullScreen="false" numberOfSamples="1">
 			<Pos x="0.0" y="0.0" />
 			<Stereo type="none" />
@@ -12,7 +12,7 @@
 			<Fisheye fov="180.0" quality="medium" tilt="0.0" />
 		</Window>
 	</Node>
-	<Node address="172.19.1.11" port="20401" swapLock="false">
+	<Node address="130.236.133.18" port="20401" swapLock="false">
 		<Window fullScreen="false" numberOfSamples="4">
 			<Pos x="512.0" y="0.0" />
 			<Stereo type="none" />
