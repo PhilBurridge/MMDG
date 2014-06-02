@@ -156,5 +156,9 @@ void RobberCop::update(float dt){
 
 // Draws robberCop
 void RobberCop::draw(bool drawSpherical) const {
+    glEnable( GL_TEXTURE_2D );
+    glActiveTexture(GL_TEXTURE0);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     scene->draw(drawSpherical);
+    glDisable( GL_TEXTURE_2D );
 }

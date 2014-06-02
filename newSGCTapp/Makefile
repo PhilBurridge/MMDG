@@ -331,5 +331,17 @@ run:
 .PHONY: run
 
 run_spec:
-	./src/newSGCTapp -config configs/single.xml
+	./src/newSGCTapp -config configs/dome/dome_alpha_test.xml -local 0
+.PHONY: run
+
+run_spec2:
+	./src/newSGCTapp -config configs/dome/dome_alpha_test.xml -local 1 --slave
+.PHONY: run
+
+run_two:
+	./src/newSGCTapp -config configs/two_nodes.xml -local 0
+.PHONY: run
+
+run_two2:
+	./src/newSGCTapp -config configs/two_nodes.xml -local 1 --slave
 .PHONY: run
