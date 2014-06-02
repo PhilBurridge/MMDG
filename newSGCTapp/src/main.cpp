@@ -54,19 +54,11 @@ int main( int argc, char* argv[] ) {
         return EXIT_FAILURE;
     }
 
-    // Send a message to the connected clients
-    //gEngine->sendMessageToExternalControl(core->getMessage());
-
-    //test
-    //robberCop->process(1,"connected","1");
-    //int x_res = gEngine->getActiveXResolution();
-    //std::cout << "X-RES: " << x_res << std::endl;
     // Main loop
     gEngine->render();
 
     // Clean up (de-allocate)
     delete robberCop;
-    //delete scene;
     delete gEngine;
 
     // Exit program
@@ -114,20 +106,6 @@ void preSync() {
         }
         _playersPositions.setVal(playerPositionsTemp);
     }
-    else {
-        
-        std::string extStr = _externalInput.getVal();
-        if(extStr != "")
-            robberCop->handleExternalInput(extStr.c_str(), extStr.length(), 0);
-
-        robberCop->scene->setPlayerPositions(_playersPositions.getVal());
-    }
-
-    robberCop->update(gEngine->getDt());
-}
-
-void postSyncPreDraw(){
-    
 }
 
 // Write all shared variables to be shared across the cluster
@@ -144,6 +122,15 @@ void decode() {
     sgct::SharedData::instance()->readBool( &_drawSpherical );
     sgct::SharedData::instance()->readVector( &_playersPositions );
     sgct::SharedData::instance()->readString( &_externalInput );
+}
+
+void postSyncPreDraw(){
+    std::string extStr = _externalInput.getVal();
+    if(extStr != "")
+        robberCop->handleExternalInput(extStr.c_str(), extStr.length(), 0);
+
+    robberCop->scene->setPlayerPositions(_playersPositions.getVal());
+    robberCop->update(gEngine->getDt());
 }
 
 // Deletes all objects when the program is shut down

@@ -12,7 +12,7 @@ public class RunMMDGServer{
         
         int httpPort = 1337;
         int wsPort   = 1338;
-        int appPort  = 20501;
+        int appPort  = 20500;
         
         MMDGServer mmdgServer = new MMDGServer(httpPort, wsPort, appPort);
         mmdgServer.setUnloadsPerSecond(1000);

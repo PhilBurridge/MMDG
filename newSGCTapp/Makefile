@@ -345,3 +345,8 @@ run_two:
 run_two2:
 	./src/newSGCTapp -config configs/two_nodes.xml -local 1 --slave
 .PHONY: run
+
+run_dome:
+	./src/newSGCTapp -config current/dome_alpha_laptop.xml
+.PHONY: run
+
