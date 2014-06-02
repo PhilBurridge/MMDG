@@ -21,6 +21,16 @@ void cleanUp();
 void externalControlCallback(const char * recievedChars, int size, int clientId);
 void keyCallBack(int key, int action);
 
+
+struct SharedPlayer{
+    float phi;
+    float theta;
+    bool cop;
+};
+
+std::vector<SharedPlayer> SharedPlayers(100);
+
+
 /*** Shared variables ***/
 // The current time on master
 sgct::SharedDouble curr_time(0.0);
@@ -72,18 +82,6 @@ void init() {
     std::cout << "  ** MAIN INIT DONE **  " << std::endl;
 }
 
-// Draw function
-int degrees = 0;
-float size = 0;
-void draw() {
-    glPushMatrix();
-        float s = pow(2.0f, size);
-        glScalef(s,s,s);
-        glRotatef(degrees, 0, 0, 1);
-        robberCop->draw(_drawSpherical.getVal());
-    glPopMatrix();
-}
-
 // Sets the time and timeintervall(dt)
 void preSync() {
     // Set the time only on the master
@@ -96,7 +94,6 @@ void preSync() {
         externalInputTemp = "";
 
         //update shared player positions
-        
         Player * p;
         std::vector<glm::vec2> playerPositionsTemp;
         const std::map<int, Player*> playerMap = robberCop->scene->getPlayerMap();
@@ -132,6 +129,19 @@ void postSyncPreDraw(){
     robberCop->scene->setPlayerPositions(_playersPositions.getVal());
     robberCop->update(gEngine->getDt());
 }
+
+// Draw function
+int degrees = 0;
+float size = 0;
+void draw() {
+    glPushMatrix();
+        float s = pow(2.0f, size);
+        glScalef(s,s,s);
+        glRotatef(degrees, 0, 0, 1);
+        robberCop->draw(_drawSpherical.getVal());
+    glPopMatrix();
+}
+
 
 // Deletes all objects when the program is shut down
 void cleanUp() {
