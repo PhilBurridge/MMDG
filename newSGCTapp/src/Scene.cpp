@@ -5,10 +5,9 @@
 Scene::Scene(){
     background = new DrawableSquare("mmdg", 4.0f, 3.0f);
     bg_sphere = new ModelMesh("sphere", "mmdg");
-
 }
 
-const std::map<int, Player *>& Scene::getPlayerMap() const{
+std::map<int, Player *>& Scene::getPlayerMap(){
     return players;
 }
 

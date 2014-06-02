@@ -51,8 +51,6 @@ void RobberCop::process(int id, std::string var, std::string val) {
     std::cout << "INPUT: " << std::endl;
     Core::process(id,var,val);
 
-    std::cout << "HANDELING INPUT" << std::endl;
-
     if(var == "connected"){
         std::cout << "adding new player" << std::endl;
 

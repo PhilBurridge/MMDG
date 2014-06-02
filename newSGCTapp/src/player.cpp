@@ -46,7 +46,7 @@ void Player::switchToRobber() {
 }
 
 // Check if Player is a cop
-bool Player::isCop() {
+bool Player::isCop() const{
     return cop;
 }
 
@@ -73,7 +73,7 @@ void Player::movePlayer(float dt) {
     position += dt*speed*direction;
 }
 
-glm::vec2 Player::getPosition() const {
+const glm::vec2& Player::getPosition() const {
     return position;
 }
 
