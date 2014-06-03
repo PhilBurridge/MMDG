@@ -36,14 +36,14 @@ void Scene::setPlayerMap(std::map<int, Player *> playerMap){
 }
 
 // Updates all the required stuff for players before drawing
-void Scene::update(float dt) {
+void Scene::update(float dt, bool sphericalMode) {
     Player * p;
     for(std::map<int, Player *>::iterator it = players.begin(); it != players.end(); it++) {
         std::pair<int, Player *> pair = *it;
         p = pair.second;
 
         // Updates the positions of all players with a specific step
-        p->movePlayer(dt);
+        p->movePlayer(dt, sphericalMode);
 
         // Make cops to robber if they have caught any robbers in a while
         if(p->isCop() && !p->copTimer()){

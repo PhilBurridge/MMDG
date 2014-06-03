@@ -26,6 +26,7 @@ void RobberCop::init(){
     sgct::TextureManager::instance()->loadTexure(trash, "box", "./textures/box.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "cop", "./textures/cop.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "rob", "./textures/robber.png", true);
+    sgct::TextureManager::instance()->loadTexure(trash, "info", "./textures/rob.png", true);
 
 
 
@@ -148,13 +149,11 @@ void RobberCop::toggleDrawSpherical(){
     drawSpherical = !drawSpherical;
 }
 
-void RobberCop::update(float dt){
-    scene->update(dt);
+void RobberCop::update(float dt, bool sphericalMode){
+    scene->update(dt, sphericalMode);
 }
 
 // Draws robberCop
 void RobberCop::draw(bool drawSpherical) const {
-    
     scene->draw(drawSpherical);
-    
 }

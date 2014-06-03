@@ -34,17 +34,26 @@ void drawPlayer(const SharedPlayer &sp);
 void drawPlayerSpherical(const SharedPlayer &sp);
 
 float Player::radius = 2.0f;
-float width = 0.15f;
-float height = 0.15f;
+float width = 0.10f;
+float height = 0.10f;
+
+int degrees = 0;
+float zoom = 0;
+
+sgct::SharedInt sharedZoom(0);
+sgct::SharedFloat sharedDegree(0.0f);
 
 std::vector<SharedPlayer> sharedUserDataCopy(MAX_USERS);
 
 /*** Shared variables ***/
 sgct::SharedDouble curr_time(0.0);
 sgct::SharedBool _drawSpherical(false);
+sgct::SharedBool sharedDrawQR(true);
 sgct::SharedInt nPlayers(0);
 sgct::SharedVector<SharedPlayer> sharedUserData;
 
+
+DrawableSquare info("cop", 0.3f);
 
 
 int main( int argc, char* argv[] ) {
@@ -95,8 +104,10 @@ void preSync() {
     if( gEngine->isMaster() ) {
         // Get the time in seconds
         curr_time.setVal(sgct::Engine::getTime());
+        sharedZoom.setVal(zoom);
+        sharedDegree.setVal(degrees);
 
-        robberCop->update(gEngine->getDt());
+        robberCop->update(gEngine->getDt(), _drawSpherical.getVal());
 
         //update shared player positions
         Player * p;
@@ -122,6 +133,10 @@ void preSync() {
 void encode() {    
     sgct::SharedData::instance()->writeDouble( &curr_time );
     sgct::SharedData::instance()->writeBool( &_drawSpherical );
+    sgct::SharedData::instance()->writeBool( &sharedDrawQR );
+    sgct::SharedData::instance()->writeInt( &sharedZoom );
+    sgct::SharedData::instance()->writeFloat( &sharedDegree );
+
     sgct::SharedData::instance()->writeInt( &nPlayers );
     sgct::SharedData::instance()->writeVector( &sharedUserData );
 }
@@ -130,33 +145,47 @@ void encode() {
 void decode() {    
     sgct::SharedData::instance()->readDouble( &curr_time );
     sgct::SharedData::instance()->readBool( &_drawSpherical );
+    sgct::SharedData::instance()->readBool( &sharedDrawQR );
+    sgct::SharedData::instance()->readInt( &sharedZoom );
+    sgct::SharedData::instance()->readFloat( &sharedDegree );
     sgct::SharedData::instance()->readInt( &nPlayers );
     sgct::SharedData::instance()->readVector( &sharedUserData );
 }
 
 void postSyncPreDraw(){
     if (!gEngine->isMaster()){
+        zoom = sharedZoom.getVal();
+        degrees = sharedDegree.getVal();
         sharedUserDataCopy = sharedUserData.getVal();
     }
 }
 
 // Draw function
-int degrees = 0;
-float size = 0;
 void draw() {
     glEnable( GL_TEXTURE_2D );
     glActiveTexture(GL_TEXTURE0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    glPushMatrix();
-        float s = pow(2.0f, size);
-        glScalef(s,s,s);
-        glRotatef(degrees, 0, 0, 1);
-        robberCop->draw(_drawSpherical.getVal());
-        drawPlayers(sharedUserDataCopy, _drawSpherical.getVal());
-    glPopMatrix();
+    robberCop->draw(_drawSpherical.getVal());
+    drawPlayers(sharedUserDataCopy, _drawSpherical.getVal());
 
-    
+    glPushMatrix();
+        float s = pow(2.0f, zoom);
+        //glScalef(s,s,s);
+        glRotatef(degrees, 0, 0, 1);
+        
+        if(sharedDrawQR.getVal()){
+
+            info.drawSpherical(-s, 3.1415f/4.0f, 0.0f);
+            /*
+            glPushMatrix();
+            glRotatef(90, 1, 0, 0);
+            info.draw(0.0f, 0.0f, -0.01f);
+            glPopMatrix();
+            */
+        }
+
+    glPopMatrix();
 
     glDisable( GL_TEXTURE_2D );
 }
@@ -182,18 +211,20 @@ void keyCallBack(int key, int action){
         switch(key) {
             case 'A': degrees -= 10; break;
             case 'D': degrees += 10; break;
-            case 'Z': size--; break;
-            case 'X': size++; break;
+            case 'Z': zoom--; break;
+            case 'X': zoom++; break;
 
             case 'S':
                 _drawSpherical.toggle(); break;
             case 'T':
                 robberCop->printPingStats(); break;
 
-
             case 'P':
                 std::cout << "Pinging clients " << std::endl;
-                robberCop->startBenchmark();
+                robberCop->startBenchmark(); break;
+            case 'Q':
+                sharedDrawQR.toggle(); break;
+
             break;
         }
     }
@@ -218,9 +249,7 @@ void drawPlayer(const SharedPlayer &sp){
     float z = Player::radius;
 
 
-
     glActiveTexture(GL_TEXTURE0);
-
 
     // Bind the texture by its set handle
     std::string textureName = sp.cop ? "cop" : "rob";
@@ -234,13 +263,6 @@ void drawPlayer(const SharedPlayer &sp){
         // Set the normal of the polygon
         glNormal3f(0.0, 0.0, 1.0);
 
-        // Set starting position of the texture mapping
-        // The polygon is drawn from the world coordinates perspective 
-        // (we set the origin in the center of the polygon)
-        // while the texture is drawn from the polygons coordinates 
-        // (we draw from the bottom-left corner of the polygon)
-
-        // Define polygon vertices in counter clock wise order
         glTexCoord2d(1, 0);
         glVertex3f(+width, -height, 0);
 
@@ -267,15 +289,6 @@ void drawPlayerSpherical(const SharedPlayer &sp){
     float x = r*glm::sin(phi)*glm::cos(theta);
     float y = r*glm::sin(phi)*glm::sin(theta);
     float z = r*glm::cos(phi);
-
-    /*std::cout << "r    =" << r << std::endl;
-    std::cout << "phi  =" << phi << std::endl;
-    std::cout << "theta=" << theta << std::endl;
-    std::cout << "x=" << x << std::endl;
-    std::cout << "y=" << y << std::endl;
-    std::cout << "z=" << z << std::endl;
-    std::cout << "----" << std::endl;*/
-
 
     glActiveTexture(GL_TEXTURE0);
     std::string textureName = sp.cop ? "cop" : "rob";

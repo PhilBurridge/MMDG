@@ -30,7 +30,7 @@ public:
     void stop();
 
     // Multplies speed with direction
-    void movePlayer(float dt);
+    void movePlayer(float dt, bool sphericalMode);
 
     // Get and set position
     const glm::vec2& getPosition() const;

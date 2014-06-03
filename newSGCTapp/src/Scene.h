@@ -23,7 +23,7 @@ public:
     Scene();
 
     // Updates the Scene
-    void update(float dt);
+    void update(float dt, bool sphericalMode);
 
     // Checks if a collision occurs
     void checkCollisions();

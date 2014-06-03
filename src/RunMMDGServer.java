@@ -24,7 +24,7 @@ public class RunMMDGServer extends JFrame implements ActionListener{
 	
 	 public RunMMDGServer() 
 	 {
-		 
+	    
 	 	panelMain = new JPanel();
 	 	panelText = new JPanel();
 	 	
@@ -39,7 +39,7 @@ public class RunMMDGServer extends JFrame implements ActionListener{
 	 	txtIp.setEditable(false);
 	 	txtHttp = new JTextField("1337");
 	 	txtWs = new JTextField("1338");
-	 	txtApp = new JTextField("20501");
+	 	txtApp = new JTextField("20500");
 	 	txtAddress=  new JTextField(" ",JTextField.CENTER);
 	 	txtAddress.setEditable(false);
 	 	txtAppIP = new JTextField("localhost");

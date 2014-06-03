@@ -19,7 +19,7 @@ const double Player::COP_TIMER_LIMIT = 3.0;
 
 // Player constructor
 Player::Player(glm::vec2 pos, glm::vec3 c, bool isCop, sgct::Engine * e):
-DrawableSquare("rob", 0.15f, 0.15f), position(pos), cop(isCop), directionIndex(0) {
+DrawableSquare("rob", 0.10f, 0.10f), position(pos), cop(isCop), directionIndex(0) {
 
     std::cout << "Player constructor" << std::endl;
     speed = isCop ? COP_SPEED : ROB_SPEED;
@@ -68,12 +68,20 @@ void Player::stop(){
 }
 
 // Multiplies the player direction with its speed
-void Player::movePlayer(float dt) {
+void Player::movePlayer(float dt, bool sphericalMode) {
     position += dt*speed*direction;
-    std::cout << "x=" << position.x << std::endl;
-    std::cout << "y=" << position.y << std::endl;
-    if(position.y > 3.1415f) position.y = 3.1415f;
-    if(position.y < 0.0f)    position.y = 0.0f;
+    if(sphericalMode){
+        //Normalize theta
+        if(position.y > 3.1415f/2.0f-0.13f) 
+            position.y = 3.1415f/2.0f-0.13f;
+        if(position.y < 0.13f) 
+            position.y = 0.13f;
+        //Normalize phi
+        if(position.x < -3.1415f)
+            position.x += 2.0f*3.1415f;
+        if(position.x > 3.1415f)
+            position.x -= 2.0f*3.1415f;
+    }
 }
 
 const glm::vec2& Player::getPosition() const {
