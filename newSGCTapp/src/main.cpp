@@ -104,7 +104,7 @@ void preSync() {
         sharedZoom.setVal(zoom);
         sharedDegree.setVal(degrees);
 
-        robberCop->update(gEngine->getDt());
+        robberCop->update(gEngine->getDt(), _drawSpherical.getVal());
 
         //update shared player positions
         Player * p;
@@ -150,7 +150,6 @@ void postSyncPreDraw(){
     if (!gEngine->isMaster()){
         zoom = sharedZoom.getVal();
         degrees = sharedDegree.getVal();
-        std::cout << "zoom=" << zoom << std::endl;
         sharedUserDataCopy = sharedUserData.getVal();
     }
 }

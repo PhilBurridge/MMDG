@@ -68,12 +68,20 @@ void Player::stop(){
 }
 
 // Multiplies the player direction with its speed
-void Player::movePlayer(float dt) {
+void Player::movePlayer(float dt, bool sphericalMode) {
     position += dt*speed*direction;
-    std::cout << "x=" << position.x << std::endl;
-    std::cout << "y=" << position.y << std::endl;
-    if(position.y > 3.1415f-0.13f) position.y = 3.1415f-0.13f;
-    if(position.y < 0.13f)    position.y = 0.13f;
+    if(sphericalMode){
+        //Normalize theta
+        if(position.y > 3.1415f-0.13f) 
+            position.y = 3.1415f-0.13f;
+        if(position.y < 0.13f) 
+            position.y = 0.13f;
+        //Normalize phi
+        if(position.x < -3.1415f)
+            position.x -= 2.0f*3.1415f;
+        if(position.x > 3.1415f)
+            position.x -= 2.0f*3.1415f;
+    }
 }
 
 const glm::vec2& Player::getPosition() const {

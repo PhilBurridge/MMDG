@@ -148,13 +148,11 @@ void RobberCop::toggleDrawSpherical(){
     drawSpherical = !drawSpherical;
 }
 
-void RobberCop::update(float dt){
-    scene->update(dt);
+void RobberCop::update(float dt, bool sphericalMode){
+    scene->update(dt, sphericalMode);
 }
 
 // Draws robberCop
 void RobberCop::draw(bool drawSpherical) const {
-    
     scene->draw(drawSpherical);
-    
 }
