@@ -30,9 +30,9 @@ ICON: URL or path in folder.
 POS: upleft, upcenter, upright, centerleft, centercenter, centerright, downleft, downcenter, downright.
 -->
 <CATALOG>
-	<SUBMITNAME>
+<!--	<SUBMITNAME>
 		<DESCRIPTION>Please enter your name, 2-12 letters!</DESCRIPTION>
-	</SUBMITNAME>
+	</SUBMITNAME>-->
 	<!--<TEXTFIELD>
 		<ID>0</ID>
 		<BUTTONTEXT>POST</BUTTONTEXT>

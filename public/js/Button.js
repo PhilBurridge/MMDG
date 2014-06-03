@@ -16,10 +16,20 @@ Button.prototype = {
     */
 	printButton: function(){
 
+        var html = "<div class='button' style='background-image:url(" + this.icon + ");'"
+
         if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
 
+            html += " ontouchstart='buttonDown(" + this.name + ");' ontouchend='buttonUp(" + this.name + ");'";
+
+        }else{
+
+            html += "onmousedown='buttonDown(" + this.name + ");' onmouseup='buttonUp(" + this.name + ");'";
         }
-        document.write("<div class='button' style='background-image:url(");
+
+        html += ");'></div>";
+
+       /* document.write("<div class='button' style='background-image:url(");
         document.write(this.icon);
         document.write(");' onmousedown='buttonDown(");
         document.write(this.name);
@@ -29,7 +39,8 @@ Button.prototype = {
         document.write(this.name);
         document.write(")' ontouchend='buttonUp(");
         document.write(this.name);
-        document.write(");'></div>");
+        document.write(");'></div>");*/
+        document.write(html);
     }
 
     // TO DO

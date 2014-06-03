@@ -69,7 +69,6 @@ public class MMDGServer extends ConsolePrinter implements Runnable{
         httpServer = new HTTPServer(serverIP, HTTP_PORT);
         webSocketServer = new WebSocketServer(WEB_SOCKET_PORT);
         tcpHandler = new TCPHandler(applicationIP, APP_PORT);
-        
     }
 
     /**
