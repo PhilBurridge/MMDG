@@ -26,7 +26,7 @@ public:
     void update(float dt, bool sphericalMode);
 
     // Checks if a collision occurs
-    void checkCollisions();
+    void checkCollisions(bool sphericalMode);
 
     // Handels Players
     void addPlayer(int id, Player *);

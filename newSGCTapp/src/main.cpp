@@ -47,7 +47,7 @@ std::vector<SharedPlayer> sharedUserDataCopy(MAX_USERS);
 
 /*** Shared variables ***/
 sgct::SharedDouble curr_time(0.0);
-sgct::SharedBool _drawSpherical(false);
+sgct::SharedBool _drawSpherical(true);
 sgct::SharedBool sharedDrawQR(true);
 sgct::SharedInt nPlayers(0);
 sgct::SharedVector<SharedPlayer> sharedUserData;

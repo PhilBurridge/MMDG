@@ -50,12 +50,12 @@ void Scene::update(float dt, bool sphericalMode) {
             p->switchToRobber();
         }
     }
-    checkCollisions();
+    checkCollisions(sphericalMode);
 }
 
 
 
-void Scene::checkCollisions() {
+void Scene::checkCollisions(bool sphericalMode) {
     Player * p1;
     Player * p2;
 
@@ -78,12 +78,39 @@ void Scene::checkCollisions() {
             //If we've gotten here, we know p1 is a cop and p2 is a robber
             //Check if there is a collision
             
-            //glm::vec3 pos1;
-            //glm::vec3 pos2;
-            //if(sphericalMode){}
+            
+            /*if(sphericalMode){
 
+                glm::vec3 pos1;
+                glm::vec3 pos2;
+
+                //Player 1
+                float phi1 = p1->getPosition().x;
+                float theta1 = -p1->getPosition().y;
+                pos1.x = Player::radius*glm::sin(phi1)*glm::cos(theta1);
+                pos1.y = Player::radius*glm::sin(phi1)*glm::sin(theta1);
+                pos1.z = Player::radius*glm::cos(phi1);
+
+                //PLayer 2
+                float phi2 = p2->getPosition().x;
+                float theta2 = -p2->getPosition().y;
+                pos2.x = Player::radius*glm::sin(phi2)*glm::cos(theta2);
+                pos2.y = Player::radius*glm::sin(phi2)*glm::sin(theta2);
+                pos2.z = Player::radius*glm::cos(phi2);
+
+
+                if(glm::length(pos1 - pos2) < (p1->getSize() + p2->getSize())) { 
+                    // Do somthing when collision happens. KILL THA ROBBBA
+                    p1->resetCopTimer();
+                    p2->switchToCop();
+
+                    std::cout << "****************************************" << std::endl;
+                    std::cout << "collision between player " << (*itRob).first << " and " << (*itCop).first << std::endl;
+                    std::cout << "****************************************" << std::endl;
+                }
+                continue;
+            } */
             if(glm::length(p1->getPosition() - p2->getPosition()) < (p1->getSize() + p2->getSize())) { 
-
                 // Do somthing when collision happens. KILL THA ROBBBA
                 p1->resetCopTimer();
                 p2->switchToCop();
