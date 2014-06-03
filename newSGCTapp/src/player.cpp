@@ -72,8 +72,8 @@ void Player::movePlayer(float dt) {
     position += dt*speed*direction;
     std::cout << "x=" << position.x << std::endl;
     std::cout << "y=" << position.y << std::endl;
-    if(position.y > 3.1415f) position.y = 3.1415f;
-    if(position.y < 0.0f)    position.y = 0.0f;
+    if(position.y > 3.1415f-0.13f) position.y = 3.1415f-0.13f;
+    if(position.y < 0.13f)    position.y = 0.13f;
 }
 
 const glm::vec2& Player::getPosition() const {

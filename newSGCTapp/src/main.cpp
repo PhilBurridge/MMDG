@@ -37,6 +37,12 @@ float Player::radius = 2.0f;
 float width = 0.15f;
 float height = 0.15f;
 
+int degrees = 0;
+float zoom = 0;
+
+sgct::SharedInt sharedZoom(0);
+sgct::SharedFloat sharedDegree(0.0f);
+
 std::vector<SharedPlayer> sharedUserDataCopy(MAX_USERS);
 
 /*** Shared variables ***/
@@ -95,6 +101,8 @@ void preSync() {
     if( gEngine->isMaster() ) {
         // Get the time in seconds
         curr_time.setVal(sgct::Engine::getTime());
+        sharedZoom.setVal(zoom);
+        sharedDegree.setVal(degrees);
 
         robberCop->update(gEngine->getDt());
 
@@ -122,6 +130,8 @@ void preSync() {
 void encode() {    
     sgct::SharedData::instance()->writeDouble( &curr_time );
     sgct::SharedData::instance()->writeBool( &_drawSpherical );
+    sgct::SharedData::instance()->writeInt( &sharedZoom );
+    sgct::SharedData::instance()->writeFloat( &sharedDegree );
     sgct::SharedData::instance()->writeInt( &nPlayers );
     sgct::SharedData::instance()->writeVector( &sharedUserData );
 }
@@ -130,33 +140,34 @@ void encode() {
 void decode() {    
     sgct::SharedData::instance()->readDouble( &curr_time );
     sgct::SharedData::instance()->readBool( &_drawSpherical );
+    sgct::SharedData::instance()->readInt( &sharedZoom );
+    sgct::SharedData::instance()->readFloat( &sharedDegree );
     sgct::SharedData::instance()->readInt( &nPlayers );
     sgct::SharedData::instance()->readVector( &sharedUserData );
 }
 
 void postSyncPreDraw(){
     if (!gEngine->isMaster()){
+        zoom = sharedZoom.getVal();
+        degrees = sharedDegree.getVal();
+        std::cout << "zoom=" << zoom << std::endl;
         sharedUserDataCopy = sharedUserData.getVal();
     }
 }
 
 // Draw function
-int degrees = 0;
-float size = 0;
 void draw() {
     glEnable( GL_TEXTURE_2D );
     glActiveTexture(GL_TEXTURE0);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     glPushMatrix();
-        float s = pow(2.0f, size);
+        float s = pow(2.0f, zoom);
         glScalef(s,s,s);
         glRotatef(degrees, 0, 0, 1);
         robberCop->draw(_drawSpherical.getVal());
         drawPlayers(sharedUserDataCopy, _drawSpherical.getVal());
-    glPopMatrix();
-
-    
+    glPopMatrix();    
 
     glDisable( GL_TEXTURE_2D );
 }
@@ -182,8 +193,8 @@ void keyCallBack(int key, int action){
         switch(key) {
             case 'A': degrees -= 10; break;
             case 'D': degrees += 10; break;
-            case 'Z': size--; break;
-            case 'X': size++; break;
+            case 'Z': zoom--; break;
+            case 'X': zoom++; break;
 
             case 'S':
                 _drawSpherical.toggle(); break;
