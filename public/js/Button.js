@@ -28,7 +28,7 @@ Button.prototype = {
         }
 
         html += ");'></div>";
-
+        document.write(html);
        /* document.write("<div class='button' style='background-image:url(");
         document.write(this.icon);
         document.write(");' onmousedown='buttonDown(");
@@ -40,7 +40,7 @@ Button.prototype = {
         document.write(")' ontouchend='buttonUp(");
         document.write(this.name);
         document.write(");'></div>");*/
-        document.write(html);
+        
     }
 
     // TO DO
