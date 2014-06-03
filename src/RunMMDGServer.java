@@ -1,10 +1,14 @@
 import java.io.*;
+import java.net.InetAddress;
 import java.net.URL;
-
+import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
+
 import mmdg_server.MMDGServer;
+
 import java.awt.*;
 import java.awt.event.*;
+
 import javax.swing.*;
 
 
@@ -97,18 +101,7 @@ public class RunMMDGServer extends JFrame implements ActionListener{
             txtAppIP.setEditable(false);
             
             //H€MTA IP
-            // This is probably a wierd way to get the IP address...
-            String ipAdress = "";
-            try {
-                URL whatismyip = new URL("http://checkip.amazonaws.com/");
-                BufferedReader in = new BufferedReader(new InputStreamReader(
-                                whatismyip.openStream()));
-
-                ipAdress = in.readLine(); // you return the IP as a String
-            } catch (Exception eIp) {
-            	ipAdress = "Could not find IP";
-                eIp.printStackTrace();
-            }
+            String ipAdress = getMyIP();             
             txtIp.setText(ipAdress);
             
             try {
@@ -131,6 +124,33 @@ public class RunMMDGServer extends JFrame implements ActionListener{
     		txtAddress.setText("Server Stopped");
     	}
     	
+    }
+	
+    /**
+     * Tries to get local host address via Java InetAdress. If that doesn't
+     * work, it tries to get the IP address from http://checkip.amazonaws.com/.
+     * 
+     * @return The local host IP address, or public IP address.
+     */
+    private String getMyIP() {
+        try {
+            // Getting local host address.
+            return InetAddress.getLocalHost().getHostAddress();
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        // This is probably a wierd way to get the IP address...
+        try {
+            URL whatismyip = new URL("http://checkip.amazonaws.com/");
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                            whatismyip.openStream()));
+
+            return in.readLine(); // you return the IP as a String
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "Couldn't find IP";
+        }
     }
 
     /**
