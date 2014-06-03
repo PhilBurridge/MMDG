@@ -8,10 +8,12 @@ Scene::Scene(){
 
 }
 
+// Gets the map containing all players
 const std::map<int, Player *>& Scene::getPlayerMap() const{
     return players;
 }
 
+// Sets the positions of all players, used for sharing the positions over the cluster
 void Scene::setPlayerPositions(std::vector<glm::vec2> positions){
     if(positions.size() != players.size()){
         
@@ -32,6 +34,7 @@ void Scene::setPlayerPositions(std::vector<glm::vec2> positions){
     }
 }
 
+// Sets the map containing all players
 void Scene::setPlayerMap(std::map<int, Player *> playerMap){
     players = playerMap;
 }
@@ -55,7 +58,7 @@ void Scene::update(float dt) {
 }
 
 
-
+// Checks for collisions between players
 void Scene::checkCollisions() {
     Player * p1;
     Player * p2;
@@ -90,10 +93,9 @@ void Scene::checkCollisions() {
             }
         }
     }
-
 }
 
-        
+// Adds a player to the game
 void Scene::addPlayer(int id, Player *p) {
     // Set cop texture and start cop timer
     if(p->isCop())
@@ -102,6 +104,7 @@ void Scene::addPlayer(int id, Player *p) {
     players.insert(std::pair<int, Player *>(id, p));
 }
 
+// Removes a player from the game
 bool Scene::removePlayer(int id){
     std::map<int, Player *>::iterator it = players.find(id);
     
@@ -112,6 +115,7 @@ bool Scene::removePlayer(int id){
     return true;
 }
 
+// Gets a player by id
 Player * Scene::getPlayer(int id){
     return players[id];
 }
@@ -121,8 +125,8 @@ unsigned int Scene::getNumberOfPlayers() {
     return players.size();
 }
 
+// Draws the scene in dome or normal desktop mode
 void Scene::draw(bool drawSpherical) {
-
     if(drawSpherical){ 
         // Draw Dome mode
         glPushMatrix();

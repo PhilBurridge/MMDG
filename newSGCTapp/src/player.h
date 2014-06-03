@@ -64,6 +64,7 @@ public:
     } DIRECTION;
 
 
+    static float radius;
 
 private:
 
@@ -85,7 +86,7 @@ private:
     static const float COP_SPEED;
     static const float ROB_SPEED;
 
-    static const float RADIOUS;
+    
     
     static const glm::vec2 DIRECTIONS[];
 };

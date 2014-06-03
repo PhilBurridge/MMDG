@@ -1,11 +1,13 @@
 #include "DrawableSquare.h"
 
+// DrawableSquare constructor, using width and heigth
 DrawableSquare::DrawableSquare(const std::string& t, float w, float h):
 textureName(t), width(w), height(h) {
     std::cout << "DrawableSquare constructor" << std::endl;
     size = fmax(w,h);
 }
 
+// DrawableSquare constructor, using only size
 DrawableSquare::DrawableSquare(const std::string& t, float s):
 textureName(t), size(s) {
     std::cout << "DrawableSquare constructor" << std::endl;
@@ -14,7 +16,7 @@ textureName(t), size(s) {
 }
 
 // Draws a player with a set position and MVP matrix
-void DrawableSquare::draw(/*mat4::MVP,*/ float x, float y, float z) const {
+void DrawableSquare::draw(float x, float y, float z) const {
     // Set the active texture unit
     glActiveTexture(GL_TEXTURE0);
 
@@ -54,6 +56,7 @@ void DrawableSquare::draw(/*mat4::MVP,*/ float x, float y, float z) const {
 
 }
 
+// Draws a square in spherical coordinates
 void DrawableSquare::drawSpherical(float r, float theta, float phi) const{
 
     float x = r*glm::sin(phi)*glm::cos(theta);
@@ -67,7 +70,6 @@ void DrawableSquare::drawSpherical(float r, float theta, float phi) const{
     std::cout << "y=" << y << std::endl;
     std::cout << "z=" << z << std::endl;
     std::cout << "----" << std::endl;*/
-
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, sgct::TextureManager::instance()->getTextureByName(textureName));
@@ -114,6 +116,7 @@ float DrawableSquare::getSize() const {
     return size;
 }
 
+// Displays info about a DrawableSquare
 void DrawableSquare::display() const{
     std::cout << "size = " << size << std::endl;
     std::cout << "width = " << width << std::endl;

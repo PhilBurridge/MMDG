@@ -22,7 +22,7 @@ void RobberCop::init(){
 
     // Load the textures to the texturehandle
     size_t trash = -1;
-    sgct::TextureManager::instance()->loadTexure(trash, "mmdg",  "./textures/mmdg.png", true);
+    sgct::TextureManager::instance()->loadTexure(trash, "mmdg",  "./textures/space.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "box", "./textures/box.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "cop", "./textures/cop.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "rob", "./textures/robber.png", true);
@@ -70,10 +70,10 @@ void RobberCop::process(int id, std::string var, std::string val) {
 
 
         float r1 = fmod((0.22f * scene->getNumberOfPlayers()), 1.0f);
-        float x = ((1.57 + 1.57) * r1 - 1.57);
+        float x = ((1.57 + 1.57) * r1);
 
         float r2 = fmod((0.32f * scene->getNumberOfPlayers()), 1.0f);
-        float y = ((0.78 + 0.78) * r2 - 0.78);
+        float y = ((0.78 + 0.78) * r2 + 0.78);
 
         // Randomize a color for every player
         float rand_R = r1;

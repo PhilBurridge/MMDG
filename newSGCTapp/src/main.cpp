@@ -4,6 +4,7 @@
 #include "debug.h"
 #include "sgct.h"
 #include "robberCop.h"
+#include "player.h"
 
 #define MAX_USERS 256
 
@@ -32,7 +33,7 @@ void drawPlayers(const std::vector<SharedPlayer> &v, bool drawSpherical);
 void drawPlayer(const SharedPlayer &sp);
 void drawPlayerSpherical(const SharedPlayer &sp);
 
-const float PLAYER_RADIUS = 2.0f;
+float Player::radius = 2.0f;
 float width = 0.15f;
 float height = 0.15f;
 
@@ -152,9 +153,10 @@ void draw() {
         glScalef(s,s,s);
         glRotatef(degrees, 0, 0, 1);
         robberCop->draw(_drawSpherical.getVal());
+        drawPlayers(sharedUserDataCopy, _drawSpherical.getVal());
     glPopMatrix();
 
-    drawPlayers(sharedUserDataCopy, _drawSpherical.getVal());
+    
 
     glDisable( GL_TEXTURE_2D );
 }
@@ -213,7 +215,9 @@ void drawPlayers(const std::vector<SharedPlayer> &v, bool drawSpherical){
 void drawPlayer(const SharedPlayer &sp){
     float x = sp.phi;
     float y = sp.theta;
-    float z = PLAYER_RADIUS;
+    float z = Player::radius;
+
+
 
     glActiveTexture(GL_TEXTURE0);
 
@@ -258,7 +262,7 @@ void drawPlayer(const SharedPlayer &sp){
 void drawPlayerSpherical(const SharedPlayer &sp){
     float phi = -sp.phi;
     float theta = sp.theta;
-    float r = -PLAYER_RADIUS;
+    float r = -Player::radius;
 
     float x = r*glm::sin(phi)*glm::cos(theta);
     float y = r*glm::sin(phi)*glm::sin(theta);

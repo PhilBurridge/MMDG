@@ -4,8 +4,9 @@ import java.io.*;
 import java.util.ArrayList;
 
 
-public class MMDGServer extends ConsolePrinter{
+public class MMDGServer extends ConsolePrinter implements Runnable{
 
+	private Thread serverThread;
     /** This is the HTTP server handler class */
     private HTTPServer httpServer;
 
@@ -18,7 +19,7 @@ public class MMDGServer extends ConsolePrinter{
     /** The IP used by the HTTP server */
     private String serverIP = "undefined";
     
-    private String applicationIP = "localhost";
+    private String applicationIP = "undefined";
 
     /** The port used by HTTP server */
     private final int HTTP_PORT;
@@ -49,10 +50,12 @@ public class MMDGServer extends ConsolePrinter{
 
     
     // CONSTRUCTORS    
-    public MMDGServer(int httpPort, int wsPort, int appPort) throws IOException {
+    public MMDGServer(int httpPort, int wsPort, int appPort, String appIP) throws IOException {
         HTTP_PORT = httpPort;
         WEB_SOCKET_PORT = wsPort;
         APP_PORT = appPort;
+        applicationIP=appIP;
+        serverThread = new Thread (this);
         init();
         print("MMDGServer constructor done!\n");
     }
@@ -88,7 +91,8 @@ public class MMDGServer extends ConsolePrinter{
      * 
      * @throws IOException
      */
-    public void run() throws IOException {
+    @Override
+    public void run() {
 
         System.out.println("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
                         + "/robbercop.html>");
@@ -96,8 +100,8 @@ public class MMDGServer extends ConsolePrinter{
         httpServer.listenForNewConnections();
 
         // will start the listener thread for the tcpHandler.
-        tcpHandler.listener.start();
-        webSocketServer.connect();
+        tcpHandler.startListenerThread();
+        webSocketServer.startConnectionThread();
 
         // Read from console in Eclipse
         // BufferedReader br = new BufferedReader(new
@@ -133,13 +137,11 @@ public class MMDGServer extends ConsolePrinter{
             // print("Sent message to TCP handler");
 
             // sleep for 1/unloadPerSeconds seconds
-            try {
                 // How often stacks get sent to application
-                Thread.sleep((int) (1000 / unloadsPerSecond));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(!XThread.delay((int) (1000 / unloadsPerSecond)))
                 break;
-            }
+ 
+
         }
         print("Server stopped");
     }
@@ -266,6 +268,16 @@ public class MMDGServer extends ConsolePrinter{
             e.printStackTrace();
             return "Couldn't find IP";
         }
+    }
+    
+    public void runServer(){
+    	serverThread.start();
+    }
+    public void stopServer(){
+    	serverThread.interrupt();
+    	tcpHandler.stopListenerThread();
+    	webSocketServer.stopConnectionThread();
+    	httpServer.stop(1);
     }
 
     /**
