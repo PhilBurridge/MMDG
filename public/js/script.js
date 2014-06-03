@@ -21,17 +21,14 @@ function sendMessage(msg){
 
 function buttonClick(id){
     var msg = document.getElementById(id).value;
-	console.log("id: %s, message: %s", id,msg);
 	ws.send("var="+id+ config.arg_delimiter + "val=" + msg);
 }
 
 function buttonDown(btnId) {
-	postOnDisplay("pushed!!");
     ws.send("var=btn" + btnId + config.arg_delimiter + "val=1");
 };
 
 function buttonUp(btnId){
-	postOnDisplay("released!");
 	ws.send("var=btn" + btnId + config.arg_delimiter + "val=0");
 };
 
