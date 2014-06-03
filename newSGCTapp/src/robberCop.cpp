@@ -70,10 +70,10 @@ void RobberCop::process(int id, std::string var, std::string val) {
 
 
         float r1 = fmod((0.22f * scene->getNumberOfPlayers()), 1.0f);
-        float x = ((1.57 + 1.57) * r1 - 1.57);
+        float x = ((1.57 + 1.57) * r1);
 
         float r2 = fmod((0.32f * scene->getNumberOfPlayers()), 1.0f);
-        float y = ((0.78 + 0.78) * r2 - 0.78);
+        float y = ((0.78 + 0.78) * r2 + 0.78);
 
         // Randomize a color for every player
         float rand_R = r1;

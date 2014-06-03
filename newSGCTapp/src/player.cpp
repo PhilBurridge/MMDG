@@ -16,7 +16,6 @@ const glm::vec2 Player::DIRECTIONS[] = {
 const float Player::COP_SPEED = 0.4f;
 const float Player::ROB_SPEED = 0.8f;
 const double Player::COP_TIMER_LIMIT = 3.0;
-const float Player::RADIOUS = 1.0f;
 
 // Player constructor
 Player::Player(glm::vec2 pos, glm::vec3 c, bool isCop, sgct::Engine * e):
@@ -71,6 +70,10 @@ void Player::stop(){
 // Multiplies the player direction with its speed
 void Player::movePlayer(float dt) {
     position += dt*speed*direction;
+    std::cout << "x=" << position.x << std::endl;
+    std::cout << "y=" << position.y << std::endl;
+    if(position.y > 3.1415f) position.y = 3.1415f;
+    if(position.y < 0.0f)    position.y = 0.0f;
 }
 
 const glm::vec2& Player::getPosition() const {
@@ -106,7 +109,7 @@ void Player::draw() const {
 }
 
 void Player::drawSpherical() const{
-    DrawableSquare::drawSpherical(-RADIOUS, position.y, -position.x);
+    DrawableSquare::drawSpherical(-radius, position.y, -position.x);
     //drawNameSpherical();
 }
 
@@ -156,7 +159,7 @@ void Player::drawNameSpherical() const{
     // Draw name on screen, changes dynamicly depending on screen size
     // (font type, x-pos in pixels, y-pos in pixels, glm::vec4 color, std::string text)
 
-    float r = -RADIOUS; 
+    float r = -radius; 
     float theta = position.y; 
     float phi = -position.x;
 

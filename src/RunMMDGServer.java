@@ -74,7 +74,8 @@ public class RunMMDGServer extends JFrame implements ActionListener{
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 	 }
 	 
-	 public void start(int http, int ws, int app, String appIP) throws IOException, InterruptedException, NoSuchAlgorithmException {        
+	 public void start(int http, int ws, int app, String appIP) throws IOException, InterruptedException, NoSuchAlgorithmException {
+	     
 		 mmdgServer = new MMDGServer(http, ws, app, appIP);
          mmdgServer.setUnloadsPerSecond(1000);
          mmdgServer.runServer();
