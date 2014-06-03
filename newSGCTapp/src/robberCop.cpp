@@ -26,6 +26,7 @@ void RobberCop::init(){
     sgct::TextureManager::instance()->loadTexure(trash, "box", "./textures/box.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "cop", "./textures/cop.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "rob", "./textures/robber.png", true);
+    sgct::TextureManager::instance()->loadTexure(trash, "info", "./textures/rob.png", true);
 
 
 
