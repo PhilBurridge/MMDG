@@ -51,7 +51,7 @@ public class HTTPServer extends ConsolePrinter{
      * interface. This handler must implement the abstract handler method from
      * HttpHandler interface.
      */
-    static class MyHandler implements HttpHandler{
+    static class MyHandler implements HttpHandler {
 
         /**
          * Will respond with any file requested if it exist in public directory.
@@ -70,7 +70,10 @@ public class HTTPServer extends ConsolePrinter{
             URI uri = t.getRequestURI();
             // String with the relative path to requested file i.e /mmdg.html
             String entry = uri.getPath();
-
+            System.out.println(entry);
+            if (entry.equals("") || entry.equals("/"))
+            	entry="/robbercop.html";
+            System.out.println(entry);
             /*
              * Attempts to create a file with a canonical pathname from
              * root+entry. This means that it will resolve any "./" and "../"
