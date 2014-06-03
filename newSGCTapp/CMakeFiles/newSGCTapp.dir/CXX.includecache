@@ -54,6 +54,20 @@ sgct.h
 
 /Users/erik/Documents/git/MMDG/newSGCTapp/src/debug.h
 
+/Users/erik/Documents/git/MMDG/newSGCTapp/src/main.cpp
+stdlib.h
+-
+stdio.h
+-
+iostream
+-
+debug.h
+/Users/erik/Documents/git/MMDG/newSGCTapp/src/debug.h
+sgct.h
+/Users/erik/Documents/git/MMDG/newSGCTapp/src/sgct.h
+robberCop.h
+/Users/erik/Documents/git/MMDG/newSGCTapp/src/robberCop.h
+
 /Users/erik/Documents/git/MMDG/newSGCTapp/src/player.h
 ctime
 -

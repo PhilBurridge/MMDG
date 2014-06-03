@@ -152,9 +152,10 @@ void draw() {
         glScalef(s,s,s);
         glRotatef(degrees, 0, 0, 1);
         robberCop->draw(_drawSpherical.getVal());
+        drawPlayers(sharedUserDataCopy, _drawSpherical.getVal());
     glPopMatrix();
 
-    drawPlayers(sharedUserDataCopy, _drawSpherical.getVal());
+    
 
     glDisable( GL_TEXTURE_2D );
 }
