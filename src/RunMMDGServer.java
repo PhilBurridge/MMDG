@@ -115,7 +115,7 @@ public class RunMMDGServer extends JFrame implements ActionListener{
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-            txtAddress.setText("http://" + ipAdress + ":" + httpPort + "/robbercop.html");
+            txtAddress.setText("http://" + ipAdress + ":" + httpPort);
     	}
     	
     	if(e.getSource() == btnTerminate)

@@ -94,7 +94,7 @@ public class MMDGServer extends ConsolePrinter implements Runnable{
     public void run() {
 
         System.out.println("Running MMDG-server <http://" + serverIP + ":" + HTTP_PORT
-                        + "/robbercop.html>");
+                        + ">");
 
         httpServer.listenForNewConnections();
 
