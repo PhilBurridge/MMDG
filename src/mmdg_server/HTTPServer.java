@@ -137,4 +137,11 @@ public class HTTPServer extends ConsolePrinter{
         print("Waiting for connections ... ");
         server.start();
     }
+    
+    public void stop(int secondsDelay) {
+        // Starts listening to connections
+        print("Waiting for connections ... ");
+        server.stop(secondsDelay);
+    }
+    
 }

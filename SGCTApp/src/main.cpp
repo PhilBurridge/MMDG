@@ -5,11 +5,6 @@
 #include "sgct.h"
 #include "robberCop.h"
 
-
-
-/* !!!! FIXA ROBERCOP I CORE BRANCHEN !!!! */
-
-
 // Create pointer to the sgct engine, scene and core
 sgct::Engine * gEngine;
 RobberCop *robberCop;
@@ -42,7 +37,6 @@ int main( int argc, char* argv[] ) {
     gEngine->setDrawFunction(draw);
     gEngine->setPreSyncFunction(preSync);
     gEngine->setCleanUpFunction(cleanUp);
-    //gEngine->setPostSyncPreDrawFunction(postSyncPreDraw);
     gEngine->setExternalControlCallback(externalControlCallback);
     gEngine->setKeyboardCallbackFunction(keyCallBack);
 
@@ -56,19 +50,11 @@ int main( int argc, char* argv[] ) {
         return EXIT_FAILURE;
     }
 
-    // Send a message to the connected clients
-    //gEngine->sendMessageToExternalControl(core->getMessage());
-
-    //test
-    //robberCop->process(1,"connected","1");
-    //int x_res = gEngine->getActiveXResolution();
-    //std::cout << "X-RES: " << x_res << std::endl;
     // Main loop
     gEngine->render();
 
     // Clean up (de-allocate)
     delete robberCop;
-    //delete scene;
     delete gEngine;
 
     // Exit program
@@ -98,11 +84,11 @@ void preSync() {
         _externalInput.setVal(externalInputTemp);
         externalInputTemp = "";
 
-        //update shared player positions
-        
+        // Update shared player positions
         Player * p;
         std::vector<glm::vec2> playerPositionsTemp;
         const std::map<int, Player*> playerMap = robberCop->scene->getPlayerMap();
+
         for(std::map<int, Player *>::const_iterator it = playerMap.begin(); it != playerMap.end(); it++) {
             p = it->second;
             playerPositionsTemp.push_back(p->getPosition());
@@ -110,18 +96,17 @@ void preSync() {
         _playersPositions.setVal(playerPositionsTemp);
     }
     else {
-        
         std::string extStr = _externalInput.getVal();
         if(extStr != "")
             robberCop->handleExternalInput(extStr.c_str(), extStr.length(), 0);
 
         robberCop->scene->setPlayerPositions(_playersPositions.getVal());
     }
-
     robberCop->update(gEngine->getDt());
 }
 
 // Write all shared variables to be shared across the cluster
+// These are shared from the master
 void encode() {    
     sgct::SharedData::instance()->writeDouble( &curr_time );
     sgct::SharedData::instance()->writeBool( &_drawSpherical );
@@ -130,6 +115,7 @@ void encode() {
 }
 
 // Read all shared variables to be shared across the cluster
+// These are read by the nodes
 void decode() {    
     sgct::SharedData::instance()->readDouble( &curr_time );
     sgct::SharedData::instance()->readBool( &_drawSpherical );
@@ -139,16 +125,16 @@ void decode() {
 
 // Deletes all objects when the program is shut down
 void cleanUp() {
-    // add stuff
+    //delete robberCop;
+    //delete gEngine;
 }
 
 // Receives messages from the TPC connection
 void externalControlCallback(const char * recievedChars, int size, int clientId) {
-    // Only do something with the received message if the game is master
+    // Only do something with the received message if master
     if(gEngine->isMaster()) {
-        // Calls the message handler function from the core class which decodes the received messages
-
         externalInputTemp = std::string(recievedChars);
+        // Calls the message handler function from the core class which decodes the received messages
         robberCop->handleExternalInput(recievedChars, size, clientId);
     }
 }
@@ -159,10 +145,10 @@ void keyCallBack(int key, int action){
         switch(key) {
             case 'S':
                 _drawSpherical.toggle();
+            break;
             case 'T':
                 robberCop->printPingStats();
             break;
-
             case 'P':
                 std::cout << "Pinging clients " << std::endl;
                 robberCop->startBenchmark();
