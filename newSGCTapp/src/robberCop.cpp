@@ -22,7 +22,7 @@ void RobberCop::init(){
 
     // Load the textures to the texturehandle
     size_t trash = -1;
-    sgct::TextureManager::instance()->loadTexure(trash, "mmdg",  "./textures/space.png", true);
+    sgct::TextureManager::instance()->loadTexure(trash, "mmdg",  "./textures/space.jpg", true);
     sgct::TextureManager::instance()->loadTexure(trash, "box", "./textures/box.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "cop", "./textures/cop.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "rob", "./textures/robber.png", true);
