@@ -20,7 +20,7 @@ public class RunMMDGServer extends JFrame implements ActionListener{
 	
 	 public RunMMDGServer() 
 	 {
-		 
+	    
 	 	panelMain = new JPanel();
 	 	panelText = new JPanel();
 	 	

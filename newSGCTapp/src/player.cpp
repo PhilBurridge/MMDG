@@ -72,8 +72,8 @@ void Player::movePlayer(float dt, bool sphericalMode) {
     position += dt*speed*direction;
     if(sphericalMode){
         //Normalize theta
-        if(position.y > 3.1415f-0.13f) 
-            position.y = 3.1415f-0.13f;
+        if(position.y > 3.1415f/2.0f-0.13f) 
+            position.y = 3.1415f/2.0f-0.13f;
         if(position.y < 0.13f) 
             position.y = 0.13f;
         //Normalize phi
