@@ -77,6 +77,11 @@ void Scene::checkCollisions() {
 
             //If we've gotten here, we know p1 is a cop and p2 is a robber
             //Check if there is a collision
+            
+            //glm::vec3 pos1;
+            //glm::vec3 pos2;
+            //if(sphericalMode){}
+
             if(glm::length(p1->getPosition() - p2->getPosition()) < (p1->getSize() + p2->getSize())) { 
 
                 // Do somthing when collision happens. KILL THA ROBBBA

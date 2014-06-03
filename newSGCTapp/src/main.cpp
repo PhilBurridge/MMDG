@@ -53,7 +53,7 @@ sgct::SharedInt nPlayers(0);
 sgct::SharedVector<SharedPlayer> sharedUserData;
 
 
-DrawableSquare info("cop", 0.3f);
+DrawableSquare info("info", 0.3f);
 
 
 int main( int argc, char* argv[] ) {
