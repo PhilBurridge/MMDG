@@ -33,7 +33,7 @@ public class RunMMDGServer extends JFrame implements ActionListener{
 	 	
 	 	txtIp = new JTextField("");
 	 	txtIp.setEditable(false);
-	 	txtHttp = new JTextField("1337");
+	 	txtHttp = new JTextField("80");
 	 	txtWs = new JTextField("1338");
 	 	txtApp = new JTextField("20501");
 	 	txtAddress=  new JTextField(" ",JTextField.CENTER);
