@@ -392,6 +392,7 @@ CMakeFiles/newSGCTapp.dir/Scene.cpp.o: /usr/local/include/sgct/utils/SGCTSphere.
 
 CMakeFiles/newSGCTapp.dir/core.cpp.o: src/core.cpp
 CMakeFiles/newSGCTapp.dir/core.cpp.o: src/core.h
+CMakeFiles/newSGCTapp.dir/core.cpp.o: src/debug.h
 CMakeFiles/newSGCTapp.dir/core.cpp.o: /usr/local/include/GL/glew.h
 CMakeFiles/newSGCTapp.dir/core.cpp.o: /usr/local/include/GL/glfw3.h
 CMakeFiles/newSGCTapp.dir/core.cpp.o: /usr/local/include/GL/glfw3native.h

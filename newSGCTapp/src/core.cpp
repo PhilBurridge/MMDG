@@ -32,7 +32,7 @@ void Core::handleExternalInput(const char * recievedChars, int size, int clientI
 
 // Extracts commands delimited by CMD_DELIMITER from a string
 std::vector<std::string> Core::extractCommands(std::string externalInputString){
-    std::cout << "external input string: " << externalInputString << std::endl;
+    if(DEBUG) std::cout << "external input string: " << externalInputString << std::endl;
 
     std::vector<std::string> command_vec;
     size_t delimiter_pos = 0;
@@ -45,7 +45,7 @@ std::vector<std::string> Core::extractCommands(std::string externalInputString){
         externalInputString.erase(0, delimiter_pos + CMD_DELIMITER.length());
     }
     if(externalInputString.length() > 0){
-        std::cout << "WARNING! found command with no command delimiter" << std::endl;
+        if(DEBUG) std::cout << "WARNING! found command with no command delimiter" << std::endl;
     }
 
     return command_vec;
@@ -54,8 +54,7 @@ std::vector<std::string> Core::extractCommands(std::string externalInputString){
 // Decodes the received command and sends it to the process function
 bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::string *val) {
 
-    
-    std::cout << "analyzing: " << command << std::endl;
+    if(DEBUG) std::cout << "analyzing: " << command << std::endl;
 
     const size_t n_cmd_args = 3;
     std::string extracted_values[n_cmd_args];
@@ -96,11 +95,11 @@ bool Core::analyzeCommand(std::string command, int *id, std::string *var, std::s
 void Core::process(int id, std::string variable, std::string value){
     //this method is to be overridden by applications like RobberCop
 
-    std::cout << "Extracted input data: " << std::endl;
+    /*std::cout << "Extracted input data: " << std::endl;
     std::cout << "id = " << id << std::endl;
     std::cout << "variable = " << variable << std::endl;
     std::cout << "value = " << value << std::endl;
-    std::cout << std::endl;
+    std::cout << std::endl;*/
 
     if(variable == "recieved_pings"){
         stopBenchmark();

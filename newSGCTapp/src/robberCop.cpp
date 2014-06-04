@@ -28,8 +28,6 @@ void RobberCop::init(){
     sgct::TextureManager::instance()->loadTexure(trash, "rob", "./textures/robber.png", true);
     sgct::TextureManager::instance()->loadTexure(trash, "info", "./textures/info.png", true);
 
-
-
     // Enable some openGL stuff
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_DEPTH_TEST);
@@ -49,7 +47,6 @@ void RobberCop::init(){
 // Overiding method from core
 void RobberCop::process(int id, std::string var, std::string val) {
 
-    std::cout << "INPUT: " << std::endl;
     Core::process(id,var,val);
 
     if(var == "connected"){
@@ -114,8 +111,10 @@ void RobberCop::process(int id, std::string var, std::string val) {
     if(var.substr(0,3) == "btn"){
         int btnNumber = atoi(var.substr(3,1).c_str());
         bool pressed = (val == "1");
-        std::cout << "btn number: " << btnNumber << std::endl;
-        std::cout << "btn is pressed: " << pressed << std::endl;
+        if(DEBUG){
+            std::cout << "btn number: " << btnNumber << std::endl;
+            std::cout << "btn is pressed: " << pressed << std::endl;
+        }
             
         // Chooses the corrensponding direction
         int direction;

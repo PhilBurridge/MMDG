@@ -393,6 +393,7 @@ CMakeFiles/newSGCTapp.dir/Scene.cpp.o
 CMakeFiles/newSGCTapp.dir/core.cpp.o
  /Users/erik/Documents/git/MMDG/newSGCTapp/src/core.cpp
  /Users/erik/Documents/git/MMDG/newSGCTapp/src/core.h
+ /Users/erik/Documents/git/MMDG/newSGCTapp/src/debug.h
  /usr/local/include/GL/glew.h
  /usr/local/include/GL/glfw3.h
  /usr/local/include/GL/glfw3native.h

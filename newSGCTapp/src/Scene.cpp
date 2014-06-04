@@ -115,9 +115,11 @@ void Scene::checkCollisions(bool sphericalMode) {
                 p1->resetCopTimer();
                 p2->switchToCop();
 
-                std::cout << "****************************************" << std::endl;
-                std::cout << "collision between player " << (*itRob).first << " and " << (*itCop).first << std::endl;
-                std::cout << "****************************************" << std::endl;
+                if(DEBUG){
+                    std::cout << "****************************************" << std::endl;
+                    std::cout << "collision between player " << (*itRob).first << " and " << (*itCop).first << std::endl;
+                    std::cout << "****************************************" << std::endl;
+                }
             }
         }
     }

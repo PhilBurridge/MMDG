@@ -7,6 +7,7 @@
 #include <vector>
 #include <ctime>
 #include "sgct.h"
+#include "debug.h"
 //#include "robberCop.h"
 
 #ifndef CORE_H
